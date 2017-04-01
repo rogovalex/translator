@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import io.reactivex.functions.Consumer;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
 import ru.rogovalex.translator.domain.translate.TranslateParams;
+import ru.rogovalex.translator.domain.translate.TranslateResult;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
 /**
@@ -48,9 +49,9 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
         mParams = params;
         mLoading = true;
-        mInteractor.execute(mParams, new Consumer<String>() {
+        mInteractor.execute(mParams, new Consumer<TranslateResult>() {
             @Override
-            public void accept(String translation) throws Exception {
+            public void accept(TranslateResult translation) throws Exception {
                 mLoading = false;
                 getView().onTranslated(translation);
             }
@@ -69,7 +70,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         }
 
         @Override
-        public void onTranslated(String translation) {
+        public void onTranslated(TranslateResult translation) {
         }
 
         @Override

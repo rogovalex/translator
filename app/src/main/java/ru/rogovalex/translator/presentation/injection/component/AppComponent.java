@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import io.reactivex.Scheduler;
-import ru.rogovalex.translator.api.TranslateApiService;
+import ru.rogovalex.translator.domain.translate.DictionaryProvider;
 import ru.rogovalex.translator.domain.translate.TranslateProvider;
 import ru.rogovalex.translator.presentation.injection.module.AppModule;
 import ru.rogovalex.translator.presentation.injection.module.DataModule;
@@ -25,8 +25,6 @@ public interface AppComponent {
 
     Context context();
 
-    TranslateApiService newsApiService();
-
     @Named(DomainModule.JOB)
     Scheduler jobScheduler();
 
@@ -34,4 +32,6 @@ public interface AppComponent {
     Scheduler uiScheduler();
 
     TranslateProvider translateProvider();
+
+    DictionaryProvider dictionaryProvider();
 }

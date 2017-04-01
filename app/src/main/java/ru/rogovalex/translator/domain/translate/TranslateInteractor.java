@@ -1,11 +1,15 @@
 package ru.rogovalex.translator.domain.translate;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.functions.Function;
+import io.reactivex.functions.BiFunction;
+import ru.rogovalex.translator.api.Entry;
 import ru.rogovalex.translator.domain.common.Interactor;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
@@ -15,26 +19,35 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  * Date: 01.04.2017
  * Time: 18:18
  */
-public class TranslateInteractor extends Interactor<String, TranslateParams> {
+public class TranslateInteractor extends Interactor<TranslateResult, TranslateParams> {
 
-    private final TranslateProvider mProvider;
+    private final TranslateProvider mTranslateProvider;
+    private final DictionaryProvider mDictionaryProvider;
 
     @Inject
     public TranslateInteractor(@Named(DomainModule.JOB) Scheduler jobScheduler,
                                @Named(DomainModule.UI) Scheduler uiScheduler,
-                               TranslateProvider provider) {
+                               TranslateProvider translateProvider,
+                               DictionaryProvider dictionaryProvider) {
         super(jobScheduler, uiScheduler);
-        mProvider = provider;
+        mTranslateProvider = translateProvider;
+        mDictionaryProvider = dictionaryProvider;
     }
 
     @Override
-    protected Observable<String> buildObservable(TranslateParams params) {
-        return mProvider.translate(params)
-                .map(new Function<TranslateResult, String>() {
+    protected Observable<TranslateResult> buildObservable(final TranslateParams params) {
+        return mTranslateProvider.translate(params)
+                .zipWith(lookupDictionary(params), new BiFunction<String, List<Entry>, TranslateResult>() {
                     @Override
-                    public String apply(TranslateResult result) throws Exception {
-                        return result.getTranslation();
+                    public TranslateResult apply(String translation, List<Entry> entries) throws Exception {
+                        return new TranslateResult(params.getText(), params.getTextLang(),
+                                translation, params.getTranslationLang(), entries);
                     }
                 });
+    }
+
+    private Observable<List<Entry>> lookupDictionary(TranslateParams params) {
+        return mDictionaryProvider.lookup(params)
+                .onErrorReturnItem(Collections.<Entry>emptyList());
     }
 }

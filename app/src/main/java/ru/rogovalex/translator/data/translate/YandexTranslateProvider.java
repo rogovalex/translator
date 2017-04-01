@@ -9,7 +9,6 @@ import ru.rogovalex.translator.api.TranslateApiService;
 import ru.rogovalex.translator.api.TranslateResponse;
 import ru.rogovalex.translator.domain.translate.TranslateParams;
 import ru.rogovalex.translator.domain.translate.TranslateProvider;
-import ru.rogovalex.translator.domain.translate.TranslateResult;
 
 /**
  * Created with Android Studio.
@@ -31,21 +30,20 @@ public class YandexTranslateProvider implements TranslateProvider {
     }
 
     @Override
-    public Observable<TranslateResult> translate(final TranslateParams params) {
+    public Observable<String> translate(final TranslateParams params) {
         return mService.translate(API_KEY, params.getText(),
                 params.getTextLang() + "-" + params.getTranslationLang(),
                 FORMAT_PLAIN, DISABLE_AUTO_DETERMINATION)
-                .flatMap(new Function<TranslateResponse, Observable<TranslateResult>>() {
+                .flatMap(new Function<TranslateResponse, Observable<String>>() {
                     @Override
-                    public Observable<TranslateResult> apply(TranslateResponse response) throws Exception {
+                    public Observable<String> apply(TranslateResponse response) throws Exception {
                         if (response.getCode() != 200) {
                             return Observable.error(new ApiException(response.getCode()));
                         }
-                        TranslateResult result = new TranslateResult(params.getText(),
-                                params.getTextLang(),
-                                response.getText()[0],
-                                params.getTranslationLang());
-                        return Observable.just(result);
+                        if (response.getText() == null || response.getText().length == 0) {
+                            return Observable.error(new ApiException(422));
+                        }
+                        return Observable.just(response.getText()[0]);
                     }
                 });
     }

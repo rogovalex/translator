@@ -1,5 +1,7 @@
 package ru.rogovalex.translator.presentation.translate;
 
+import ru.rogovalex.translator.domain.translate.TranslateResult;
+
 /**
  * Created with Android Studio.
  * User: rogov
@@ -9,7 +11,7 @@ package ru.rogovalex.translator.presentation.translate;
 public interface TranslateView {
     void onTranslating();
 
-    void onTranslated(String translation);
+    void onTranslated(TranslateResult translation);
 
     void onTranslateError(Throwable e);
 }

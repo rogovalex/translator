@@ -23,6 +23,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import ru.rogovalex.translator.domain.translate.TranslateParams;
+import ru.rogovalex.translator.domain.translate.TranslateResult;
 import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
 import ru.rogovalex.translator.presentation.translate.TranslateView;
 import ru.rogovalex.translator.presentation.translate.TranslateViewPresenter;
@@ -97,8 +98,8 @@ public class TranslateFragment extends Fragment implements TranslateView {
     }
 
     @Override
-    public void onTranslated(String translation) {
-        mTextOutput.setText(translation);
+    public void onTranslated(TranslateResult translation) {
+        mTextOutput.setText(translation.getTranslation());
     }
 
     @Override
