@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.navigation_favorite:
                 showFragment(FavoriteFragment.class);
                 break;
-            case R.id.navigation_settings:
-                showFragment(SettingsFragment.class);
-                break;
         }
     }
 
