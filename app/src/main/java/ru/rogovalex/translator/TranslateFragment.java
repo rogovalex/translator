@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -49,8 +50,9 @@ public class TranslateFragment extends Fragment implements TranslateView {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_translate, container, false);
 
-        mTextInput = (EditText) view.findViewById(R.id.text_input);
-        final View clear = view.findViewById(R.id.clear);
+        final CardView cardView = (CardView) view.findViewById(R.id.translation_input);
+        mTextInput = (EditText) cardView.findViewById(R.id.text_input);
+        final View clear = cardView.findViewById(R.id.clear);
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +78,7 @@ public class TranslateFragment extends Fragment implements TranslateView {
             }
         });
 
-        view.findViewById(R.id.translate).setOnClickListener(new View.OnClickListener() {
+        cardView.findViewById(R.id.translate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.translate(new TranslateParams(
@@ -85,10 +87,20 @@ public class TranslateFragment extends Fragment implements TranslateView {
         });
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.translation_output);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         mAdapter = new TranslationAdapter();
         recyclerView.setAdapter(mAdapter);
+
+        final float elevation = getResources().getDimension(R.dimen.default_elevation);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int position = layoutManager.findFirstCompletelyVisibleItemPosition();
+                cardView.setCardElevation(position == 0 ? 0 : elevation);
+            }
+        });
 
         return view;
     }
