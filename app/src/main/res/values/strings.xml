@@ -3,5 +3,5 @@
     <string name="title_translate">Перевод</string>
     <string name="title_history">История</string>
     <string name="title_favorite">Избранное</string>
-    <string name="translate_hint">Текст для перевода</string>
+    <string name="translate_hint">Введите текст</string>
 </resources>

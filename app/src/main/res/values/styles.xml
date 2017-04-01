@@ -8,4 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TranslateContainer">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TranslateInput">
+        <item name="android:layout_height">124dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="TranslateOutput">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
 </resources>

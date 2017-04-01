@@ -4,24 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
-
-import com.jakewharton.rxbinding2.widget.RxTextView;
-import com.jakewharton.rxbinding2.widget.TextViewAfterTextChangeEvent;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import ru.rogovalex.translator.domain.translate.TranslateParams;
 import ru.rogovalex.translator.domain.translate.TranslateResult;
 import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
@@ -30,12 +22,7 @@ import ru.rogovalex.translator.presentation.translate.TranslateViewPresenter;
 
 public class TranslateFragment extends Fragment implements TranslateView {
 
-    private static final long DEBOUNCE_MILLIS = 1000;
-
     private EditText mTextInput;
-    private TextView mTextOutput;
-
-    private CompositeDisposable mSubscription = new CompositeDisposable();
 
     private Callbacks mCallbacks;
 
@@ -60,12 +47,36 @@ public class TranslateFragment extends Fragment implements TranslateView {
         View view = inflater.inflate(R.layout.fragment_translate, container, false);
 
         mTextInput = (EditText) view.findViewById(R.id.text_input);
-        mTextOutput = (TextView) view.findViewById(R.id.text_output);
-        view.findViewById(R.id.clear).setOnClickListener(new View.OnClickListener() {
+        final View clear = view.findViewById(R.id.clear);
+        clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mTextInput.setText("");
-                mTextOutput.setText("");
+                showKeyboard();
+            }
+        });
+        clear.setVisibility(mTextInput.getText().length() == 0 ? View.GONE : View.VISIBLE);
+
+        mTextInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                clear.setVisibility(s.length() == 0 ? View.GONE : View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        view.findViewById(R.id.translate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.translate(new TranslateParams(
+                        mTextInput.getText().toString(), "ru", "en"));
             }
         });
         return view;
@@ -82,24 +93,22 @@ public class TranslateFragment extends Fragment implements TranslateView {
     public void onStart() {
         super.onStart();
         mPresenter.setView(this);
-        subscribeToTextChanges();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mSubscription.clear();
         mPresenter.setView(null);
     }
 
     @Override
     public void onTranslating() {
-
+        dismissKeyboard();
     }
 
     @Override
     public void onTranslated(TranslateResult translation) {
-        mTextOutput.setText(translation.getTranslation());
+
     }
 
     @Override
@@ -107,28 +116,19 @@ public class TranslateFragment extends Fragment implements TranslateView {
 
     }
 
-    private void subscribeToTextChanges() {
-        mSubscription.add(RxTextView.afterTextChangeEvents(mTextInput)
-                .debounce(DEBOUNCE_MILLIS, TimeUnit.MILLISECONDS)
-                .map(new Function<TextViewAfterTextChangeEvent, String>() {
-                    @Override
-                    public String apply(TextViewAfterTextChangeEvent event) throws Exception {
-                        return event.view().getText().toString();
-                    }
-                })
-                .filter(new Predicate<String>() {
-                    @Override
-                    public boolean test(String s) throws Exception {
-                        return !s.isEmpty();
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String text) throws Exception {
-                        mPresenter.translate(new TranslateParams(text, "ru", "en"));
-                    }
-                }));
+    private void dismissKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    private void showKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mTextInput, InputMethodManager.SHOW_FORCED);
     }
 
     public interface Callbacks {
