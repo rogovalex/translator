@@ -4,4 +4,5 @@
     <string name="title_history">История</string>
     <string name="title_favorite">Избранное</string>
     <string name="title_settings">Настройки</string>
+    <string name="translate_hint">Текст для перевода</string>
 </resources>
