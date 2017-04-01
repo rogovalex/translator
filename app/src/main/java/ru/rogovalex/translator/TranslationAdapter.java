@@ -24,7 +24,6 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private List<AdapterItem> mItems = new ArrayList<>();
 
-
     public void setTranslation(TranslateResult translation) {
         mItems.clear();
 
@@ -38,6 +37,11 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         }
 
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        mItems.clear();
         notifyDataSetChanged();
     }
 

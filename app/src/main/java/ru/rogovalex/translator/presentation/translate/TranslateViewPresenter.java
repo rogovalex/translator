@@ -19,6 +19,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     private final TranslateInteractor mInteractor;
 
     private TranslateParams mParams;
+    private TranslateResult mResult;
 
     private boolean mLoading;
 
@@ -50,14 +51,19 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
             } else {
                 return;
             }
+        } else if (params.equals(mParams) && mResult != null) {
+            getView().onTranslated(mResult);
+            return;
         }
 
         mParams = params;
+        mResult = null;
         mLoading = true;
         mInteractor.execute(mParams, new Consumer<TranslateResult>() {
             @Override
             public void accept(TranslateResult translation) throws Exception {
                 mLoading = false;
+                mResult = translation;
                 getView().onTranslated(translation);
             }
         }, new Consumer<Throwable>() {

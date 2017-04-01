@@ -26,6 +26,8 @@ import ru.rogovalex.translator.presentation.translate.TranslateViewPresenter;
 public class TranslateFragment extends Fragment implements TranslateView {
 
     private EditText mTextInput;
+    private View mProgress;
+    private View mTranslate;
     private TranslationAdapter mAdapter;
 
     private Callbacks mCallbacks;
@@ -58,6 +60,7 @@ public class TranslateFragment extends Fragment implements TranslateView {
             public void onClick(View v) {
                 mPresenter.cancel();
                 mTextInput.setText("");
+                mAdapter.clear();
                 showKeyboard();
             }
         });
@@ -78,13 +81,15 @@ public class TranslateFragment extends Fragment implements TranslateView {
             }
         });
 
-        cardView.findViewById(R.id.translate).setOnClickListener(new View.OnClickListener() {
+        mTranslate = cardView.findViewById(R.id.translate);
+        mTranslate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.translate(new TranslateParams(
                         mTextInput.getText().toString().trim(), "ru", "en"));
             }
         });
+        mProgress = cardView.findViewById(R.id.progress);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.translation_output);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -116,6 +121,8 @@ public class TranslateFragment extends Fragment implements TranslateView {
     public void onStart() {
         super.onStart();
         mPresenter.setView(this);
+        mPresenter.translate(new TranslateParams(
+                mTextInput.getText().toString().trim(), "ru", "en"));
     }
 
     @Override
@@ -126,17 +133,22 @@ public class TranslateFragment extends Fragment implements TranslateView {
 
     @Override
     public void onTranslating() {
+        mProgress.setVisibility(View.VISIBLE);
+        mTranslate.setVisibility(View.GONE);
         dismissKeyboard();
     }
 
     @Override
     public void onTranslated(TranslateResult translation) {
+        mProgress.setVisibility(View.GONE);
+        mTranslate.setVisibility(View.VISIBLE);
         mAdapter.setTranslation(translation);
     }
 
     @Override
     public void onTranslateError(Throwable e) {
-
+        mProgress.setVisibility(View.GONE);
+        mTranslate.setVisibility(View.VISIBLE);
     }
 
     private void dismissKeyboard() {
