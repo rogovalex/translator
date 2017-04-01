@@ -59,6 +59,10 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/translation_output"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="outsideOverlay"
         style="@style/TranslateOutput"/>
 
 </LinearLayout>

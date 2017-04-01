@@ -1,0 +1,50 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp">
+
+    <TextView
+        android:id="@+id/index"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        tools:text="2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/synonyms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="18sp"
+            tools:text="перевод1, перевод2, перевод3"/>
+
+        <TextView
+            android:id="@+id/meanings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            tools:text="значение1, значение2, значение3"/>
+
+        <TextView
+            android:id="@+id/examples"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            tools:text="пример1, пример2, пример3"/>
+    </LinearLayout>
+</LinearLayout>

@@ -7,13 +7,13 @@
     <style name="TranslateInput">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_weight">4</item>
     </style>
 
     <style name="TranslateOutput">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_weight">5</item>
     </style>
 
 </resources>

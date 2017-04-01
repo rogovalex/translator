@@ -4,4 +4,5 @@
     <string name="title_history">История</string>
     <string name="title_favorite">Избранное</string>
     <string name="translate_hint">Введите текст</string>
+    <string name="transcription">[%s]</string>
 </resources>
