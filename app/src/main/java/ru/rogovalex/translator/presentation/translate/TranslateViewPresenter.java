@@ -37,6 +37,11 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     }
 
     public void translate(TranslateParams params) {
+        if (params.getText().isEmpty()) {
+            cancel();
+            return;
+        }
+
         getView().onTranslating();
 
         if (mLoading) {
@@ -62,6 +67,11 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
                 getView().onTranslateError(throwable);
             }
         });
+    }
+
+    public void cancel() {
+        mLoading = false;
+        mInteractor.cancel();
     }
 
     private static TranslateView sStubView = new TranslateView() {

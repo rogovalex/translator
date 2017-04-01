@@ -51,6 +51,7 @@ public class TranslateFragment extends Fragment implements TranslateView {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mPresenter.cancel();
                 mTextInput.setText("");
                 showKeyboard();
             }
