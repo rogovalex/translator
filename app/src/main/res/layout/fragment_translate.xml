@@ -1,10 +1,11 @@
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:orientation="vertical"
     tools:context="ru.rogovalex.translator.TranslateFragment">
 
     <FrameLayout
@@ -47,4 +48,38 @@
 
     </FrameLayout>
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:background="@drawable/frame_border"
+        android:padding="2dp">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/text_output"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:gravity="top|left"
+                android:textColor="?colorPrimary"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="32dp"
+                android:paddingTop="8dp"
+                tools:text="Перевод"/>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </FrameLayout>
+
+</LinearLayout>

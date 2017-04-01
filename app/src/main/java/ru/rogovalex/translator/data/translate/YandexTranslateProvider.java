@@ -1,4 +1,4 @@
-package ru.rogovalex.translator.data;
+package ru.rogovalex.translator.data.translate;
 
 import javax.inject.Inject;
 
@@ -19,7 +19,7 @@ import ru.rogovalex.translator.domain.translate.TranslateResult;
  */
 public class YandexTranslateProvider implements TranslateProvider {
 
-    private static final String API_KEY = "\"trnsl.1.1.20170401T123903Z.821a542db77c4103.831126fb02a869cdd86f9c876690e4c437f83f65";
+    private static final String API_KEY = "trnsl.1.1.20170401T123903Z.821a542db77c4103.831126fb02a869cdd86f9c876690e4c437f83f65";
     private static final String FORMAT_PLAIN = "plain";
     private static final String DISABLE_AUTO_DETERMINATION = "0";
 

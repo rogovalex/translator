@@ -8,7 +8,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import ru.rogovalex.translator.presentation.injection.component.AppComponent;
+import ru.rogovalex.translator.presentation.injection.component.DaggerTranslateFragmentComponent;
+import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
+
+public class MainActivity extends AppCompatActivity
+        implements TranslateFragment.Callbacks {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +30,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (savedInstanceState == null) {
+            addComponentHolder();
             showFragment(navigation.getSelectedItemId());
         }
+    }
+
+    @Override
+    public TranslateFragmentComponent getTranslateFragmentComponent() {
+        return getComponentHolder().getComponent("main", TranslateFragmentComponent.class,
+                new ComponentFactory<TranslateFragmentComponent>() {
+                    @Override
+                    public TranslateFragmentComponent buildComponent() {
+                        return DaggerTranslateFragmentComponent.builder()
+                                .appComponent(getAppComponent())
+                                .build();
+                    }
+                });
     }
 
     private void showFragment(int id) {
@@ -57,4 +76,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void addComponentHolder() {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.holder_container);
+        if (fragment == null) {
+            fragment = new ComponentHolderFragment();
+            fm.beginTransaction()
+                    .add(R.id.holder_container, fragment)
+                    .commit();
+        }
+    }
+
+    private ComponentHolderFragment getComponentHolder() {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.holder_container);
+        return ((ComponentHolderFragment) fragment);
+    }
+
+    private AppComponent getAppComponent() {
+        return ((App) getApplicationContext()).getAppComponent();
+    }
 }
