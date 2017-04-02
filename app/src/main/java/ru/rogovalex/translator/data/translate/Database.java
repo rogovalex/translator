@@ -41,7 +41,7 @@ public class Database implements Storage {
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
         Cursor cursor = db.query(TranslationTable.TABLE_NAME, null,
-                where, null, null, null, TranslationTable._ID + " DESC");
+                where, null, null, null, TranslationTable.TIMESTAMP + " DESC");
 
         if (cursor != null && cursor.moveToFirst()) {
             int colId = cursor.getColumnIndex(TranslationTable._ID);
@@ -137,12 +137,19 @@ public class Database implements Storage {
 
             SQLiteStatement insertTranslation = db.compileStatement(
                     "INSERT OR REPLACE INTO " + TranslationTable.TABLE_NAME + " ("
+                            + TranslationTable._ID + ","
                             + TranslationTable.TEXT + ","
                             + TranslationTable.TEXT_LANG + ","
                             + TranslationTable.TRANSLATION + ","
                             + TranslationTable.TRANSLATION_LANG + ","
-                            + TranslationTable.FAVORITE
-                            + ") VALUES (?, ?, ?, ?, ?)");
+                            + TranslationTable.FAVORITE + ","
+                            + TranslationTable.TIMESTAMP
+                            + ") VALUES ((SELECT " + TranslationTable._ID
+                            + " FROM " + TranslationTable.TABLE_NAME + " WHERE "
+                            + TranslationTable.TEXT + "=? AND "
+                            + TranslationTable.TEXT_LANG + "=? AND "
+                            + TranslationTable.TRANSLATION_LANG + "=?"
+                            + "), ?, ?, ?, ?, ?, ?)");
 
             SQLiteStatement insertDefinition = db.compileStatement(
                     "INSERT INTO " + DefinitionTable.TABLE_NAME + " ("
@@ -162,9 +169,13 @@ public class Database implements Storage {
 
             insertTranslation.bindString(1, translation.getText());
             insertTranslation.bindString(2, translation.getTextLang());
-            insertTranslation.bindString(3, translation.getTranslation());
-            insertTranslation.bindString(4, translation.getTranslationLang());
-            insertTranslation.bindLong(5, translation.isFavorite() ? 1 : 0);
+            insertTranslation.bindString(3, translation.getTranslationLang());
+            insertTranslation.bindString(4, translation.getText());
+            insertTranslation.bindString(5, translation.getTextLang());
+            insertTranslation.bindString(6, translation.getTranslation());
+            insertTranslation.bindString(7, translation.getTranslationLang());
+            insertTranslation.bindLong(8, translation.isFavorite() ? 1 : 0);
+            insertTranslation.bindLong(9, System.currentTimeMillis());
 
             long id = insertTranslation.executeInsert();
 

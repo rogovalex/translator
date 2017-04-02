@@ -11,6 +11,7 @@ public class TranslationTable implements BaseColumns {
     public static final String TRANSLATION = "translation";
     public static final String TRANSLATION_LANG = "translation_lang";
     public static final String FAVORITE = "favorite";
+    public static final String TIMESTAMP = "timestamp";
 
     public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     public static final String CREATE_TABLE
@@ -21,6 +22,7 @@ public class TranslationTable implements BaseColumns {
             + TRANSLATION + " TEXT,"
             + TRANSLATION_LANG + " TEXT,"
             + FAVORITE + " INTEGER,"
+            + TIMESTAMP + " INTEGER,"
             + "CONSTRAINT unq UNIQUE (" + TEXT + "," + TEXT_LANG + "," + TRANSLATION_LANG + ")"
             + ");";
 }
