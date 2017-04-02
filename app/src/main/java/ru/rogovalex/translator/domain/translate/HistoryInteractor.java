@@ -22,7 +22,7 @@ public class HistoryInteractor extends Interactor<List<TranslateResult>, Void> {
     private final Storage mStorage;
 
     @Inject
-    public HistoryInteractor(@Named(DomainModule.JOB) Scheduler jobScheduler,
+    public HistoryInteractor(@Named(DomainModule.LOCAL) Scheduler jobScheduler,
                              @Named(DomainModule.UI) Scheduler uiScheduler,
                              Storage storage) {
         super(jobScheduler, uiScheduler);

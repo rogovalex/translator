@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteStatement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import ru.rogovalex.translator.domain.translate.Definition;
 import ru.rogovalex.translator.domain.translate.Storage;
 import ru.rogovalex.translator.domain.translate.TranslateResult;
@@ -25,7 +23,6 @@ public class Database implements Storage {
 
     private final SQLiteOpenHelper mOpenHelper;
 
-    @Inject
     public Database(SQLiteOpenHelper openHelper) {
         mOpenHelper = openHelper;
     }

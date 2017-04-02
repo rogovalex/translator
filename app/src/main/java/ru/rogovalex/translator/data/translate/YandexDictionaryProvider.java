@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import ru.rogovalex.translator.api.ApiException;
@@ -32,7 +30,6 @@ public class YandexDictionaryProvider implements DictionaryProvider {
 
     private final DictionaryApiService mService;
 
-    @Inject
     public YandexDictionaryProvider(DictionaryApiService service) {
         mService = service;
     }

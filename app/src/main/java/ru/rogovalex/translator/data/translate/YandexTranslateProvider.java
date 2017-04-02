@@ -1,7 +1,5 @@
 package ru.rogovalex.translator.data.translate;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import ru.rogovalex.translator.api.ApiException;
@@ -24,7 +22,6 @@ public class YandexTranslateProvider implements TranslateProvider {
 
     private final TranslateApiService mService;
 
-    @Inject
     public YandexTranslateProvider(TranslateApiService service) {
         mService = service;
     }
