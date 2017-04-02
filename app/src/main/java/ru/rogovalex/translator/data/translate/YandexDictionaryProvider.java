@@ -63,7 +63,8 @@ public class YandexDictionaryProvider implements DictionaryProvider {
                     @Override
                     public Definition apply(DictionaryEntry entry) throws Exception {
                         Definition result = new Definition(entry.getText(),
-                                entry.getTranscription(), entry.getPos(),
+                                notNull(entry.getTranscription()),
+                                notNull(entry.getPos()),
                                 new ArrayList<Translation>());
 
                         if (entry.getTranslations() != null) {
@@ -77,6 +78,10 @@ public class YandexDictionaryProvider implements DictionaryProvider {
                 })
                 .toList()
                 .toObservable();
+    }
+
+    private String notNull(String value) {
+        return value == null ? "" : value;
     }
 
     private Translation convert(DictionaryTranslation t) {

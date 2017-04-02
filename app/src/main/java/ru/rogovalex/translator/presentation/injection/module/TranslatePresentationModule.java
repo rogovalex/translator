@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.translate.DictionaryProvider;
+import ru.rogovalex.translator.domain.translate.Storage;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
 import ru.rogovalex.translator.domain.translate.TranslateProvider;
 import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
@@ -26,9 +27,10 @@ public class TranslatePresentationModule {
             @Named(DomainModule.JOB) Scheduler jobScheduler,
             @Named(DomainModule.UI) Scheduler uiScheduler,
             TranslateProvider translateProvider,
-            DictionaryProvider dictionaryProvider) {
+            DictionaryProvider dictionaryProvider,
+            Storage storage) {
         return new TranslateInteractor(jobScheduler, uiScheduler,
-                translateProvider, dictionaryProvider);
+                translateProvider, dictionaryProvider, storage);
     }
 
     @Provides

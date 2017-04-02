@@ -1,5 +1,8 @@
 package ru.rogovalex.translator.presentation.injection.module;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteOpenHelper;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -10,9 +13,12 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.rogovalex.translator.api.DictionaryApiService;
 import ru.rogovalex.translator.api.TranslateApiService;
+import ru.rogovalex.translator.data.translate.Database;
+import ru.rogovalex.translator.data.translate.DatabaseHelper;
 import ru.rogovalex.translator.data.translate.YandexDictionaryProvider;
 import ru.rogovalex.translator.data.translate.YandexTranslateProvider;
 import ru.rogovalex.translator.domain.translate.DictionaryProvider;
+import ru.rogovalex.translator.domain.translate.Storage;
 import ru.rogovalex.translator.domain.translate.TranslateProvider;
 
 /**
@@ -80,5 +86,17 @@ public class DataModule {
     @Singleton
     public DictionaryProvider provideDictionaryProvider(DictionaryApiService apiService) {
         return new YandexDictionaryProvider(apiService);
+    }
+
+    @Provides
+    @Singleton
+    public SQLiteOpenHelper provideSQLiteOpenHelper(Context context) {
+        return new DatabaseHelper(context);
+    }
+
+    @Provides
+    @Singleton
+    public Storage provideStorage(SQLiteOpenHelper sqLiteOpenHelper) {
+        return new Database(sqLiteOpenHelper);
     }
 }

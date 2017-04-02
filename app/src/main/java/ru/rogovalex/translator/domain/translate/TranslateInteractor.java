@@ -9,6 +9,7 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
 import ru.rogovalex.translator.domain.common.Interactor;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
@@ -22,15 +23,18 @@ public class TranslateInteractor extends Interactor<TranslateResult, TranslatePa
 
     private final TranslateProvider mTranslateProvider;
     private final DictionaryProvider mDictionaryProvider;
+    private final Storage mStorage;
 
     @Inject
     public TranslateInteractor(@Named(DomainModule.JOB) Scheduler jobScheduler,
                                @Named(DomainModule.UI) Scheduler uiScheduler,
                                TranslateProvider translateProvider,
-                               DictionaryProvider dictionaryProvider) {
+                               DictionaryProvider dictionaryProvider,
+                               Storage storage) {
         super(jobScheduler, uiScheduler);
         mTranslateProvider = translateProvider;
         mDictionaryProvider = dictionaryProvider;
+        mStorage = storage;
     }
 
     @Override
@@ -41,6 +45,12 @@ public class TranslateInteractor extends Interactor<TranslateResult, TranslatePa
                     public TranslateResult apply(String translation, List<Definition> definitions) throws Exception {
                         return new TranslateResult(params.getText(), params.getTextLang(),
                                 translation, params.getTranslationLang(), definitions);
+                    }
+                })
+                .doOnNext(new Consumer<TranslateResult>() {
+                    @Override
+                    public void accept(TranslateResult result) throws Exception {
+                        mStorage.saveRecentTranslation(result);
                     }
                 });
     }

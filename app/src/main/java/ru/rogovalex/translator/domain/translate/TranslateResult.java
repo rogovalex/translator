@@ -14,6 +14,7 @@ public class TranslateResult {
     private String mTextLang;
     private String mTranslation;
     private String mTranslationLang;
+    private boolean mFavorite;
     private List<Definition> mDefinitions;
 
     public TranslateResult(String text, String textLang, String translation,
@@ -39,6 +40,14 @@ public class TranslateResult {
 
     public String getTranslationLang() {
         return mTranslationLang;
+    }
+
+    public boolean isFavorite() {
+        return mFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        mFavorite = favorite;
     }
 
     public List<Definition> getDefinitions() {
