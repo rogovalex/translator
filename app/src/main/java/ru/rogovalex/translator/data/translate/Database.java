@@ -129,6 +129,33 @@ public class Database implements Storage {
     }
 
     @Override
+    public boolean checkFavorite(TranslateResult translation) {
+        boolean favorite = false;
+        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(TranslationTable.TABLE_NAME,
+                new String[]{TranslationTable.FAVORITE},
+                TranslationTable.TEXT + "=? AND "
+                        + TranslationTable.TEXT_LANG + "=? AND "
+                        + TranslationTable.TRANSLATION_LANG + "=?",
+                new String[]{translation.getText(),
+                        translation.getTextLang(),
+                        translation.getTranslationLang()}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int colFavorite = cursor.getColumnIndex(TranslationTable.FAVORITE);
+
+            do {
+                favorite = cursor.getInt(colFavorite) == 1;
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return favorite;
+    }
+
+    @Override
     public void saveRecentTranslation(TranslateResult translation) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 

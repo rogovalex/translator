@@ -23,7 +23,9 @@ import ru.rogovalex.translator.presentation.injection.component.TranslateFragmen
 import ru.rogovalex.translator.presentation.translate.TranslateView;
 import ru.rogovalex.translator.presentation.translate.TranslateViewPresenter;
 
-public class TranslateFragment extends Fragment implements TranslateView {
+public class TranslateFragment extends Fragment
+        implements TranslateView,
+        TranslationAdapter.OnFavoriteChangedListener {
 
     private EditText mTextInput;
     private View mProgress;
@@ -96,6 +98,7 @@ public class TranslateFragment extends Fragment implements TranslateView {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         mAdapter = new TranslationAdapter();
+        mAdapter.setFavoriteChangedListener(this);
         recyclerView.setAdapter(mAdapter);
 
         final float elevation = getResources().getDimension(R.dimen.default_elevation);
@@ -149,6 +152,11 @@ public class TranslateFragment extends Fragment implements TranslateView {
     public void onTranslateError(Throwable e) {
         mProgress.setVisibility(View.GONE);
         mTranslate.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onFavoriteChanged(TranslateResult item) {
+        mPresenter.updateFavorite(item);
     }
 
     private void dismissKeyboard() {

@@ -29,6 +29,7 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
                                 UpdateFavoriteInteractor updateInteractor) {
         mInteractor = interactor;
         mUpdateInteractor = updateInteractor;
+        super.setView(sStubView);
     }
 
     public void loadHistory() {
@@ -57,4 +58,24 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
     public void updateFavorite(TranslateResult item) {
         mUpdateInteractor.execute(item, Functions.<Boolean>emptyConsumer());
     }
+
+    public void cancel() {
+        mLoading = false;
+        mInteractor.cancel();
+        mUpdateInteractor.cancel();
+    }
+
+    private static HistoryView sStubView = new HistoryView() {
+        @Override
+        public void onHistoryLoading() {
+        }
+
+        @Override
+        public void onHistoryLoaded(List<TranslateResult> items) {
+        }
+
+        @Override
+        public void onHistoryLoadError(Throwable e) {
+        }
+    };
 }

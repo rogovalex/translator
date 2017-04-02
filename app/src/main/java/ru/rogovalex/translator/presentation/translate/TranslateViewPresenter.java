@@ -3,9 +3,11 @@ package ru.rogovalex.translator.presentation.translate;
 import javax.inject.Inject;
 
 import io.reactivex.functions.Consumer;
+import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
 import ru.rogovalex.translator.domain.translate.TranslateParams;
 import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
 /**
@@ -17,6 +19,7 @@ import ru.rogovalex.translator.presentation.common.BasePresenter;
 public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
     private final TranslateInteractor mInteractor;
+    private final UpdateFavoriteInteractor mUpdateInteractor;
 
     private TranslateParams mParams;
     private TranslateResult mResult;
@@ -24,9 +27,11 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     private boolean mLoading;
 
     @Inject
-    public TranslateViewPresenter(TranslateInteractor interactor) {
+    public TranslateViewPresenter(TranslateInteractor interactor,
+                                  UpdateFavoriteInteractor updateInteractor) {
         mInteractor = interactor;
-        setView(sStubView);
+        mUpdateInteractor = updateInteractor;
+        super.setView(sStubView);
     }
 
     @Override
@@ -75,9 +80,14 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         });
     }
 
+    public void updateFavorite(TranslateResult item) {
+        mUpdateInteractor.execute(item, Functions.<Boolean>emptyConsumer());
+    }
+
     public void cancel() {
         mLoading = false;
         mInteractor.cancel();
+        mUpdateInteractor.cancel();
     }
 
     private static TranslateView sStubView = new TranslateView() {

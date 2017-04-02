@@ -50,6 +50,8 @@ public class TranslateInteractor extends Interactor<TranslateResult, TranslatePa
                 .doOnNext(new Consumer<TranslateResult>() {
                     @Override
                     public void accept(TranslateResult result) throws Exception {
+                        boolean favorite = mStorage.checkFavorite(result);
+                        result.setFavorite(favorite);
                         mStorage.saveRecentTranslation(result);
                     }
                 });

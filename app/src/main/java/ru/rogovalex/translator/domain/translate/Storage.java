@@ -13,6 +13,8 @@ public interface Storage {
 
     List<TranslateResult> getFavoriteTranslations();
 
+    boolean checkFavorite(TranslateResult translation);
+
     void saveRecentTranslation(TranslateResult translation);
 
     boolean updateFavoriteTranslation(TranslateResult translation);

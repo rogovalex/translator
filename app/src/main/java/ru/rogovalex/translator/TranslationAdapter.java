@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,11 +24,12 @@ import ru.rogovalex.translator.domain.translate.Translation;
 public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<AdapterItem> mItems = new ArrayList<>();
+    private OnFavoriteChangedListener mListener;
 
     public void setTranslation(TranslateResult translation) {
         mItems.clear();
 
-        mItems.add(new MainItem(translation.getTranslation()));
+        mItems.add(new MainItem(translation));
         for (Definition def : translation.getDefinitions()) {
             mItems.add(new DefinitionItem(def));
             int index = 0;
@@ -43,6 +45,10 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void clear() {
         mItems.clear();
         notifyDataSetChanged();
+    }
+
+    public void setFavoriteChangedListener(OnFavoriteChangedListener listener) {
+        mListener = listener;
     }
 
     @Override
@@ -95,15 +101,38 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private class MainItemViewHolder extends RecyclerView.ViewHolder {
 
         TextView text;
+        ImageView favIcon;
+
+        TranslateResult mItem;
 
         public MainItemViewHolder(View itemView) {
             super(itemView);
 
             text = (TextView) itemView.findViewById(R.id.text);
+            favIcon = (ImageView) itemView.findViewById(R.id.fav_icon);
+
+            favIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItem.setFavorite(!mItem.isFavorite());
+                    updateFavIcon();
+                    if (mListener != null) {
+                        mListener.onFavoriteChanged(mItem);
+                    }
+                }
+            });
         }
 
         public void bind(MainItem item) {
-            text.setText(item.text);
+            mItem = item.translation;
+            updateFavIcon();
+            text.setText(mItem.getTranslation());
+        }
+
+        private void updateFavIcon() {
+            favIcon.setImageResource(mItem.isFavorite()
+                    ? R.drawable.ic_favorite_accent_24dp
+                    : R.drawable.ic_favorite_border_gray_24dp);
         }
     }
 
@@ -186,10 +215,10 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static class MainItem implements AdapterItem {
         static final int TYPE = 0;
 
-        String text;
+        TranslateResult translation;
 
-        public MainItem(String text) {
-            this.text = text;
+        public MainItem(TranslateResult translation) {
+            this.translation = translation;
         }
 
         @Override
@@ -249,5 +278,9 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((TranslationItemViewHolder) viewHolder).bind(this);
             }
         }
+    }
+
+    public interface OnFavoriteChangedListener {
+        void onFavoriteChanged(TranslateResult item);
     }
 }
