@@ -10,10 +10,13 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import ru.rogovalex.translator.api.ApiException;
 import ru.rogovalex.translator.api.DictionaryApiService;
+import ru.rogovalex.translator.api.DictionaryEntry;
 import ru.rogovalex.translator.api.DictionaryResponse;
-import ru.rogovalex.translator.api.Entry;
+import ru.rogovalex.translator.api.DictionaryTranslation;
+import ru.rogovalex.translator.domain.translate.Definition;
 import ru.rogovalex.translator.domain.translate.DictionaryProvider;
 import ru.rogovalex.translator.domain.translate.TranslateParams;
+import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -35,21 +38,80 @@ public class YandexDictionaryProvider implements DictionaryProvider {
     }
 
     @Override
-    public Observable<List<Entry>> lookup(final TranslateParams params) {
+    public Observable<List<Definition>> lookup(final TranslateParams params) {
         return mService.lookup(API_KEY, params.getText(),
                 params.getTextLang() + "-" + params.getTranslationLang(),
                 UI_LANG, SHORT_POS)
-                .flatMap(new Function<DictionaryResponse, Observable<List<Entry>>>() {
+                .flatMap(new Function<DictionaryResponse, Observable<DictionaryResponse>>() {
                     @Override
-                    public Observable<List<Entry>> apply(DictionaryResponse response) throws Exception {
+                    public Observable<DictionaryResponse> apply(DictionaryResponse response) throws Exception {
                         if (response.getCode() != 200) {
                             return Observable.error(new ApiException(response.getCode()));
                         }
-                        List<Entry> result = response.getEntries() != null
-                                ? Arrays.asList(response.getEntries())
-                                : new ArrayList<Entry>();
-                        return Observable.just(result);
+                        return Observable.just(response);
                     }
-                });
+                })
+                .flatMapIterable(new Function<DictionaryResponse, Iterable<DictionaryEntry>>() {
+                    @Override
+                    public Iterable<DictionaryEntry> apply(DictionaryResponse response) throws Exception {
+                        return response.getEntries() != null
+                                ? Arrays.asList(response.getEntries())
+                                : new ArrayList<DictionaryEntry>();
+                    }
+                })
+                .map(new Function<DictionaryEntry, Definition>() {
+                    @Override
+                    public Definition apply(DictionaryEntry entry) throws Exception {
+                        Definition result = new Definition(entry.getText(),
+                                entry.getTranscription(), entry.getPos(),
+                                new ArrayList<Translation>());
+
+                        if (entry.getTranslations() != null) {
+                            for (DictionaryTranslation t : entry.getTranslations()) {
+                                result.getTranslations().add(convert(t));
+                            }
+                        }
+
+                        return result;
+                    }
+                })
+                .toList()
+                .toObservable();
+    }
+
+    private Translation convert(DictionaryTranslation t) {
+        String synonyms;
+        if (t.getSynonyms() != null
+                && t.getSynonyms().length > 0) {
+            synonyms = join(t.getText(),
+                    t.getSynonyms());
+        } else {
+            synonyms = t.getText();
+        }
+
+        String meanings = "";
+        if (t.getMeanings() != null
+                && t.getMeanings().length > 0) {
+            meanings = join("", t.getMeanings());
+        }
+
+        String examples = "";
+        if (t.getExamples() != null
+                && t.getExamples().length > 0) {
+            examples = join("", t.getExamples());
+        }
+
+        return new Translation(synonyms, meanings, examples);
+    }
+
+    private String join(String value, DictionaryTranslation... items) {
+        StringBuilder sb = new StringBuilder(value);
+        for (DictionaryTranslation item : items) {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append(item.getText());
+        }
+        return sb.toString();
     }
 }

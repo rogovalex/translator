@@ -10,9 +10,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.rogovalex.translator.api.Entry;
-import ru.rogovalex.translator.api.Translation;
+import ru.rogovalex.translator.domain.translate.Definition;
 import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -28,10 +28,10 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mItems.clear();
 
         mItems.add(new MainItem(translation.getTranslation()));
-        for (Entry e : translation.getEntries()) {
-            mItems.add(new DefinitionItem(e));
+        for (Definition def : translation.getDefinitions()) {
+            mItems.add(new DefinitionItem(def));
             int index = 0;
-            for (Translation t : e.getTranslations()) {
+            for (Translation t : def.getTranslations()) {
                 index++;
                 mItems.add(new TranslationItem(index, t));
             }
@@ -122,20 +122,20 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(DefinitionItem item) {
-            text.setText(item.entry.getText());
+            text.setText(item.definition.getText());
 
-            if (TextUtils.isEmpty(item.entry.getPos())) {
+            if (TextUtils.isEmpty(item.definition.getPos())) {
                 pos.setVisibility(View.GONE);
             } else {
-                pos.setText(item.entry.getPos());
+                pos.setText(item.definition.getPos());
                 pos.setVisibility(View.VISIBLE);
             }
 
-            if (TextUtils.isEmpty(item.entry.getTranscription())) {
+            if (TextUtils.isEmpty(item.definition.getTranscription())) {
                 transcription.setVisibility(View.GONE);
             } else {
                 transcription.setText(itemView.getResources().getString(
-                        R.string.transcription, item.entry.getTranscription()));
+                        R.string.transcription, item.definition.getTranscription()));
                 transcription.setVisibility(View.VISIBLE);
             }
         }
@@ -159,31 +159,20 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public void bind(TranslationItem item) {
             index.setText(String.valueOf(item.index));
+            synonyms.setText(item.translation.getSynonyms());
 
-            String synonymsText;
-            if (item.translation.getSynonyms() != null
-                    && item.translation.getSynonyms().length > 0) {
-                synonymsText = join(item.translation.getText(),
-                        item.translation.getSynonyms());
-            } else {
-                synonymsText = item.translation.getText();
-            }
-            synonyms.setText(synonymsText);
-
-            if (item.translation.getMeanings() != null
-                    && item.translation.getMeanings().length > 0) {
-                meanings.setText(join("", item.translation.getMeanings()));
-                meanings.setVisibility(View.VISIBLE);
-            } else {
+            if (TextUtils.isEmpty(item.translation.getMeanings())) {
                 meanings.setVisibility(View.GONE);
+            } else {
+                meanings.setText(item.translation.getMeanings());
+                meanings.setVisibility(View.VISIBLE);
             }
 
-            if (item.translation.getExamples() != null
-                    && item.translation.getExamples().length > 0) {
-                examples.setText(join("", item.translation.getExamples()));
-                examples.setVisibility(View.VISIBLE);
-            } else {
+            if (TextUtils.isEmpty(item.translation.getExamples())) {
                 examples.setVisibility(View.GONE);
+            } else {
+                examples.setText(item.translation.getExamples());
+                examples.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -219,10 +208,10 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static class DefinitionItem implements AdapterItem {
         static final int TYPE = 1;
 
-        Entry entry;
+        Definition definition;
 
-        public DefinitionItem(Entry entry) {
-            this.entry = entry;
+        public DefinitionItem(Definition definition) {
+            this.definition = definition;
         }
 
         @Override
@@ -260,16 +249,5 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((TranslationItemViewHolder) viewHolder).bind(this);
             }
         }
-    }
-
-    private String join(String value, Translation... items) {
-        StringBuilder sb = new StringBuilder(value);
-        for (Translation item : items) {
-            if (sb.length() > 0) {
-                sb.append(", ");
-            }
-            sb.append(item.getText());
-        }
-        return sb.toString();
     }
 }

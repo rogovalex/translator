@@ -2,8 +2,6 @@ package ru.rogovalex.translator.domain.translate;
 
 import java.util.List;
 
-import ru.rogovalex.translator.api.Entry;
-
 /**
  * Created with Android Studio.
  * User: rogov
@@ -16,15 +14,15 @@ public class TranslateResult {
     private String mTextLang;
     private String mTranslation;
     private String mTranslationLang;
-    private List<Entry> mEntries;
+    private List<Definition> mDefinitions;
 
     public TranslateResult(String text, String textLang, String translation,
-                           String translationLang, List<Entry> entries) {
+                           String translationLang, List<Definition> definitions) {
         mText = text;
         mTextLang = textLang;
         mTranslation = translation;
         mTranslationLang = translationLang;
-        mEntries = entries;
+        mDefinitions = definitions;
     }
 
     public String getText() {
@@ -43,7 +41,7 @@ public class TranslateResult {
         return mTranslationLang;
     }
 
-    public List<Entry> getEntries() {
-        return mEntries;
+    public List<Definition> getDefinitions() {
+        return mDefinitions;
     }
 }

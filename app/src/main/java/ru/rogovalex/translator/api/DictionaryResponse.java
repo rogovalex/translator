@@ -12,7 +12,7 @@ public class DictionaryResponse {
 
     private int code = 200;
     @SerializedName("def")
-    private Entry[] entries;
+    private DictionaryEntry[] entries;
 
     public int getCode() {
         return code;
@@ -22,11 +22,11 @@ public class DictionaryResponse {
         this.code = code;
     }
 
-    public Entry[] getEntries() {
+    public DictionaryEntry[] getEntries() {
         return entries;
     }
 
-    public void setEntries(Entry[] entries) {
+    public void setEntries(DictionaryEntry[] entries) {
         this.entries = entries;
     }
 }

@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Date: 01.04.2017
  * Time: 21:38
  */
-public class Translation {
+public class DictionaryTranslation {
 
     private String text;
     private String pos;
@@ -16,11 +16,11 @@ public class Translation {
     private String asp;
     private String num;
     @SerializedName("syn")
-    private Translation[] synonyms;
+    private DictionaryTranslation[] synonyms;
     @SerializedName("mean")
-    private Translation[] meanings;
+    private DictionaryTranslation[] meanings;
     @SerializedName("ex")
-    private Translation[] examples;
+    private DictionaryTranslation[] examples;
 
     public String getText() {
         return text;
@@ -62,27 +62,27 @@ public class Translation {
         this.num = num;
     }
 
-    public Translation[] getSynonyms() {
+    public DictionaryTranslation[] getSynonyms() {
         return synonyms;
     }
 
-    public void setSynonyms(Translation[] synonyms) {
+    public void setSynonyms(DictionaryTranslation[] synonyms) {
         this.synonyms = synonyms;
     }
 
-    public Translation[] getMeanings() {
+    public DictionaryTranslation[] getMeanings() {
         return meanings;
     }
 
-    public void setMeanings(Translation[] meanings) {
+    public void setMeanings(DictionaryTranslation[] meanings) {
         this.meanings = meanings;
     }
 
-    public Translation[] getExamples() {
+    public DictionaryTranslation[] getExamples() {
         return examples;
     }
 
-    public void setExamples(Translation[] examples) {
+    public void setExamples(DictionaryTranslation[] examples) {
         this.examples = examples;
     }
 }

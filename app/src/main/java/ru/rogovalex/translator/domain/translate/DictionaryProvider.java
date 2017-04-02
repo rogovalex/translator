@@ -3,7 +3,6 @@ package ru.rogovalex.translator.domain.translate;
 import java.util.List;
 
 import io.reactivex.Observable;
-import ru.rogovalex.translator.api.Entry;
 
 /**
  * Created with Android Studio.
@@ -12,5 +11,5 @@ import ru.rogovalex.translator.api.Entry;
  * Time: 18:21
  */
 public interface DictionaryProvider {
-    Observable<List<Entry>> lookup(TranslateParams params);
+    Observable<List<Definition>> lookup(TranslateParams params);
 }

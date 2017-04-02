@@ -8,14 +8,14 @@ import com.google.gson.annotations.SerializedName;
  * Date: 01.04.2017
  * Time: 21:36
  */
-public class Entry {
+public class DictionaryEntry {
 
     private String text;
     private String pos;
     @SerializedName("ts")
     private String transcription;
     @SerializedName("tr")
-    private Translation[] translations;
+    private DictionaryTranslation[] translations;
 
     public String getText() {
         return text;
@@ -41,11 +41,11 @@ public class Entry {
         this.transcription = transcription;
     }
 
-    public Translation[] getTranslations() {
+    public DictionaryTranslation[] getTranslations() {
         return translations;
     }
 
-    public void setTranslations(Translation[] translations) {
+    public void setTranslations(DictionaryTranslation[] translations) {
         this.translations = translations;
     }
 }

@@ -9,7 +9,6 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.BiFunction;
-import ru.rogovalex.translator.api.Entry;
 import ru.rogovalex.translator.domain.common.Interactor;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
@@ -37,17 +36,17 @@ public class TranslateInteractor extends Interactor<TranslateResult, TranslatePa
     @Override
     protected Observable<TranslateResult> buildObservable(final TranslateParams params) {
         return mTranslateProvider.translate(params)
-                .zipWith(lookupDictionary(params), new BiFunction<String, List<Entry>, TranslateResult>() {
+                .zipWith(lookupDictionary(params), new BiFunction<String, List<Definition>, TranslateResult>() {
                     @Override
-                    public TranslateResult apply(String translation, List<Entry> entries) throws Exception {
+                    public TranslateResult apply(String translation, List<Definition> definitions) throws Exception {
                         return new TranslateResult(params.getText(), params.getTextLang(),
-                                translation, params.getTranslationLang(), entries);
+                                translation, params.getTranslationLang(), definitions);
                     }
                 });
     }
 
-    private Observable<List<Entry>> lookupDictionary(TranslateParams params) {
+    private Observable<List<Definition>> lookupDictionary(TranslateParams params) {
         return mDictionaryProvider.lookup(params)
-                .onErrorReturnItem(Collections.<Entry>emptyList());
+                .onErrorReturnItem(Collections.<Definition>emptyList());
     }
 }
