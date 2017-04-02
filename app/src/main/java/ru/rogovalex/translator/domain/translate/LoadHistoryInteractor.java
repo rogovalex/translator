@@ -17,14 +17,14 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  * Date: 02.04.2017
  * Time: 15:30
  */
-public class HistoryInteractor extends Interactor<List<TranslateResult>, Void> {
+public class LoadHistoryInteractor extends Interactor<List<TranslateResult>, Void> {
 
     private final Storage mStorage;
 
     @Inject
-    public HistoryInteractor(@Named(DomainModule.LOCAL) Scheduler jobScheduler,
-                             @Named(DomainModule.UI) Scheduler uiScheduler,
-                             Storage storage) {
+    public LoadHistoryInteractor(@Named(DomainModule.LOCAL) Scheduler jobScheduler,
+                                 @Named(DomainModule.UI) Scheduler uiScheduler,
+                                 Storage storage) {
         super(jobScheduler, uiScheduler);
         mStorage = storage;
     }

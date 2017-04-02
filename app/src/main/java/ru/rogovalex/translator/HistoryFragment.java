@@ -20,7 +20,9 @@ import ru.rogovalex.translator.presentation.injection.component.HistoryFragmentC
 import ru.rogovalex.translator.presentation.translate.HistoryView;
 import ru.rogovalex.translator.presentation.translate.HistoryViewPresenter;
 
-public class HistoryFragment extends Fragment implements HistoryView {
+public class HistoryFragment extends Fragment
+        implements HistoryView,
+        ListAdapter.OnFavoriteChangedListener {
 
     private ListAdapter mAdapter;
 
@@ -51,6 +53,7 @@ public class HistoryFragment extends Fragment implements HistoryView {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         mAdapter = new ListAdapter();
+        mAdapter.setFavoriteChangedListener(this);
         recyclerView.setAdapter(mAdapter);
 
         return view;
@@ -89,6 +92,11 @@ public class HistoryFragment extends Fragment implements HistoryView {
     @Override
     public void onHistoryLoadError(Throwable e) {
 
+    }
+
+    @Override
+    public void onFavoriteChanged(TranslateResult item) {
+        mPresenter.updateFavorite(item);
     }
 
     public interface Callbacks {

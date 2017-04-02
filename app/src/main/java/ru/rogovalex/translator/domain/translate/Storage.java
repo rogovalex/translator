@@ -15,5 +15,5 @@ public interface Storage {
 
     void saveRecentTranslation(TranslateResult translation);
 
-    void saveFavoriteTranslation(TranslateResult translation);
+    boolean updateFavoriteTranslation(TranslateResult translation);
 }

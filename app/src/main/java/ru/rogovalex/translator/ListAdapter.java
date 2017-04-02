@@ -21,11 +21,16 @@ import ru.rogovalex.translator.domain.translate.TranslateResult;
 public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<TranslateResult> mItems = new ArrayList<>();
+    private OnFavoriteChangedListener mListener;
 
     public void setItems(List<TranslateResult> items) {
         mItems.clear();
         mItems.addAll(items);
         notifyDataSetChanged();
+    }
+
+    public void setFavoriteChangedListener(OnFavoriteChangedListener listener) {
+        mListener = listener;
     }
 
     @Override
@@ -52,6 +57,8 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView translation;
         TextView lang;
 
+        TranslateResult mItem;
+
         public ItemViewHolder(View itemView) {
             super(itemView);
 
@@ -59,17 +66,37 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             text = (TextView) itemView.findViewById(R.id.text);
             translation = (TextView) itemView.findViewById(R.id.translation);
             lang = (TextView) itemView.findViewById(R.id.lang);
+
+            favIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItem.setFavorite(!mItem.isFavorite());
+                    updateFavIcon();
+                    if (mListener != null) {
+                        mListener.onFavoriteChanged(mItem);
+                    }
+                }
+            });
         }
 
         public void bind(TranslateResult item) {
-            favIcon.setImageResource(item.isFavorite()
-                    ? R.drawable.ic_favorite_accent_24dp
-                    : R.drawable.ic_favorite_border_gray_24dp);
+            mItem = item;
+            updateFavIcon();
             text.setText(item.getText());
             translation.setText(item.getTranslation());
             lang.setText(itemView.getResources().getString(
                     R.string.translation_direction, item.getTextLang(),
                     item.getTranslationLang()));
         }
+
+        private void updateFavIcon() {
+            favIcon.setImageResource(mItem.isFavorite()
+                    ? R.drawable.ic_favorite_accent_24dp
+                    : R.drawable.ic_favorite_border_gray_24dp);
+        }
+    }
+
+    public interface OnFavoriteChangedListener {
+        void onFavoriteChanged(TranslateResult item);
     }
 }

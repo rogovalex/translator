@@ -5,7 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.functions.Consumer;
-import ru.rogovalex.translator.domain.translate.FavoriteInteractor;
+import ru.rogovalex.translator.domain.translate.LoadFavoritesInteractor;
 import ru.rogovalex.translator.domain.translate.TranslateResult;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
@@ -17,10 +17,10 @@ import ru.rogovalex.translator.presentation.common.BasePresenter;
  */
 public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
 
-    private final FavoriteInteractor mInteractor;
+    private final LoadFavoritesInteractor mInteractor;
 
     @Inject
-    public FavoriteViewPresenter(FavoriteInteractor interactor) {
+    public FavoriteViewPresenter(LoadFavoritesInteractor interactor) {
         mInteractor = interactor;
     }
 

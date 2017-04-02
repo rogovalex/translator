@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ import ru.rogovalex.translator.domain.translate.Translation;
  * Time: 12:46
  */
 public class Database implements Storage {
+
+    private static final String TAG = Database.class.getSimpleName();
 
     private final SQLiteOpenHelper mOpenHelper;
 
@@ -188,14 +191,29 @@ public class Database implements Storage {
             db.setTransactionSuccessful();
 
         } catch (Exception e) {
-            e.getMessage();
+            Log.i(TAG, "saveRecentTranslation", e);
         } finally {
             db.endTransaction();
         }
     }
 
     @Override
-    public void saveFavoriteTranslation(TranslateResult translation) {
+    public boolean updateFavoriteTranslation(TranslateResult translation) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
+        SQLiteStatement updateFavorite = db.compileStatement(
+                "UPDATE " + TranslationTable.TABLE_NAME + " SET "
+                        + TranslationTable.FAVORITE + "=? WHERE "
+                        + TranslationTable.TEXT + "=? AND "
+                        + TranslationTable.TEXT_LANG + "=? AND "
+                        + TranslationTable.TRANSLATION_LANG + "=?");
+
+        updateFavorite.bindLong(1, translation.isFavorite() ? 1 : 0);
+        updateFavorite.bindString(2, translation.getText());
+        updateFavorite.bindString(3, translation.getTextLang());
+        updateFavorite.bindString(4, translation.getTranslationLang());
+
+        int countRows = updateFavorite.executeUpdateDelete();
+        return countRows > 0;
     }
 }
