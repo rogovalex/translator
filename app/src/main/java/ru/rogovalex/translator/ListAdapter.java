@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -46,19 +47,29 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView favIcon;
         TextView text;
         TextView translation;
+        TextView lang;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
 
+            favIcon = (ImageView) itemView.findViewById(R.id.fav_icon);
             text = (TextView) itemView.findViewById(R.id.text);
             translation = (TextView) itemView.findViewById(R.id.translation);
+            lang = (TextView) itemView.findViewById(R.id.lang);
         }
 
         public void bind(TranslateResult item) {
+            favIcon.setImageResource(item.isFavorite()
+                    ? R.drawable.ic_favorite_accent_24dp
+                    : R.drawable.ic_favorite_border_gray_24dp);
             text.setText(item.getText());
             translation.setText(item.getTranslation());
+            lang.setText(itemView.getResources().getString(
+                    R.string.translation_direction, item.getTextLang(),
+                    item.getTranslationLang()));
         }
     }
 }
