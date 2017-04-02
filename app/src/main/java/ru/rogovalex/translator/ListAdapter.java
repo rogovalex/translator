@@ -77,11 +77,19 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int maxLines = text.getMaxLines() == 1 ? Integer.MAX_VALUE : 1;
+                    updateTextMaxLines(maxLines);
+                }
+            });
         }
 
         public void bind(TranslateResult item) {
             mItem = item;
             updateFavIcon();
+            updateTextMaxLines(1);
             text.setText(item.getText());
             translation.setText(item.getTranslation());
             lang.setText(itemView.getResources().getString(
@@ -93,6 +101,11 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             favIcon.setImageResource(mItem.isFavorite()
                     ? R.drawable.ic_favorite_accent_24dp
                     : R.drawable.ic_favorite_border_gray_24dp);
+        }
+
+        private void updateTextMaxLines(int maxLines) {
+            text.setMaxLines(maxLines);
+            translation.setMaxLines(maxLines);
         }
     }
 
