@@ -103,7 +103,7 @@ public class TranslateFragment extends Fragment implements TranslateView {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 int position = layoutManager.findFirstCompletelyVisibleItemPosition();
-                cardView.setCardElevation(position == 0 ? 0 : elevation);
+                cardView.setCardElevation(position > 0 ? elevation : 0);
             }
         });
 
