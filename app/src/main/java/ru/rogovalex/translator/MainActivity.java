@@ -9,11 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import ru.rogovalex.translator.presentation.injection.component.AppComponent;
+import ru.rogovalex.translator.presentation.injection.component.DaggerHistoryFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.DaggerTranslateFragmentComponent;
+import ru.rogovalex.translator.presentation.injection.component.HistoryFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
 
 public class MainActivity extends AppCompatActivity
-        implements TranslateFragment.Callbacks {
+        implements TranslateFragment.Callbacks,
+        HistoryFragment.Callbacks {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,19 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public TranslateFragmentComponent buildComponent() {
                         return DaggerTranslateFragmentComponent.builder()
+                                .appComponent(getAppComponent())
+                                .build();
+                    }
+                });
+    }
+
+    @Override
+    public HistoryFragmentComponent getHistoryFragmentComponent() {
+        return getComponentHolder().getComponent("main", HistoryFragmentComponent.class,
+                new ComponentFactory<HistoryFragmentComponent>() {
+                    @Override
+                    public HistoryFragmentComponent buildComponent() {
+                        return DaggerHistoryFragmentComponent.builder()
                                 .appComponent(getAppComponent())
                                 .build();
                     }

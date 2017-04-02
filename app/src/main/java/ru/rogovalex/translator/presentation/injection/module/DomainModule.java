@@ -20,6 +20,7 @@ public class DomainModule {
 
     public static final String JOB = "JOB";
     public static final String UI = "UI";
+    public static final String LOCAL = "LOCAL";
 
     @Provides
     @Singleton
@@ -33,5 +34,12 @@ public class DomainModule {
     @Named(UI)
     public Scheduler provideUiScheduler() {
         return AndroidSchedulers.mainThread();
+    }
+
+    @Provides
+    @Singleton
+    @Named(LOCAL)
+    public Scheduler provideLocalScheduler() {
+        return Schedulers.computation();
     }
 }

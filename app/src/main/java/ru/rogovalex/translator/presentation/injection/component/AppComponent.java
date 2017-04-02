@@ -32,6 +32,9 @@ public interface AppComponent {
     @Named(DomainModule.UI)
     Scheduler uiScheduler();
 
+    @Named(DomainModule.LOCAL)
+    Scheduler localScheduler();
+
     TranslateProvider translateProvider();
 
     DictionaryProvider dictionaryProvider();
