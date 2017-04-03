@@ -4,12 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import java.util.List;
 
@@ -22,6 +26,7 @@ import ru.rogovalex.translator.presentation.translate.FavoriteViewPresenter;
 
 public class FavoriteFragment extends Fragment implements FavoriteView {
 
+    private EditText mSearchInput;
     private ListAdapter mAdapter;
 
     private Callbacks mCallbacks;
@@ -44,10 +49,40 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
+
+        final CardView cardView = (CardView) view.findViewById(R.id.search_bar);
+        mSearchInput = (EditText) cardView.findViewById(R.id.search_input);
+        mSearchInput.setHint(R.string.search_history_hint);
+        final View clear = cardView.findViewById(R.id.clear);
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchInput.setText("");
+            }
+        });
+        clear.setVisibility(mSearchInput.getText().length() == 0
+                ? View.GONE : View.VISIBLE);
+
+        mSearchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                clear.setVisibility(s.length() == 0 ? View.GONE : View.VISIBLE);
+                mAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         mAdapter = new ListAdapter();
@@ -83,7 +118,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
 
     @Override
     public void onFavoriteLoaded(List<TranslateResult> items) {
-        mAdapter.setItems(items, "");
+        mAdapter.setItems(items, mSearchInput.getText().toString());
     }
 
     @Override

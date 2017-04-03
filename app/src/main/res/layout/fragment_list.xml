@@ -8,7 +8,7 @@
     tools:context="ru.rogovalex.translator.HistoryFragment">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/filter"
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -16,19 +16,19 @@
         app:cardElevation="@dimen/cardview_default_elevation">
 
         <EditText
-            android:id="@+id/filter_input"
+            android:id="@+id/search_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:drawableLeft="@drawable/ic_search_gray_24dp"
             android:drawablePadding="19dp"
-            android:hint="@string/search_history_hint"
-            android:inputType="textAutoComplete"
+            android:inputType="text"
             android:maxLines="1"
             android:paddingBottom="16dp"
             android:paddingLeft="19dp"
             android:paddingRight="38dp"
-            android:paddingTop="16dp"/>
+            android:paddingTop="16dp"
+            tools:hint="Найти в списке"/>
 
         <ImageView
             android:id="@+id/clear"

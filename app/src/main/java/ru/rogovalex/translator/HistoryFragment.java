@@ -28,7 +28,7 @@ public class HistoryFragment extends Fragment
         implements HistoryView,
         ListAdapter.OnFavoriteChangedListener {
 
-    private EditText mFilterInput;
+    private EditText mSearchInput;
     private ListAdapter mAdapter;
 
     private Callbacks mCallbacks;
@@ -51,21 +51,22 @@ public class HistoryFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_history, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        final CardView cardView = (CardView) view.findViewById(R.id.filter);
-        mFilterInput = (EditText) cardView.findViewById(R.id.filter_input);
+        final CardView cardView = (CardView) view.findViewById(R.id.search_bar);
+        mSearchInput = (EditText) cardView.findViewById(R.id.search_input);
+        mSearchInput.setHint(R.string.search_history_hint);
         final View clear = cardView.findViewById(R.id.clear);
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFilterInput.setText("");
+                mSearchInput.setText("");
             }
         });
-        clear.setVisibility(mFilterInput.getText().length() == 0
+        clear.setVisibility(mSearchInput.getText().length() == 0
                 ? View.GONE : View.VISIBLE);
 
-        mFilterInput.addTextChangedListener(new TextWatcher() {
+        mSearchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -120,7 +121,7 @@ public class HistoryFragment extends Fragment
 
     @Override
     public void onHistoryLoaded(List<TranslateResult> items) {
-        mAdapter.setItems(items, mFilterInput.getText().toString());
+        mAdapter.setItems(items, mSearchInput.getText().toString());
     }
 
     @Override
