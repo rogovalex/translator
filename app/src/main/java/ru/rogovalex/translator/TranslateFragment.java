@@ -66,7 +66,8 @@ public class TranslateFragment extends Fragment
                 showKeyboard();
             }
         });
-        clear.setVisibility(mTextInput.getText().length() == 0 ? View.GONE : View.VISIBLE);
+        clear.setVisibility(mTextInput.getText().length() == 0
+                ? View.GONE : View.VISIBLE);
 
         mTextInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -94,21 +95,11 @@ public class TranslateFragment extends Fragment
         mProgress = cardView.findViewById(R.id.progress);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.translation_output);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         mAdapter = new TranslationAdapter();
         mAdapter.setFavoriteChangedListener(this);
         recyclerView.setAdapter(mAdapter);
-
-        final float elevation = getResources().getDimension(R.dimen.default_elevation);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int position = layoutManager.findFirstCompletelyVisibleItemPosition();
-                cardView.setCardElevation(position > 0 ? elevation : 0);
-            }
-        });
 
         return view;
     }

@@ -4,12 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import java.util.List;
 
@@ -24,6 +28,7 @@ public class HistoryFragment extends Fragment
         implements HistoryView,
         ListAdapter.OnFavoriteChangedListener {
 
+    private EditText mFilterInput;
     private ListAdapter mAdapter;
 
     private Callbacks mCallbacks;
@@ -48,8 +53,37 @@ public class HistoryFragment extends Fragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
+        final CardView cardView = (CardView) view.findViewById(R.id.filter);
+        mFilterInput = (EditText) cardView.findViewById(R.id.filter_input);
+        final View clear = cardView.findViewById(R.id.clear);
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFilterInput.setText("");
+            }
+        });
+        clear.setVisibility(mFilterInput.getText().length() == 0
+                ? View.GONE : View.VISIBLE);
+
+        mFilterInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                clear.setVisibility(s.length() == 0 ? View.GONE : View.VISIBLE);
+                mAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         mAdapter = new ListAdapter();
@@ -86,7 +120,7 @@ public class HistoryFragment extends Fragment
 
     @Override
     public void onHistoryLoaded(List<TranslateResult> items) {
-        mAdapter.setItems(items);
+        mAdapter.setItems(items, mFilterInput.getText().toString());
     }
 
     @Override

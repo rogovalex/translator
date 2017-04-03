@@ -12,7 +12,7 @@
         style="@style/TranslateInput"
         android:background="@android:color/white"
         app:cardCornerRadius="0dp"
-        app:cardElevation="0dp">
+        app:cardElevation="@dimen/cardview_default_elevation">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"

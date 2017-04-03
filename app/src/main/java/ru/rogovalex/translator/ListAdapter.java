@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,15 +20,16 @@ import ru.rogovalex.translator.domain.translate.TranslateResult;
  * Date: 01.04.2017
  * Time: 23:30
  */
-public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements Filterable {
 
     private List<TranslateResult> mItems = new ArrayList<>();
+    private List<TranslateResult> mVisibleItems = new ArrayList<>();
     private OnFavoriteChangedListener mListener;
 
-    public void setItems(List<TranslateResult> items) {
-        mItems.clear();
-        mItems.addAll(items);
-        notifyDataSetChanged();
+    public void setItems(List<TranslateResult> items, String constraint) {
+        mItems = items;
+        getFilter().filter(constraint);
     }
 
     public void setFavoriteChangedListener(OnFavoriteChangedListener listener) {
@@ -42,12 +45,47 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ItemViewHolder) holder).bind(mItems.get(position));
+        ((ItemViewHolder) holder).bind(mVisibleItems.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return mVisibleItems.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                List<TranslateResult> filtered = new ArrayList<>();
+
+                String constraintStr = constraint.toString().toLowerCase();
+                if (constraintStr.isEmpty()) {
+                    filtered = mItems;
+                } else {
+                    for (TranslateResult item : mItems) {
+                        if (item.getText().toLowerCase().contains(constraintStr)
+                                || item.getTranslation().toLowerCase().contains(constraintStr)) {
+                            filtered.add(item);
+                        }
+                    }
+                }
+
+                results.count = filtered.size();
+                results.values = filtered;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mVisibleItems.clear();
+                //noinspection unchecked
+                mVisibleItems.addAll((List<TranslateResult>) results.values);
+                notifyDataSetChanged();
+            }
+        };
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {

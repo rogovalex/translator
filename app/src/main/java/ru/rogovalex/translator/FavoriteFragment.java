@@ -83,7 +83,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
 
     @Override
     public void onFavoriteLoaded(List<TranslateResult> items) {
-        mAdapter.setItems(items);
+        mAdapter.setItems(items, "");
     }
 
     @Override
