@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity
         HistoryFragment.Callbacks,
         FavoriteFragment.Callbacks {
 
+    private static final String COMPONENT_HOLDER = "component_holder";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,18 +109,18 @@ public class MainActivity extends AppCompatActivity
 
     private void addComponentHolder() {
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.holder_container);
+        Fragment fragment = fm.findFragmentByTag(COMPONENT_HOLDER);
         if (fragment == null) {
             fragment = new ComponentHolderFragment();
             fm.beginTransaction()
-                    .add(R.id.holder_container, fragment)
+                    .add(fragment, COMPONENT_HOLDER)
                     .commit();
         }
     }
 
     private ComponentHolderFragment getComponentHolder() {
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.holder_container);
+        Fragment fragment = fm.findFragmentByTag(COMPONENT_HOLDER);
         return ((ComponentHolderFragment) fragment);
     }
 
