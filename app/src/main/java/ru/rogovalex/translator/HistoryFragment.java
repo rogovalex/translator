@@ -3,6 +3,8 @@ package ru.rogovalex.translator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.EditText;
 
 import java.util.List;
 
@@ -31,6 +33,12 @@ public class HistoryFragment extends SearchableListFragment
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ((EditText) view.findViewById(R.id.search_input))
+                .setHint(R.string.search_history_hint);
     }
 
     @Override

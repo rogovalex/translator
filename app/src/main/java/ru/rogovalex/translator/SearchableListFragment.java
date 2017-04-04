@@ -31,7 +31,6 @@ public abstract class SearchableListFragment extends Fragment
 
         final CardView cardView = (CardView) view.findViewById(R.id.search_bar);
         mSearchInput = (EditText) cardView.findViewById(R.id.search_input);
-        mSearchInput.setHint(R.string.search_history_hint);
         mClear = cardView.findViewById(R.id.clear);
         mClear.setOnClickListener(new View.OnClickListener() {
             @Override

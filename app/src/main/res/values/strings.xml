@@ -7,4 +7,5 @@
     <string name="transcription">[%s]</string>
     <string name="translation_direction">%1$s - %2$s</string>
     <string name="search_history_hint">Найти в истории</string>
+    <string name="search_favorite_hint">Найти в избранном</string>
 </resources>
