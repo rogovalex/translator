@@ -32,7 +32,7 @@ public class Database implements Storage {
 
     @Override
     public List<TranslateResult> getRecentTranslations() {
-        return getTranslations(null);
+        return getTranslations(TranslationTable.HISTORY + "=1");
     }
 
     private List<TranslateResult> getTranslations(String where) {
@@ -169,6 +169,7 @@ public class Database implements Storage {
                             + TranslationTable.TEXT_LANG + ","
                             + TranslationTable.TRANSLATION + ","
                             + TranslationTable.TRANSLATION_LANG + ","
+                            + TranslationTable.HISTORY + ","
                             + TranslationTable.FAVORITE + ","
                             + TranslationTable.TIMESTAMP
                             + ") VALUES ((SELECT " + TranslationTable._ID
@@ -176,7 +177,7 @@ public class Database implements Storage {
                             + TranslationTable.TEXT + "=? AND "
                             + TranslationTable.TEXT_LANG + "=? AND "
                             + TranslationTable.TRANSLATION_LANG + "=?"
-                            + "), ?, ?, ?, ?, ?, ?)");
+                            + "), ?, ?, ?, ?, 1, ?, ?)");
 
             SQLiteStatement insertDefinition = db.compileStatement(
                     "INSERT INTO " + DefinitionTable.TABLE_NAME + " ("
