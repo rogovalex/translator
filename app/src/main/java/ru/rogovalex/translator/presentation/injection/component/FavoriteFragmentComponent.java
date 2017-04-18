@@ -2,6 +2,7 @@ package ru.rogovalex.translator.presentation.injection.component;
 
 import dagger.Component;
 import ru.rogovalex.translator.FavoriteFragment;
+import ru.rogovalex.translator.presentation.injection.module.FavoriteFragmentModule;
 import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
 
 /**
@@ -11,7 +12,7 @@ import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
  * Time: 19:49
  */
 @ViewScope
-@Component(dependencies = AppComponent.class)
+@Component(dependencies = AppComponent.class, modules = {FavoriteFragmentModule.class})
 public interface FavoriteFragmentComponent {
     void inject(FavoriteFragment fragment);
 }

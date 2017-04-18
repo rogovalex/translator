@@ -2,6 +2,7 @@ package ru.rogovalex.translator.presentation.injection.component;
 
 import dagger.Component;
 import ru.rogovalex.translator.TranslateFragment;
+import ru.rogovalex.translator.presentation.injection.module.TranslateFragmentModule;
 import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
 
 /**
@@ -11,7 +12,7 @@ import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
  * Time: 19:49
  */
 @ViewScope
-@Component(dependencies = AppComponent.class)
+@Component(dependencies = AppComponent.class, modules = {TranslateFragmentModule.class})
 public interface TranslateFragmentComponent {
     void inject(TranslateFragment fragment);
 }
