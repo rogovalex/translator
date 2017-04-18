@@ -18,16 +18,15 @@
         <EditText
             android:id="@+id/search_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:background="@null"
             android:drawableLeft="@drawable/ic_search_gray_24dp"
             android:drawablePadding="19dp"
+            android:gravity="center_vertical"
             android:inputType="text"
             android:maxLines="1"
-            android:paddingBottom="16dp"
             android:paddingLeft="19dp"
             android:paddingRight="38dp"
-            android:paddingTop="16dp"
             tools:hint="Найти в списке"/>
 
         <ImageView

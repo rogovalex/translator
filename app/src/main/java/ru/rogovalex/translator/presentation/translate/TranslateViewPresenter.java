@@ -21,6 +21,8 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     private final TranslateInteractor mInteractor;
     private final UpdateFavoriteInteractor mUpdateInteractor;
 
+    private String mOrigin;
+    private String mTranslation;
     private TranslateResult mResult;
 
     private boolean mLoading;
@@ -48,10 +50,30 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         }
     }
 
-    public void translate(TranslateParams params) {
+    public void setTranslationDirection(String text, String origin, String translation) {
+        if (origin.equals(mOrigin) && translation.equals(mTranslation)) {
+            return;
+        }
+        if (origin.equals(mTranslation) && translation.equals(mOrigin)
+                && mResult != null && mResult.getText().equals(text)) {
+            text = mResult.getTranslation();
+        }
+        getView().onTranslationDirectionChanged(text);
+        cancel();
+        mOrigin = origin;
+        mTranslation = translation;
+        translate(text);
+    }
+
+    public void translate(String text) {
+        if (text.isEmpty()) {
+            return;
+        }
+
         getView().onTranslating();
 
         mLoading = true;
+        TranslateParams params = new TranslateParams(text, mOrigin, mTranslation);
         mInteractor.execute(params, new Consumer<TranslateResult>() {
             @Override
             public void accept(TranslateResult translation) throws Exception {
@@ -90,6 +112,10 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
         @Override
         public void onTranslateError(Throwable e) {
+        }
+
+        @Override
+        public void onTranslationDirectionChanged(String text) {
         }
     };
 }

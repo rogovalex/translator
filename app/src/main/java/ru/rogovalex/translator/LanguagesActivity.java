@@ -65,7 +65,11 @@ public class LanguagesActivity extends BaseActivity
 
     @Override
     public void onLanguageSelected(Language item) {
-        // TODO set to shared preferences
+        if (getIntent().getBooleanExtra(ORIGIN, false)) {
+            PreferencesHelper.setOriginLanguage(this, item);
+        } else {
+            PreferencesHelper.setTranslationLanguage(this, item);
+        }
         setResult(RESULT_OK);
         supportFinishAfterTransition();
     }

@@ -14,4 +14,6 @@ public interface TranslateView {
     void onTranslated(TranslateResult translation);
 
     void onTranslateError(Throwable e);
+
+    void onTranslationDirectionChanged(String text);
 }

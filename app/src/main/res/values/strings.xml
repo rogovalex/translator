@@ -12,4 +12,8 @@
     <string name="title_origin_lang">Язык оригинала</string>
     <string name="title_translation_lang">Язык перевода</string>
     <string name="repeat">Повторить</string>
+    <string name="origin_code_default">ru</string>
+    <string name="origin_name_default">Русский</string>
+    <string name="translation_code_default">en</string>
+    <string name="translation_name_default">Английский</string>
 </resources>

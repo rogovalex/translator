@@ -13,7 +13,7 @@
     </style>
 
     <style name="TranslateInput">
-        <item name="android:layout_height">124dp</item>
+        <item name="android:layout_height">120dp</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 
