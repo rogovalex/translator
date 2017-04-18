@@ -6,19 +6,10 @@ package ru.rogovalex.translator.api;
  * Date: 01.04.2017
  * Time: 17:51
  */
-public class TranslateResponse {
+public class TranslateResponse extends BaseResponse {
 
-    private int code;
     private String lang;
     private String[] text;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public String getLang() {
         return lang;

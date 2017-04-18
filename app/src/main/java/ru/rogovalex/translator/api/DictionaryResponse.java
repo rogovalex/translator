@@ -8,19 +8,10 @@ import com.google.gson.annotations.SerializedName;
  * Date: 01.04.2017
  * Time: 17:51
  */
-public class DictionaryResponse {
+public class DictionaryResponse extends BaseResponse {
 
-    private int code = 200;
     @SerializedName("def")
     private DictionaryEntry[] entries;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public DictionaryEntry[] getEntries() {
         return entries;

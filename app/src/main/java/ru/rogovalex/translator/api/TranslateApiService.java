@@ -21,4 +21,10 @@ public interface TranslateApiService {
             @Field("lang") String lang,
             @Field("format") String format,
             @Field("options") String options);
+
+    @FormUrlEncoded
+    @POST("/api/v1.5/tr.json/getLangs")
+    Observable<LanguagesResponse> languages(
+            @Field("key") String key,
+            @Field("ui") String uiLang);
 }

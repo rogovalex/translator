@@ -1,10 +1,15 @@
 package ru.rogovalex.translator.data.translate;
 
+import java.util.List;
+import java.util.Map;
+
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import ru.rogovalex.translator.api.ApiException;
+import ru.rogovalex.translator.api.LanguagesResponse;
 import ru.rogovalex.translator.api.TranslateApiService;
 import ru.rogovalex.translator.api.TranslateResponse;
+import ru.rogovalex.translator.domain.translate.Language;
 import ru.rogovalex.translator.domain.translate.TranslateParams;
 import ru.rogovalex.translator.domain.translate.TranslateProvider;
 
@@ -43,5 +48,32 @@ public class YandexTranslateProvider implements TranslateProvider {
                         return Observable.just(response.getText()[0]);
                     }
                 });
+    }
+
+    @Override
+    public Observable<List<Language>> languages(String uiLang) {
+        return mService.languages(API_KEY, uiLang)
+                .flatMap(new Function<LanguagesResponse, Observable<Map<String, String>>>() {
+                    @Override
+                    public Observable<Map<String, String>> apply(LanguagesResponse response) throws Exception {
+                        if (response.getCode() != 200) {
+                            return Observable.error(new ApiException(response.getCode()));
+                        }
+                        return Observable.just(response.getLangs());
+                    }
+                })
+                .flatMapIterable(new Function<Map<String, String>, Iterable<Map.Entry<String, String>>>() {
+                    @Override
+                    public Iterable<Map.Entry<String, String>> apply(Map<String, String> map) throws Exception {
+                        return map.entrySet();
+                    }
+                })
+                .map(new Function<Map.Entry<String, String>, Language>() {
+                    @Override
+                    public Language apply(Map.Entry<String, String> entry) throws Exception {
+                        return new Language(entry.getKey(), entry.getValue());
+                    }
+                })
+                .toList().toObservable();
     }
 }
