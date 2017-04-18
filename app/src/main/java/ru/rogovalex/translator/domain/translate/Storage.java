@@ -18,4 +18,8 @@ public interface Storage {
     void saveRecentTranslation(TranslateResult translation);
 
     boolean updateFavoriteTranslation(TranslateResult translation);
+
+    List<Language> getLanguages(String uiLang);
+
+    void saveLanguages(String uiLang, List<Language> languages);
 }

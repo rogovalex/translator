@@ -4,12 +4,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.rogovalex.translator.domain.translate.Definition;
+import ru.rogovalex.translator.domain.translate.Language;
 import ru.rogovalex.translator.domain.translate.Storage;
 import ru.rogovalex.translator.domain.translate.TranslateResult;
 import ru.rogovalex.translator.domain.translate.Translation;
@@ -21,8 +21,6 @@ import ru.rogovalex.translator.domain.translate.Translation;
  * Time: 12:46
  */
 public class Database implements Storage {
-
-    private static final String TAG = Database.class.getSimpleName();
 
     private final SQLiteOpenHelper mOpenHelper;
 
@@ -121,7 +119,6 @@ public class Database implements Storage {
         }
         return list;
     }
-
 
     @Override
     public List<TranslateResult> getFavoriteTranslations() {
@@ -229,8 +226,6 @@ public class Database implements Storage {
 
             db.setTransactionSuccessful();
 
-        } catch (Exception e) {
-            Log.i(TAG, "saveRecentTranslation", e);
         } finally {
             db.endTransaction();
         }
@@ -254,5 +249,61 @@ public class Database implements Storage {
 
         int countRows = updateFavorite.executeUpdateDelete();
         return countRows > 0;
+    }
+
+    @Override
+    public List<Language> getLanguages(String uiLang) {
+        List<Language> list = new ArrayList<>();
+
+        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(LanguageTable.TABLE_NAME, null,
+                LanguageTable.UI + "=?", new String[]{uiLang},
+                null, null, LanguageTable.NAME + " ASC");
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int colCode = cursor.getColumnIndex(LanguageTable.CODE);
+            int colName = cursor.getColumnIndex(LanguageTable.NAME);
+
+            do {
+                Language item = new Language(
+                        cursor.getString(colCode),
+                        cursor.getString(colName));
+                list.add(item);
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return list;
+    }
+
+    @Override
+    public void saveLanguages(String uiLang, List<Language> languages) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        try {
+            db.beginTransaction();
+
+            SQLiteStatement insertLang = db.compileStatement(
+                    "INSERT OR REPLACE INTO " + LanguageTable.TABLE_NAME + " ("
+                            + LanguageTable.CODE + ","
+                            + LanguageTable.NAME + ","
+                            + LanguageTable.UI
+                            + ") VALUES (?, ?, ?)");
+
+            for (Language lang : languages) {
+                insertLang.clearBindings();
+                insertLang.bindString(1, lang.getCode());
+                insertLang.bindString(2, lang.getName());
+                insertLang.bindString(3, uiLang);
+                insertLang.executeInsert();
+            }
+
+            db.setTransactionSuccessful();
+
+        } finally {
+            db.endTransaction();
+        }
     }
 }

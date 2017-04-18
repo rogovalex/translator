@@ -24,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TranslationTable.CREATE_TABLE);
         db.execSQL(DefinitionTable.CREATE_TABLE);
         db.execSQL(VariantTable.CREATE_TABLE);
+        db.execSQL(LanguageTable.CREATE_TABLE);
     }
 
     @Override
@@ -31,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TranslationTable.DROP_TABLE);
         db.execSQL(DefinitionTable.DROP_TABLE);
         db.execSQL(VariantTable.DROP_TABLE);
+        db.execSQL(LanguageTable.DROP_TABLE);
         onCreate(db);
     }
 
