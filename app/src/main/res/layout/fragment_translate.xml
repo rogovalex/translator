@@ -1,19 +1,28 @@
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/TranslateContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ru.rogovalex.translator.TranslateFragment">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".45"/>
+
     <android.support.v7.widget.CardView
         android:id="@+id/languages"
-        android:layout_width="match_parent"
+        style="@style/TranslateLanguages"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         app:cardCornerRadius="0dp"
-        app:cardElevation="@dimen/cardview_default_elevation">
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -66,10 +75,13 @@
     <android.support.v7.widget.CardView
         android:id="@+id/translation_input"
         style="@style/TranslateInput"
+        android:layout_width="0dp"
         android:layout_marginTop="4dp"
         android:background="@android:color/white"
         app:cardCornerRadius="0dp"
-        app:cardElevation="@dimen/cardview_default_elevation">
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/languages">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -121,16 +133,21 @@
             android:layout_gravity="right|bottom"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="8dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/translation_output"
         style="@style/TranslateOutput"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"
         android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

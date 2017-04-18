@@ -1,19 +1,18 @@
 <resources>
 
-    <style name="TranslateContainer">
-        <item name="android:orientation">horizontal</item>
+    <style name="TranslateLanguages">
+        <item name="layout_constraintRight_toLeftOf">@+id/guideline</item>
     </style>
 
     <style name="TranslateInput">
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">4</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintRight_toLeftOf">@+id/guideline</item>
     </style>
 
     <style name="TranslateOutput">
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">5</item>
+        <item name="layout_constraintLeft_toRightOf">@+id/guideline</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
 </resources>
