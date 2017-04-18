@@ -28,6 +28,8 @@ public class LanguagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void setItems(List<Language> items, String constraint) {
         mItems = items;
+        mVisibleItems.clear();
+        mVisibleItems.addAll(mItems);
         getFilter().filter(constraint);
     }
 
@@ -59,18 +61,23 @@ public class LanguagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 List<Language> filtered = new ArrayList<>();
+                List<Language> secondary = new ArrayList<>();
 
                 String constraintStr = constraint.toString().toLowerCase();
                 if (constraintStr.isEmpty()) {
                     filtered = mItems;
                 } else {
                     for (Language item : mItems) {
-                        if (item.getName().toLowerCase().contains(constraintStr)) {
+                        String name = item.getName().toLowerCase();
+                        if (name.startsWith(constraintStr)) {
                             filtered.add(item);
+                        } else if (name.contains(constraintStr)) {
+                            secondary.add(item);
                         }
                     }
                 }
 
+                filtered.addAll(secondary);
                 results.count = filtered.size();
                 results.values = filtered;
                 return results;

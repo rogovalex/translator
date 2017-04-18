@@ -39,8 +39,6 @@ public abstract class SearchableListFragment extends BaseFragment
             }
         });
 
-        mSearchInput.addTextChangedListener(this);
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
@@ -60,6 +58,18 @@ public abstract class SearchableListFragment extends BaseFragment
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mSearchInput.addTextChangedListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mSearchInput.removeTextChangedListener(this);
     }
 
     @Override

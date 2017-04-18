@@ -29,6 +29,8 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public void setItems(List<TranslateResult> items, String constraint) {
         mItems = items;
+        mVisibleItems.clear();
+        mVisibleItems.addAll(items);
         getFilter().filter(constraint);
     }
 
@@ -60,19 +62,24 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 List<TranslateResult> filtered = new ArrayList<>();
+                List<TranslateResult> secondary = new ArrayList<>();
 
-                String constraintStr = constraint.toString().toLowerCase();
-                if (constraintStr.isEmpty()) {
+                String prefix = constraint.toString().toLowerCase();
+                if (prefix.isEmpty()) {
                     filtered = mItems;
                 } else {
                     for (TranslateResult item : mItems) {
-                        if (item.getText().toLowerCase().contains(constraintStr)
-                                || item.getTranslation().toLowerCase().contains(constraintStr)) {
+                        String text = item.getText().toLowerCase();
+                        String translation = item.getTranslation().toLowerCase();
+                        if (text.startsWith(prefix) || translation.startsWith(prefix)) {
                             filtered.add(item);
+                        } else if (text.contains(prefix) || translation.contains(prefix)) {
+                            secondary.add(item);
                         }
                     }
                 }
 
+                filtered.addAll(secondary);
                 results.count = filtered.size();
                 results.values = filtered;
                 return results;
