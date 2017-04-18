@@ -77,6 +77,11 @@ public class LanguagesFragment extends SearchableListFragment
     }
 
     @Override
+    protected void cancelLoading() {
+        mPresenter.cancel();
+    }
+
+    @Override
     protected LanguagesAdapter getAdapter() {
         return mAdapter;
     }
@@ -87,18 +92,24 @@ public class LanguagesFragment extends SearchableListFragment
     }
 
     @Override
-    public void onLanguagesLoading() {
+    protected void onErrorButtonClick() {
+        mPresenter.loadLanguages();
+    }
 
+    @Override
+    public void onLanguagesLoading() {
+        showLoadingView();
     }
 
     @Override
     public void onLanguagesLoaded(List<Language> items) {
         mAdapter.setItems(items, getQuery());
+        showListView();
     }
 
     @Override
     public void onLanguagesLoadError(Throwable e) {
-
+        showErrorView(e.getMessage());
     }
 
     @Override

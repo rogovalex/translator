@@ -71,6 +71,11 @@ public class HistoryFragment extends SearchableListFragment
     }
 
     @Override
+    protected void cancelLoading() {
+        mPresenter.cancel();
+    }
+
+    @Override
     protected ListAdapter getAdapter() {
         return mAdapter;
     }
@@ -81,18 +86,24 @@ public class HistoryFragment extends SearchableListFragment
     }
 
     @Override
-    public void onHistoryLoading() {
+    protected void onErrorButtonClick() {
+        mPresenter.loadHistory();
+    }
 
+    @Override
+    public void onHistoryLoading() {
+        showLoadingView();
     }
 
     @Override
     public void onHistoryLoaded(List<TranslateResult> items) {
         mAdapter.setItems(items, getQuery());
+        showListView();
     }
 
     @Override
     public void onHistoryLoadError(Throwable e) {
-
+        showErrorView(e.getMessage());
     }
 
     @Override

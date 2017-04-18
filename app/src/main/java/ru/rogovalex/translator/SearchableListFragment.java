@@ -1,7 +1,6 @@
 package ru.rogovalex.translator;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Filter;
+import android.widget.TextView;
 
-public abstract class SearchableListFragment extends Fragment
+public abstract class SearchableListFragment extends BaseFragment
         implements TextWatcher {
 
     private EditText mSearchInput;
     private View mClear;
+    private RecyclerView mRecyclerView;
+    private View mProgressView;
+    private View mErrorView;
+    private TextView mErrorMessage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,12 +41,23 @@ public abstract class SearchableListFragment extends Fragment
 
         mSearchInput.addTextChangedListener(this);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(getAdapter());
+        mRecyclerView.setAdapter(getAdapter());
+
+        mProgressView = view.findViewById(R.id.progress_view);
+        mErrorView = view.findViewById(R.id.error_view);
+        mErrorMessage = (TextView) mErrorView.findViewById(R.id.error_message);
+        View errorButton = mErrorView.findViewById(R.id.error_button);
+        errorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onErrorButtonClick();
+            }
+        });
 
         return view;
     }
@@ -67,7 +82,28 @@ public abstract class SearchableListFragment extends Fragment
         return mSearchInput.getText().toString();
     }
 
+    protected void showLoadingView() {
+        mRecyclerView.setVisibility(View.GONE);
+        mProgressView.setVisibility(View.VISIBLE);
+        mErrorView.setVisibility(View.GONE);
+    }
+
+    protected void showListView() {
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mProgressView.setVisibility(View.GONE);
+        mErrorView.setVisibility(View.GONE);
+    }
+
+    protected void showErrorView(String message) {
+        mRecyclerView.setVisibility(View.GONE);
+        mProgressView.setVisibility(View.GONE);
+        mErrorView.setVisibility(View.VISIBLE);
+        mErrorMessage.setText(message);
+    }
+
     protected abstract RecyclerView.Adapter getAdapter();
 
     protected abstract Filter getFilter();
+
+    protected abstract void onErrorButtonClick();
 }

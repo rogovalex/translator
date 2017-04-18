@@ -71,6 +71,11 @@ public class FavoriteFragment extends SearchableListFragment
     }
 
     @Override
+    protected void cancelLoading() {
+        mPresenter.cancel();
+    }
+
+    @Override
     protected ListAdapter getAdapter() {
         return mAdapter;
     }
@@ -81,18 +86,24 @@ public class FavoriteFragment extends SearchableListFragment
     }
 
     @Override
-    public void onFavoriteLoading() {
+    protected void onErrorButtonClick() {
+        mPresenter.loadFavorite();
+    }
 
+    @Override
+    public void onFavoriteLoading() {
+        showLoadingView();
     }
 
     @Override
     public void onFavoriteLoaded(List<TranslateResult> items) {
         mAdapter.setItems(items, getQuery());
+        showListView();
     }
 
     @Override
     public void onFavoriteLoadError(Throwable e) {
-
+        showErrorView(e.getMessage());
     }
 
     @Override

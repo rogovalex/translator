@@ -19,6 +19,8 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
 
     private final LanguagesInteractor mInteractor;
 
+    private List<Language> mItems;
+
     private boolean mLoading;
 
     @Inject
@@ -28,6 +30,11 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
     }
 
     public void loadLanguages() {
+        if (mItems != null) {
+            getView().onLanguagesLoaded(mItems);
+            return;
+        }
+
         getView().onLanguagesLoading();
 
         if (mLoading) {
@@ -39,6 +46,7 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
             @Override
             public void accept(List<Language> items) throws Exception {
                 mLoading = false;
+                mItems = items;
                 getView().onLanguagesLoaded(items);
             }
         }, new Consumer<Throwable>() {

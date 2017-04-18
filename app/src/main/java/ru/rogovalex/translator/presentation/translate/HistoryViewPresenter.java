@@ -22,6 +22,8 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
     private final LoadHistoryInteractor mInteractor;
     private final UpdateFavoriteInteractor mUpdateInteractor;
 
+    private List<TranslateResult> mItems;
+
     private boolean mLoading;
 
     @Inject
@@ -33,6 +35,11 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
     }
 
     public void loadHistory() {
+        if (mItems != null) {
+            getView().onHistoryLoaded(mItems);
+            return;
+        }
+
         getView().onHistoryLoading();
 
         if (mLoading) {
@@ -44,6 +51,7 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
             @Override
             public void accept(List<TranslateResult> items) throws Exception {
                 mLoading = false;
+                mItems = items;
                 getView().onHistoryLoaded(items);
             }
         }, new Consumer<Throwable>() {

@@ -22,6 +22,8 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
     private final LoadFavoritesInteractor mInteractor;
     private final UpdateFavoriteInteractor mUpdateInteractor;
 
+    private List<TranslateResult> mItems;
+
     private boolean mLoading;
 
     @Inject
@@ -33,6 +35,11 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
     }
 
     public void loadFavorite() {
+        if (mItems != null) {
+            getView().onFavoriteLoaded(mItems);
+            return;
+        }
+
         getView().onFavoriteLoading();
 
         if (mLoading) {
@@ -44,6 +51,7 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
             @Override
             public void accept(List<TranslateResult> items) throws Exception {
                 mLoading = false;
+                mItems = items;
                 getView().onFavoriteLoaded(items);
             }
         }, new Consumer<Throwable>() {
