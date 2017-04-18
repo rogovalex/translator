@@ -21,7 +21,6 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     private final TranslateInteractor mInteractor;
     private final UpdateFavoriteInteractor mUpdateInteractor;
 
-    private TranslateParams mParams;
     private TranslateResult mResult;
 
     private boolean mLoading;
@@ -40,31 +39,20 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
             view = sStubView;
         }
         super.setView(view);
+
+        if (mResult != null) {
+            getView().onTranslated(mResult);
+        }
+        if (mLoading) {
+            getView().onTranslating();
+        }
     }
 
     public void translate(TranslateParams params) {
-        if (params.getText().isEmpty()) {
-            cancel();
-            return;
-        }
-
         getView().onTranslating();
 
-        if (mLoading) {
-            if (!params.equals(mParams)) {
-                mInteractor.cancel();
-            } else {
-                return;
-            }
-        } else if (params.equals(mParams) && mResult != null) {
-            getView().onTranslated(mResult);
-            return;
-        }
-
-        mParams = params;
-        mResult = null;
         mLoading = true;
-        mInteractor.execute(mParams, new Consumer<TranslateResult>() {
+        mInteractor.execute(params, new Consumer<TranslateResult>() {
             @Override
             public void accept(TranslateResult translation) throws Exception {
                 mLoading = false;
@@ -85,6 +73,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     }
 
     public void cancel() {
+        mResult = null;
         mLoading = false;
         mInteractor.cancel();
         mUpdateInteractor.cancel();
