@@ -5,10 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import ru.rogovalex.translator.presentation.injection.component.AppComponent;
 import ru.rogovalex.translator.presentation.injection.component.DaggerFavoriteFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.DaggerHistoryFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.DaggerTranslateFragmentComponent;
@@ -16,12 +14,10 @@ import ru.rogovalex.translator.presentation.injection.component.FavoriteFragment
 import ru.rogovalex.translator.presentation.injection.component.HistoryFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements TranslateFragment.Callbacks,
         HistoryFragment.Callbacks,
         FavoriteFragment.Callbacks {
-
-    private static final String COMPONENT_HOLDER = "component_holder";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +34,13 @@ public class MainActivity extends AppCompatActivity
         });
 
         if (savedInstanceState == null) {
-            addComponentHolder();
             showFragment(navigation.getSelectedItemId());
         }
     }
 
     @Override
     public TranslateFragmentComponent getTranslateFragmentComponent() {
-        return getComponentHolder().getComponent("main", TranslateFragmentComponent.class,
+        return getComponent("main", TranslateFragmentComponent.class,
                 new ComponentFactory<TranslateFragmentComponent>() {
                     @Override
                     public TranslateFragmentComponent buildComponent() {
@@ -58,7 +53,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public HistoryFragmentComponent getHistoryFragmentComponent() {
-        return getComponentHolder().getComponent("main", HistoryFragmentComponent.class,
+        return getComponent("main", HistoryFragmentComponent.class,
                 new ComponentFactory<HistoryFragmentComponent>() {
                     @Override
                     public HistoryFragmentComponent buildComponent() {
@@ -71,7 +66,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public FavoriteFragmentComponent getFavoriteFragmentComponent() {
-        return getComponentHolder().getComponent("main", FavoriteFragmentComponent.class,
+        return getComponent("main", FavoriteFragmentComponent.class,
                 new ComponentFactory<FavoriteFragmentComponent>() {
                     @Override
                     public FavoriteFragmentComponent buildComponent() {
@@ -105,26 +100,5 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.fragment_container, fragment)
                     .commit();
         }
-    }
-
-    private void addComponentHolder() {
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentByTag(COMPONENT_HOLDER);
-        if (fragment == null) {
-            fragment = new ComponentHolderFragment();
-            fm.beginTransaction()
-                    .add(fragment, COMPONENT_HOLDER)
-                    .commit();
-        }
-    }
-
-    private ComponentHolderFragment getComponentHolder() {
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentByTag(COMPONENT_HOLDER);
-        return ((ComponentHolderFragment) fragment);
-    }
-
-    private AppComponent getAppComponent() {
-        return ((App) getApplicationContext()).getAppComponent();
     }
 }
