@@ -12,17 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
-import java.util.List;
-
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import android.widget.Filter;
 
 public abstract class SearchableListFragment extends Fragment
-        implements ListAdapter.OnFavoriteChangedListener, TextWatcher {
+        implements TextWatcher {
 
     private EditText mSearchInput;
     private View mClear;
-    private ListAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,9 +42,7 @@ public abstract class SearchableListFragment extends Fragment
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
-        mAdapter = new ListAdapter();
-        mAdapter.setFavoriteChangedListener(this);
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(getAdapter());
 
         return view;
     }
@@ -61,7 +55,7 @@ public abstract class SearchableListFragment extends Fragment
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         mClear.setVisibility(s.length() == 0 ? View.GONE : View.VISIBLE);
-        mAdapter.getFilter().filter(s);
+        getFilter().filter(s);
     }
 
     @Override
@@ -69,7 +63,11 @@ public abstract class SearchableListFragment extends Fragment
 
     }
 
-    protected void setAdapterItems(List<TranslateResult> items) {
-        mAdapter.setItems(items, mSearchInput.getText().toString());
+    protected String getQuery() {
+        return mSearchInput.getText().toString();
     }
+
+    protected abstract RecyclerView.Adapter getAdapter();
+
+    protected abstract Filter getFilter();
 }

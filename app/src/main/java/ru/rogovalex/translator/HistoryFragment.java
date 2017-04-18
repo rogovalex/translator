@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Filter;
 
 import java.util.List;
 
@@ -16,7 +17,9 @@ import ru.rogovalex.translator.presentation.translate.HistoryView;
 import ru.rogovalex.translator.presentation.translate.HistoryViewPresenter;
 
 public class HistoryFragment extends SearchableListFragment
-        implements HistoryView {
+        implements ListAdapter.OnFavoriteChangedListener, HistoryView {
+
+    private ListAdapter mAdapter;
 
     private Callbacks mCallbacks;
 
@@ -36,9 +39,16 @@ public class HistoryFragment extends SearchableListFragment
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAdapter = new ListAdapter();
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ((EditText) view.findViewById(R.id.search_input))
                 .setHint(R.string.search_history_hint);
+        mAdapter.setFavoriteChangedListener(this);
     }
 
     @Override
@@ -61,13 +71,23 @@ public class HistoryFragment extends SearchableListFragment
     }
 
     @Override
+    protected ListAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    @Override
+    protected Filter getFilter() {
+        return mAdapter.getFilter();
+    }
+
+    @Override
     public void onHistoryLoading() {
 
     }
 
     @Override
     public void onHistoryLoaded(List<TranslateResult> items) {
-        setAdapterItems(items);
+        mAdapter.setItems(items, getQuery());
     }
 
     @Override
