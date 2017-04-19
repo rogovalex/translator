@@ -1,4 +1,4 @@
-package ru.rogovalex.translator.data.translate;
+package ru.rogovalex.translator.data.database;
 
 import android.provider.BaseColumns;
 

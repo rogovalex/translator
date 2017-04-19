@@ -1,4 +1,4 @@
-package ru.rogovalex.translator.data.translate;
+package ru.rogovalex.translator.data.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
