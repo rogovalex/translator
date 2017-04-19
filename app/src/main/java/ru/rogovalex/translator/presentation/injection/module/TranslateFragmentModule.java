@@ -1,8 +1,15 @@
 package ru.rogovalex.translator.presentation.injection.module;
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Scheduler;
+import ru.rogovalex.translator.domain.DictionaryProvider;
+import ru.rogovalex.translator.domain.TranslateProvider;
+import ru.rogovalex.translator.domain.favorite.FavoriteModel;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
+import ru.rogovalex.translator.domain.history.HistoryModel;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
 import ru.rogovalex.translator.presentation.main.translate.TranslateViewPresenter;
@@ -16,6 +23,27 @@ import ru.rogovalex.translator.presentation.main.translate.TranslateViewPresente
 
 @Module
 public class TranslateFragmentModule {
+
+    @Provides
+    @ActivityScope
+    public TranslateInteractor provideTranslateInteractor(
+            @Named(DomainModule.JOB) Scheduler jobScheduler,
+            @Named(DomainModule.UI) Scheduler uiScheduler,
+            TranslateProvider translateProvider,
+            DictionaryProvider dictionaryProvider,
+            HistoryModel historyModel) {
+        return new TranslateInteractor(jobScheduler, uiScheduler, translateProvider,
+                dictionaryProvider, historyModel);
+    }
+
+    @Provides
+    @ActivityScope
+    public UpdateFavoriteInteractor provideUpdateFavoriteInteractor(
+            @Named(DomainModule.LOCAL) Scheduler jobScheduler,
+            @Named(DomainModule.UI) Scheduler uiScheduler,
+            FavoriteModel favoriteModel) {
+        return new UpdateFavoriteInteractor(jobScheduler, uiScheduler, favoriteModel);
+    }
 
     @Provides
     @ActivityScope
