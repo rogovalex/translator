@@ -1,4 +1,4 @@
-package ru.rogovalex.translator.presentation.translate;
+package ru.rogovalex.translator.presentation.main.history;
 
 import java.util.List;
 

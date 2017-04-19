@@ -1,9 +1,9 @@
 package ru.rogovalex.translator.presentation.injection.component;
 
 import dagger.Component;
-import ru.rogovalex.translator.TranslateFragment;
 import ru.rogovalex.translator.presentation.injection.module.TranslateFragmentModule;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
+import ru.rogovalex.translator.presentation.main.translate.TranslateFragment;
 
 /**
  * Created with Android Studio.

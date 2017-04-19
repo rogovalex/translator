@@ -5,7 +5,7 @@ import dagger.Provides;
 import ru.rogovalex.translator.domain.favorite.LoadFavoriteInteractor;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
-import ru.rogovalex.translator.presentation.translate.FavoriteViewPresenter;
+import ru.rogovalex.translator.presentation.main.favorite.FavoriteViewPresenter;
 
 /**
  * Created with Android Studio.

@@ -1,4 +1,4 @@
-package ru.rogovalex.translator;
+package ru.rogovalex.translator.presentation.main.common;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.domain.model.Translation;
 
 /**

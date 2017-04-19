@@ -5,7 +5,7 @@ import dagger.Provides;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.history.LoadHistoryInteractor;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
-import ru.rogovalex.translator.presentation.translate.HistoryViewPresenter;
+import ru.rogovalex.translator.presentation.main.history.HistoryViewPresenter;
 
 /**
  * Created with Android Studio.

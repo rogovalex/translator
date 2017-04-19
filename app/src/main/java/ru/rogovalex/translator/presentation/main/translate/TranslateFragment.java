@@ -1,4 +1,4 @@
-package ru.rogovalex.translator;
+package ru.rogovalex.translator.presentation.main.translate;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,11 +20,12 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
+import ru.rogovalex.translator.PreferencesHelper;
+import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
-import ru.rogovalex.translator.presentation.translate.TranslateView;
-import ru.rogovalex.translator.presentation.translate.TranslateViewPresenter;
+import ru.rogovalex.translator.presentation.language.LanguageActivity;
 
 public class TranslateFragment extends Fragment
         implements TranslateView,

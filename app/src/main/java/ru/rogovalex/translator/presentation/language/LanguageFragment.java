@@ -1,4 +1,4 @@
-package ru.rogovalex.translator;
+package ru.rogovalex.translator.presentation.language;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,20 +11,26 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.rogovalex.translator.domain.model.Translation;
-import ru.rogovalex.translator.presentation.injection.component.FavoriteFragmentComponent;
-import ru.rogovalex.translator.presentation.translate.FavoriteView;
-import ru.rogovalex.translator.presentation.translate.FavoriteViewPresenter;
+import ru.rogovalex.translator.R;
+import ru.rogovalex.translator.domain.model.Language;
+import ru.rogovalex.translator.presentation.common.SearchableListFragment;
+import ru.rogovalex.translator.presentation.injection.component.LanguageFragmentComponent;
 
-public class FavoriteFragment extends SearchableListFragment
-        implements ListAdapter.OnFavoriteChangedListener, FavoriteView {
+/**
+ * Created with Android Studio.
+ * User: rogov
+ * Date: 18.04.2017
+ * Time: 0:05
+ */
+public class LanguageFragment extends SearchableListFragment
+        implements LanguageAdapter.OnItemClickListener, LanguagesView {
 
-    private ListAdapter mAdapter;
+    private LanguageAdapter mAdapter;
 
     private Callbacks mCallbacks;
 
     @Inject
-    FavoriteViewPresenter mPresenter;
+    LanguagesViewPresenter mPresenter;
 
     @Override
     public void onAttach(Context context) {
@@ -41,27 +47,27 @@ public class FavoriteFragment extends SearchableListFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new ListAdapter();
+        mAdapter = new LanguageAdapter();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ((EditText) view.findViewById(R.id.search_input))
-                .setHint(R.string.search_favorite_hint);
-        mAdapter.setFavoriteChangedListener(this);
+                .setHint(R.string.search_language_hint);
+        mAdapter.setOnItemClickListener(this);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mCallbacks.getFavoriteFragmentComponent().inject(this);
+        mCallbacks.getLanguagesFragmentComponent().inject(this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mPresenter.setView(this);
-        mPresenter.loadFavorite();
+        mPresenter.loadLanguages();
     }
 
     @Override
@@ -76,7 +82,7 @@ public class FavoriteFragment extends SearchableListFragment
     }
 
     @Override
-    protected ListAdapter getAdapter() {
+    protected LanguageAdapter getAdapter() {
         return mAdapter;
     }
 
@@ -87,31 +93,33 @@ public class FavoriteFragment extends SearchableListFragment
 
     @Override
     protected void onErrorButtonClick() {
-        mPresenter.loadFavorite();
+        mPresenter.loadLanguages();
     }
 
     @Override
-    public void onFavoriteLoading() {
+    public void onLanguagesLoading() {
         showLoadingView();
     }
 
     @Override
-    public void onFavoriteLoaded(List<Translation> items) {
+    public void onLanguagesLoaded(List<Language> items) {
         mAdapter.setItems(items, getQuery());
         showListView();
     }
 
     @Override
-    public void onFavoriteLoadError(Throwable e) {
+    public void onLanguagesLoadError(Throwable e) {
         showErrorView(e.getMessage());
     }
 
     @Override
-    public void onFavoriteChanged(Translation item) {
-        mPresenter.updateFavorite(item);
+    public void onItemClick(Language item) {
+        mCallbacks.onLanguageSelected(item);
     }
 
     public interface Callbacks {
-        FavoriteFragmentComponent getFavoriteFragmentComponent();
+        LanguageFragmentComponent getLanguagesFragmentComponent();
+
+        void onLanguageSelected(Language item);
     }
 }

@@ -1,4 +1,4 @@
-package ru.rogovalex.translator;
+package ru.rogovalex.translator.presentation.common;
 
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.TextView;
+
+import ru.rogovalex.translator.R;
 
 public abstract class SearchableListFragment extends BaseFragment
         implements TextWatcher {

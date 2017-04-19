@@ -1,4 +1,4 @@
-package ru.rogovalex.translator;
+package ru.rogovalex.translator.presentation.language;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
+import ru.rogovalex.translator.PreferencesHelper;
+import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.domain.model.Language;
+import ru.rogovalex.translator.presentation.common.BaseActivity;
+import ru.rogovalex.translator.presentation.common.ComponentFactory;
 import ru.rogovalex.translator.presentation.injection.component.DaggerLanguageFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.LanguageFragmentComponent;
 

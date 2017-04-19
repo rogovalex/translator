@@ -1,9 +1,9 @@
 package ru.rogovalex.translator.presentation.injection.component;
 
 import dagger.Component;
-import ru.rogovalex.translator.HistoryFragment;
 import ru.rogovalex.translator.presentation.injection.module.HistoryFragmentModule;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
+import ru.rogovalex.translator.presentation.main.history.HistoryFragment;
 
 /**
  * Created with Android Studio.

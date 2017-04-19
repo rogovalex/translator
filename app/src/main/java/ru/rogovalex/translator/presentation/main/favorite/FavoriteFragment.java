@@ -1,4 +1,4 @@
-package ru.rogovalex.translator;
+package ru.rogovalex.translator.presentation.main.favorite;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,20 +11,21 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.domain.model.Translation;
-import ru.rogovalex.translator.presentation.injection.component.HistoryFragmentComponent;
-import ru.rogovalex.translator.presentation.translate.HistoryView;
-import ru.rogovalex.translator.presentation.translate.HistoryViewPresenter;
+import ru.rogovalex.translator.presentation.common.SearchableListFragment;
+import ru.rogovalex.translator.presentation.injection.component.FavoriteFragmentComponent;
+import ru.rogovalex.translator.presentation.main.common.ListAdapter;
 
-public class HistoryFragment extends SearchableListFragment
-        implements ListAdapter.OnFavoriteChangedListener, HistoryView {
+public class FavoriteFragment extends SearchableListFragment
+        implements ListAdapter.OnFavoriteChangedListener, FavoriteView {
 
     private ListAdapter mAdapter;
 
     private Callbacks mCallbacks;
 
     @Inject
-    HistoryViewPresenter mPresenter;
+    FavoriteViewPresenter mPresenter;
 
     @Override
     public void onAttach(Context context) {
@@ -47,21 +48,21 @@ public class HistoryFragment extends SearchableListFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ((EditText) view.findViewById(R.id.search_input))
-                .setHint(R.string.search_history_hint);
+                .setHint(R.string.search_favorite_hint);
         mAdapter.setFavoriteChangedListener(this);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mCallbacks.getHistoryFragmentComponent().inject(this);
+        mCallbacks.getFavoriteFragmentComponent().inject(this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mPresenter.setView(this);
-        mPresenter.loadHistory();
+        mPresenter.loadFavorite();
     }
 
     @Override
@@ -87,22 +88,22 @@ public class HistoryFragment extends SearchableListFragment
 
     @Override
     protected void onErrorButtonClick() {
-        mPresenter.loadHistory();
+        mPresenter.loadFavorite();
     }
 
     @Override
-    public void onHistoryLoading() {
+    public void onFavoriteLoading() {
         showLoadingView();
     }
 
     @Override
-    public void onHistoryLoaded(List<Translation> items) {
+    public void onFavoriteLoaded(List<Translation> items) {
         mAdapter.setItems(items, getQuery());
         showListView();
     }
 
     @Override
-    public void onHistoryLoadError(Throwable e) {
+    public void onFavoriteLoadError(Throwable e) {
         showErrorView(e.getMessage());
     }
 
@@ -112,6 +113,6 @@ public class HistoryFragment extends SearchableListFragment
     }
 
     public interface Callbacks {
-        HistoryFragmentComponent getHistoryFragmentComponent();
+        FavoriteFragmentComponent getFavoriteFragmentComponent();
     }
 }

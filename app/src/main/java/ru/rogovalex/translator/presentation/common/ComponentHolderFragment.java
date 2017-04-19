@@ -1,4 +1,4 @@
-package ru.rogovalex.translator;
+package ru.rogovalex.translator.presentation.common;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
