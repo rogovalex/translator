@@ -4,7 +4,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
-import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
+import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
 import ru.rogovalex.translator.presentation.translate.TranslateViewPresenter;
 
 /**
@@ -18,7 +18,7 @@ import ru.rogovalex.translator.presentation.translate.TranslateViewPresenter;
 public class TranslateFragmentModule {
 
     @Provides
-    @ViewScope
+    @ActivityScope
     public TranslateViewPresenter provideTranslateViewPresenter(
             TranslateInteractor interactor,
             UpdateFavoriteInteractor updateInteractor) {

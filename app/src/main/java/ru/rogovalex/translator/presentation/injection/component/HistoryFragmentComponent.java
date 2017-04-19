@@ -3,7 +3,7 @@ package ru.rogovalex.translator.presentation.injection.component;
 import dagger.Component;
 import ru.rogovalex.translator.HistoryFragment;
 import ru.rogovalex.translator.presentation.injection.module.HistoryFragmentModule;
-import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
+import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
 
 /**
  * Created with Android Studio.
@@ -11,7 +11,7 @@ import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
  * Date: 01.04.2017
  * Time: 19:49
  */
-@ViewScope
+@ActivityScope
 @Component(dependencies = AppComponent.class, modules = {HistoryFragmentModule.class})
 public interface HistoryFragmentComponent {
     void inject(HistoryFragment fragment);

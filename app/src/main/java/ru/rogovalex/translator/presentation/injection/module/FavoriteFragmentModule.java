@@ -4,7 +4,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.rogovalex.translator.domain.favorite.LoadFavoriteInteractor;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
-import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
+import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
 import ru.rogovalex.translator.presentation.translate.FavoriteViewPresenter;
 
 /**
@@ -18,7 +18,7 @@ import ru.rogovalex.translator.presentation.translate.FavoriteViewPresenter;
 public class FavoriteFragmentModule {
 
     @Provides
-    @ViewScope
+    @ActivityScope
     public FavoriteViewPresenter provideFavoriteViewPresenter(
             LoadFavoriteInteractor interactor,
             UpdateFavoriteInteractor updateInteractor) {

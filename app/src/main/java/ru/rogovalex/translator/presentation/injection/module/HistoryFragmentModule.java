@@ -4,7 +4,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.history.LoadHistoryInteractor;
-import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
+import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
 import ru.rogovalex.translator.presentation.translate.HistoryViewPresenter;
 
 /**
@@ -18,7 +18,7 @@ import ru.rogovalex.translator.presentation.translate.HistoryViewPresenter;
 public class HistoryFragmentModule {
 
     @Provides
-    @ViewScope
+    @ActivityScope
     public HistoryViewPresenter provideHistoryViewPresenter(
             LoadHistoryInteractor interactor,
             UpdateFavoriteInteractor updateInteractor) {
