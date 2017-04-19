@@ -17,4 +17,5 @@
     <string name="translation_code_default">en</string>
     <string name="translation_name_default">Английский</string>
     <string name="ui_lang_code">ru</string>
+    <string name="error_default">Во время загрузки произошла ошибка. Проверьте подключение к интернету.</string>
 </resources>

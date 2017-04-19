@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import ru.rogovalex.translator.PreferencesHelper;
 import ru.rogovalex.translator.R;
+import ru.rogovalex.translator.api.ApiException;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
@@ -40,6 +41,7 @@ public class TranslateFragment extends Fragment
     private View mProgress;
     private View mTranslate;
     private TranslationAdapter mAdapter;
+    private TextView mErrorMessage;
 
     private Language mSourceLang;
     private Language mTranslationLang;
@@ -105,6 +107,8 @@ public class TranslateFragment extends Fragment
         mAdapter.setFavoriteChangedListener(this);
         recyclerView.setAdapter(mAdapter);
 
+        mErrorMessage = (TextView) view.findViewById(R.id.error_message);
+
         return view;
     }
 
@@ -138,6 +142,7 @@ public class TranslateFragment extends Fragment
     public void onTranslating() {
         mProgress.setVisibility(View.VISIBLE);
         mTranslate.setVisibility(View.GONE);
+        mErrorMessage.setVisibility(View.GONE);
         dismissKeyboard();
     }
 
@@ -152,6 +157,12 @@ public class TranslateFragment extends Fragment
     public void onTranslateError(Throwable e) {
         mProgress.setVisibility(View.GONE);
         mTranslate.setVisibility(View.VISIBLE);
+        mAdapter.clear();
+        mErrorMessage.setVisibility(View.VISIBLE);
+        String message = e instanceof ApiException
+                ? e.getMessage()
+                : getString(R.string.error_default);
+        mErrorMessage.setText(message);
     }
 
     @Override

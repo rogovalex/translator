@@ -150,4 +150,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
+    <TextView
+        android:id="@+id/error_message"
+        style="@style/TranslateOutput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="Ошибка"
+        tools:visibility="visible"/>
+
 </android.support.constraint.ConstraintLayout>
