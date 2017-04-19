@@ -10,8 +10,13 @@ import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
+import ru.rogovalex.translator.domain.DictionaryProvider;
+import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.common.Interactor;
 import ru.rogovalex.translator.domain.history.HistoryModel;
+import ru.rogovalex.translator.domain.model.Definition;
+import ru.rogovalex.translator.domain.model.TranslateParams;
+import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
 /**

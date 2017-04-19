@@ -2,7 +2,7 @@ package ru.rogovalex.translator.presentation.translate;
 
 import java.util.List;
 
-import ru.rogovalex.translator.domain.translate.Language;
+import ru.rogovalex.translator.domain.model.Language;
 
 /**
  * Created with Android Studio.

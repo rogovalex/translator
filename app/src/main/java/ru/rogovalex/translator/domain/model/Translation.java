@@ -1,4 +1,4 @@
-package ru.rogovalex.translator.domain.translate;
+package ru.rogovalex.translator.domain.model;
 
 import java.util.List;
 

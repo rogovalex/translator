@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
-import ru.rogovalex.translator.domain.translate.Language;
+import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.presentation.injection.component.DaggerLanguagesFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.LanguagesFragmentComponent;
 

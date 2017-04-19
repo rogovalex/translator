@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import ru.rogovalex.translator.data.database.Database;
 import ru.rogovalex.translator.domain.language.LanguageModel;
-import ru.rogovalex.translator.domain.translate.Language;
+import ru.rogovalex.translator.domain.model.Language;
 
 /**
  * Created with Android Studio.

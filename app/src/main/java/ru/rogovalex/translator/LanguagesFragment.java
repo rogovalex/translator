@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.rogovalex.translator.domain.translate.Language;
+import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.presentation.injection.component.LanguagesFragmentComponent;
 import ru.rogovalex.translator.presentation.translate.LanguagesView;
 import ru.rogovalex.translator.presentation.translate.LanguagesViewPresenter;

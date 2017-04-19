@@ -3,7 +3,7 @@ package ru.rogovalex.translator.domain.language;
 import java.util.List;
 
 import io.reactivex.Observable;
-import ru.rogovalex.translator.domain.translate.Language;
+import ru.rogovalex.translator.domain.model.Language;
 
 /**
  * Created with Android Studio.

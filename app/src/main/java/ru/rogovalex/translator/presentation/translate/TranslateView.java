@@ -1,6 +1,6 @@
 package ru.rogovalex.translator.presentation.translate;
 
-import ru.rogovalex.translator.domain.translate.Translation;
+import ru.rogovalex.translator.domain.model.Translation;
 
 /**
  * Created with Android Studio.

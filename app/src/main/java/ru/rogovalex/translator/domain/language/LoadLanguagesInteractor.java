@@ -8,9 +8,9 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.Function;
+import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.common.Interactor;
-import ru.rogovalex.translator.domain.translate.Language;
-import ru.rogovalex.translator.domain.translate.TranslateProvider;
+import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
 /**

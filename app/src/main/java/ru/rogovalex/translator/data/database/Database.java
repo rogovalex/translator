@@ -9,11 +9,11 @@ import android.database.sqlite.SQLiteStatement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.rogovalex.translator.domain.translate.Definition;
-import ru.rogovalex.translator.domain.translate.DefinitionOption;
-import ru.rogovalex.translator.domain.translate.Language;
-import ru.rogovalex.translator.domain.translate.TranslateParams;
-import ru.rogovalex.translator.domain.translate.Translation;
+import ru.rogovalex.translator.domain.model.Definition;
+import ru.rogovalex.translator.domain.model.DefinitionOption;
+import ru.rogovalex.translator.domain.model.Language;
+import ru.rogovalex.translator.domain.model.TranslateParams;
+import ru.rogovalex.translator.domain.model.Translation;
 
 /**
  * Created with Android Studio.

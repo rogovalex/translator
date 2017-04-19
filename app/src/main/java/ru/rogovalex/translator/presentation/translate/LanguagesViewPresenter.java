@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import io.reactivex.functions.Consumer;
 import ru.rogovalex.translator.domain.language.LoadLanguagesInteractor;
-import ru.rogovalex.translator.domain.translate.Language;
+import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
 /**

@@ -3,7 +3,7 @@ package ru.rogovalex.translator;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import ru.rogovalex.translator.domain.translate.Language;
+import ru.rogovalex.translator.domain.model.Language;
 
 /**
  * Created with Android Studio.

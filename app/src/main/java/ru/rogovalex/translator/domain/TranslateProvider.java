@@ -1,8 +1,10 @@
-package ru.rogovalex.translator.domain.translate;
+package ru.rogovalex.translator.domain;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import ru.rogovalex.translator.domain.model.Language;
+import ru.rogovalex.translator.domain.model.TranslateParams;
 
 /**
  * Created with Android Studio.

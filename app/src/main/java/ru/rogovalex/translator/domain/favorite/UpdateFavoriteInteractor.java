@@ -6,7 +6,7 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.common.Interactor;
-import ru.rogovalex.translator.domain.translate.Translation;
+import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
 /**

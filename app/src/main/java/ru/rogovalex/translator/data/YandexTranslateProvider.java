@@ -1,4 +1,4 @@
-package ru.rogovalex.translator.data.translate;
+package ru.rogovalex.translator.data;
 
 import java.util.List;
 import java.util.Map;
@@ -9,9 +9,9 @@ import ru.rogovalex.translator.api.ApiException;
 import ru.rogovalex.translator.api.LanguagesResponse;
 import ru.rogovalex.translator.api.TranslateApiService;
 import ru.rogovalex.translator.api.TranslateResponse;
-import ru.rogovalex.translator.domain.translate.Language;
-import ru.rogovalex.translator.domain.translate.TranslateParams;
-import ru.rogovalex.translator.domain.translate.TranslateProvider;
+import ru.rogovalex.translator.domain.TranslateProvider;
+import ru.rogovalex.translator.domain.model.Language;
+import ru.rogovalex.translator.domain.model.TranslateParams;
 
 /**
  * Created with Android Studio.

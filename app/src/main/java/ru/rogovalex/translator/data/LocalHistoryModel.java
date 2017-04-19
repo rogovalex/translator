@@ -9,8 +9,8 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import ru.rogovalex.translator.data.database.Database;
 import ru.rogovalex.translator.domain.history.HistoryModel;
-import ru.rogovalex.translator.domain.translate.TranslateParams;
-import ru.rogovalex.translator.domain.translate.Translation;
+import ru.rogovalex.translator.domain.model.TranslateParams;
+import ru.rogovalex.translator.domain.model.Translation;
 
 /**
  * Created with Android Studio.

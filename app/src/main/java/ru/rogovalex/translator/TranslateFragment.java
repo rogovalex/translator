@@ -20,8 +20,8 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-import ru.rogovalex.translator.domain.translate.Language;
-import ru.rogovalex.translator.domain.translate.Translation;
+import ru.rogovalex.translator.domain.model.Language;
+import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
 import ru.rogovalex.translator.presentation.translate.TranslateView;
 import ru.rogovalex.translator.presentation.translate.TranslateViewPresenter;

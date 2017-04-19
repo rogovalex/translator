@@ -16,15 +16,15 @@ import ru.rogovalex.translator.api.TranslateApiService;
 import ru.rogovalex.translator.data.LocalFavoriteModel;
 import ru.rogovalex.translator.data.LocalHistoryModel;
 import ru.rogovalex.translator.data.LocalLanguageModel;
+import ru.rogovalex.translator.data.YandexDictionaryProvider;
+import ru.rogovalex.translator.data.YandexTranslateProvider;
 import ru.rogovalex.translator.data.database.Database;
 import ru.rogovalex.translator.data.database.DatabaseHelper;
-import ru.rogovalex.translator.data.translate.YandexDictionaryProvider;
-import ru.rogovalex.translator.data.translate.YandexTranslateProvider;
+import ru.rogovalex.translator.domain.DictionaryProvider;
+import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.favorite.FavoriteModel;
 import ru.rogovalex.translator.domain.history.HistoryModel;
 import ru.rogovalex.translator.domain.language.LanguageModel;
-import ru.rogovalex.translator.domain.translate.DictionaryProvider;
-import ru.rogovalex.translator.domain.translate.TranslateProvider;
 
 /**
  * Created with Android Studio.

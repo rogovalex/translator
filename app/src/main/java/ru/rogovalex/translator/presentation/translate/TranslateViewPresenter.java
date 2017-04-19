@@ -5,9 +5,9 @@ import javax.inject.Inject;
 import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
+import ru.rogovalex.translator.domain.model.TranslateParams;
+import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
-import ru.rogovalex.translator.domain.translate.TranslateParams;
-import ru.rogovalex.translator.domain.translate.Translation;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
 /**

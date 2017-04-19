@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.rogovalex.translator.domain.translate.Translation;
+import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.presentation.injection.component.HistoryFragmentComponent;
 import ru.rogovalex.translator.presentation.translate.HistoryView;
 import ru.rogovalex.translator.presentation.translate.HistoryViewPresenter;

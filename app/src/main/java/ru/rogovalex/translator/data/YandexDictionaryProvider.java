@@ -1,4 +1,4 @@
-package ru.rogovalex.translator.data.translate;
+package ru.rogovalex.translator.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,10 +11,10 @@ import ru.rogovalex.translator.api.DictionaryApiService;
 import ru.rogovalex.translator.api.DictionaryEntry;
 import ru.rogovalex.translator.api.DictionaryResponse;
 import ru.rogovalex.translator.api.DictionaryTranslation;
-import ru.rogovalex.translator.domain.translate.Definition;
-import ru.rogovalex.translator.domain.translate.DefinitionOption;
-import ru.rogovalex.translator.domain.translate.DictionaryProvider;
-import ru.rogovalex.translator.domain.translate.TranslateParams;
+import ru.rogovalex.translator.domain.DictionaryProvider;
+import ru.rogovalex.translator.domain.model.Definition;
+import ru.rogovalex.translator.domain.model.DefinitionOption;
+import ru.rogovalex.translator.domain.model.TranslateParams;
 
 /**
  * Created with Android Studio.
