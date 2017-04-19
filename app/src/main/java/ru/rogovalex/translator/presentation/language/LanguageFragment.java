@@ -66,6 +66,7 @@ public class LanguageFragment extends SearchableListFragment
     @Override
     public void onStart() {
         super.onStart();
+        mPresenter.setUiLanguageCode(getString(R.string.ui_lang_code));
         mPresenter.setView(this);
         mPresenter.loadLanguages();
     }

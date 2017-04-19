@@ -16,4 +16,5 @@
     <string name="source_name_default">Русский</string>
     <string name="translation_code_default">en</string>
     <string name="translation_name_default">Английский</string>
+    <string name="ui_lang_code">ru</string>
 </resources>

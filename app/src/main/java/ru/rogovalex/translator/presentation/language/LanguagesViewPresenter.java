@@ -19,6 +19,7 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
 
     private final LoadLanguagesInteractor mInteractor;
 
+    private String mUiLangCode;
     private List<Language> mItems;
 
     private boolean mLoading;
@@ -27,6 +28,14 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
     public LanguagesViewPresenter(LoadLanguagesInteractor interactor) {
         mInteractor = interactor;
         super.setView(sStubView);
+    }
+
+    public void setUiLanguageCode(String uiLangCode) {
+        if (!uiLangCode.equals(mUiLangCode)) {
+            cancel();
+            mUiLangCode = uiLangCode;
+            mItems = null;
+        }
     }
 
     public void loadLanguages() {
@@ -42,7 +51,7 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
         }
 
         mLoading = true;
-        mInteractor.execute("ru", new Consumer<List<Language>>() {
+        mInteractor.execute(mUiLangCode, new Consumer<List<Language>>() {
             @Override
             public void accept(List<Language> items) throws Exception {
                 mLoading = false;
