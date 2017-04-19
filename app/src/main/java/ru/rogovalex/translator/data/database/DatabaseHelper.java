@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TranslationTable.CREATE_TABLE);
         db.execSQL(DefinitionTable.CREATE_TABLE);
-        db.execSQL(VariantTable.CREATE_TABLE);
+        db.execSQL(DefinitionOptionTable.CREATE_TABLE);
         db.execSQL(LanguageTable.CREATE_TABLE);
     }
 
@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(TranslationTable.DROP_TABLE);
         db.execSQL(DefinitionTable.DROP_TABLE);
-        db.execSQL(VariantTable.DROP_TABLE);
+        db.execSQL(DefinitionOptionTable.DROP_TABLE);
         db.execSQL(LanguageTable.DROP_TABLE);
         onCreate(db);
     }

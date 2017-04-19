@@ -6,13 +6,13 @@ package ru.rogovalex.translator.domain.translate;
  * Date: 02.04.2017
  * Time: 11:28
  */
-public class Translation {
+public class DefinitionOption {
 
     private String mSynonyms;
     private String mMeanings;
     private String mExamples;
 
-    public Translation(String synonyms, String meanings, String examples) {
+    public DefinitionOption(String synonyms, String meanings, String examples) {
         mSynonyms = synonyms;
         mMeanings = meanings;
         mExamples = examples;

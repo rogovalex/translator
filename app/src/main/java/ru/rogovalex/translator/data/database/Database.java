@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.rogovalex.translator.domain.translate.Definition;
+import ru.rogovalex.translator.domain.translate.DefinitionOption;
 import ru.rogovalex.translator.domain.translate.Language;
 import ru.rogovalex.translator.domain.translate.Storage;
 import ru.rogovalex.translator.domain.translate.TranslateResult;
-import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -85,7 +85,7 @@ public class Database implements Storage {
                         cursor.getString(colText),
                         cursor.getString(colTranscription),
                         cursor.getString(colPos),
-                        getVariants(db, cursor.getInt(colId))));
+                        getDefinitionOptions(db, cursor.getInt(colId))));
             } while (cursor.moveToNext());
         }
         if (cursor != null) {
@@ -94,21 +94,21 @@ public class Database implements Storage {
         return list;
     }
 
-    private List<Translation> getVariants(SQLiteDatabase db, int definitionId) {
-        List<Translation> list = new ArrayList<>();
+    private List<DefinitionOption> getDefinitionOptions(SQLiteDatabase db, int definitionId) {
+        List<DefinitionOption> list = new ArrayList<>();
 
-        Cursor cursor = db.query(VariantTable.TABLE_NAME, null,
-                VariantTable.DEFINITION_ID + "=?",
+        Cursor cursor = db.query(DefinitionOptionTable.TABLE_NAME, null,
+                DefinitionOptionTable.DEFINITION_ID + "=?",
                 new String[]{String.valueOf(definitionId)},
                 null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            int colSynonyms = cursor.getColumnIndex(VariantTable.SYNONYMS);
-            int colMeanings = cursor.getColumnIndex(VariantTable.MEANINGS);
-            int colExamples = cursor.getColumnIndex(VariantTable.EXAMPLES);
+            int colSynonyms = cursor.getColumnIndex(DefinitionOptionTable.SYNONYMS);
+            int colMeanings = cursor.getColumnIndex(DefinitionOptionTable.MEANINGS);
+            int colExamples = cursor.getColumnIndex(DefinitionOptionTable.EXAMPLES);
 
             do {
-                list.add(new Translation(
+                list.add(new DefinitionOption(
                         cursor.getString(colSynonyms),
                         cursor.getString(colMeanings),
                         cursor.getString(colExamples)));
@@ -185,11 +185,11 @@ public class Database implements Storage {
                             + ") VALUES (?, ?, ?, ?)");
 
             SQLiteStatement insertVariant = db.compileStatement(
-                    "INSERT INTO " + VariantTable.TABLE_NAME + " ("
-                            + VariantTable.DEFINITION_ID + ","
-                            + VariantTable.SYNONYMS + ","
-                            + VariantTable.MEANINGS + ","
-                            + VariantTable.EXAMPLES
+                    "INSERT INTO " + DefinitionOptionTable.TABLE_NAME + " ("
+                            + DefinitionOptionTable.DEFINITION_ID + ","
+                            + DefinitionOptionTable.SYNONYMS + ","
+                            + DefinitionOptionTable.MEANINGS + ","
+                            + DefinitionOptionTable.EXAMPLES
                             + ") VALUES (?, ?, ?, ?)");
 
             insertTranslation.bindString(1, translation.getText());
@@ -213,7 +213,7 @@ public class Database implements Storage {
 
                 long defId = insertDefinition.executeInsert();
 
-                for (Translation item : def.getTranslations()) {
+                for (DefinitionOption item : def.getDefinitionOptions()) {
                     insertVariant.clearBindings();
                     insertVariant.bindLong(1, defId);
                     insertVariant.bindString(2, item.getSynonyms());

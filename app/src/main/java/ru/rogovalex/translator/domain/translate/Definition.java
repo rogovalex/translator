@@ -13,13 +13,13 @@ public class Definition {
     private String mText;
     private String mTranscription;
     private String mPos;
-    private List<Translation> mTranslations;
+    private List<DefinitionOption> mDefinitionOptions;
 
-    public Definition(String text, String transcription, String pos, List<Translation> translations) {
+    public Definition(String text, String transcription, String pos, List<DefinitionOption> definitionOptions) {
         mText = text;
         mTranscription = transcription;
         mPos = pos;
-        mTranslations = translations;
+        mDefinitionOptions = definitionOptions;
     }
 
     public String getText() {
@@ -34,7 +34,7 @@ public class Definition {
         return mPos;
     }
 
-    public List<Translation> getTranslations() {
-        return mTranslations;
+    public List<DefinitionOption> getDefinitionOptions() {
+        return mDefinitionOptions;
     }
 }

@@ -2,9 +2,9 @@ package ru.rogovalex.translator.data.database;
 
 import android.provider.BaseColumns;
 
-public class VariantTable implements BaseColumns {
+public class DefinitionOptionTable implements BaseColumns {
 
-    public static final String TABLE_NAME = "variant";
+    public static final String TABLE_NAME = "definition_option";
 
     public static final String SYNONYMS = "synonyms";
     public static final String MEANINGS = "meanings";

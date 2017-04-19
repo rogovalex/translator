@@ -12,9 +12,9 @@ import ru.rogovalex.translator.api.DictionaryEntry;
 import ru.rogovalex.translator.api.DictionaryResponse;
 import ru.rogovalex.translator.api.DictionaryTranslation;
 import ru.rogovalex.translator.domain.translate.Definition;
+import ru.rogovalex.translator.domain.translate.DefinitionOption;
 import ru.rogovalex.translator.domain.translate.DictionaryProvider;
 import ru.rogovalex.translator.domain.translate.TranslateParams;
-import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -62,11 +62,11 @@ public class YandexDictionaryProvider implements DictionaryProvider {
                         Definition result = new Definition(entry.getText(),
                                 notNull(entry.getTranscription()),
                                 notNull(entry.getPos()),
-                                new ArrayList<Translation>());
+                                new ArrayList<DefinitionOption>());
 
                         if (entry.getTranslations() != null) {
                             for (DictionaryTranslation t : entry.getTranslations()) {
-                                result.getTranslations().add(convert(t));
+                                result.getDefinitionOptions().add(convert(t));
                             }
                         }
 
@@ -81,7 +81,7 @@ public class YandexDictionaryProvider implements DictionaryProvider {
         return value == null ? "" : value;
     }
 
-    private Translation convert(DictionaryTranslation t) {
+    private DefinitionOption convert(DictionaryTranslation t) {
         String synonyms;
         if (t.getSynonyms() != null
                 && t.getSynonyms().length > 0) {
@@ -103,7 +103,7 @@ public class YandexDictionaryProvider implements DictionaryProvider {
             examples = join("", t.getExamples());
         }
 
-        return new Translation(synonyms, meanings, examples);
+        return new DefinitionOption(synonyms, meanings, examples);
     }
 
     private String join(String value, DictionaryTranslation... items) {

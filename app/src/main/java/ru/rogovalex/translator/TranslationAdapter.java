@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.rogovalex.translator.domain.translate.Definition;
+import ru.rogovalex.translator.domain.translate.DefinitionOption;
 import ru.rogovalex.translator.domain.translate.TranslateResult;
-import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -33,9 +33,9 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         for (Definition def : translation.getDefinitions()) {
             mItems.add(new DefinitionItem(def));
             int index = 0;
-            for (Translation t : def.getTranslations()) {
+            for (DefinitionOption o : def.getDefinitionOptions()) {
                 index++;
-                mItems.add(new TranslationItem(index, t));
+                mItems.add(new DefinitionOptionItem(index, o));
             }
         }
 
@@ -63,7 +63,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 return createMainItemViewHolder(parent);
             case DefinitionItem.TYPE:
                 return createDefinitionItemViewHolder(parent);
-            case TranslationItem.TYPE:
+            case DefinitionOptionItem.TYPE:
                 return createTranslationItemViewHolder(parent);
             default:
                 throw new IllegalArgumentException("Unknown view type " + viewType);
@@ -84,8 +84,8 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private RecyclerView.ViewHolder createTranslationItemViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_item_translation, parent, false);
-        return new TranslationItemViewHolder(view);
+                .inflate(R.layout.view_item_definition_option, parent, false);
+        return new DefinitionOptionItemViewHolder(view);
     }
 
     @Override
@@ -170,14 +170,14 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private class TranslationItemViewHolder extends RecyclerView.ViewHolder {
+    private class DefinitionOptionItemViewHolder extends RecyclerView.ViewHolder {
 
         TextView index;
         TextView synonyms;
         TextView meanings;
         TextView examples;
 
-        public TranslationItemViewHolder(View itemView) {
+        public DefinitionOptionItemViewHolder(View itemView) {
             super(itemView);
 
             index = (TextView) itemView.findViewById(R.id.index);
@@ -186,21 +186,21 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             examples = (TextView) itemView.findViewById(R.id.examples);
         }
 
-        public void bind(TranslationItem item) {
+        public void bind(DefinitionOptionItem item) {
             index.setText(String.valueOf(item.index));
-            synonyms.setText(item.translation.getSynonyms());
+            synonyms.setText(item.option.getSynonyms());
 
-            if (TextUtils.isEmpty(item.translation.getMeanings())) {
+            if (TextUtils.isEmpty(item.option.getMeanings())) {
                 meanings.setVisibility(View.GONE);
             } else {
-                meanings.setText(item.translation.getMeanings());
+                meanings.setText(item.option.getMeanings());
                 meanings.setVisibility(View.VISIBLE);
             }
 
-            if (TextUtils.isEmpty(item.translation.getExamples())) {
+            if (TextUtils.isEmpty(item.option.getExamples())) {
                 examples.setVisibility(View.GONE);
             } else {
-                examples.setText(item.translation.getExamples());
+                examples.setText(item.option.getExamples());
                 examples.setVisibility(View.VISIBLE);
             }
         }
@@ -256,15 +256,15 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private static class TranslationItem implements AdapterItem {
+    private static class DefinitionOptionItem implements AdapterItem {
         static final int TYPE = 2;
 
         int index;
-        Translation translation;
+        DefinitionOption option;
 
-        public TranslationItem(int index, Translation translation) {
+        public DefinitionOptionItem(int index, DefinitionOption option) {
             this.index = index;
-            this.translation = translation;
+            this.option = option;
         }
 
         @Override
@@ -274,8 +274,8 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void bind(RecyclerView.ViewHolder viewHolder) {
-            if (viewHolder instanceof TranslationItemViewHolder) {
-                ((TranslationItemViewHolder) viewHolder).bind(this);
+            if (viewHolder instanceof DefinitionOptionItemViewHolder) {
+                ((DefinitionOptionItemViewHolder) viewHolder).bind(this);
             }
         }
     }
