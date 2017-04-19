@@ -16,7 +16,7 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  * Date: 02.04.2017
  * Time: 15:30
  */
-public class UpdateFavoriteInteractor extends Interactor<Boolean, TranslateResult> {
+public class UpdateFavoriteInteractor extends Interactor<Boolean, Translation> {
 
     private final Storage mStorage;
 
@@ -29,7 +29,7 @@ public class UpdateFavoriteInteractor extends Interactor<Boolean, TranslateResul
     }
 
     @Override
-    protected Observable<Boolean> buildObservable(final TranslateResult params) {
+    protected Observable<Boolean> buildObservable(final Translation params) {
         return Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {

@@ -2,7 +2,7 @@ package ru.rogovalex.translator.presentation.translate;
 
 import java.util.List;
 
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -13,7 +13,7 @@ import ru.rogovalex.translator.domain.translate.TranslateResult;
 public interface HistoryView {
     void onHistoryLoading();
 
-    void onHistoryLoaded(List<TranslateResult> items);
+    void onHistoryLoaded(List<Translation> items);
 
     void onHistoryLoadError(Throwable e);
 }

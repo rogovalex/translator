@@ -13,7 +13,7 @@ import java.util.List;
 
 import ru.rogovalex.translator.domain.translate.Definition;
 import ru.rogovalex.translator.domain.translate.DefinitionOption;
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -26,7 +26,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<AdapterItem> mItems = new ArrayList<>();
     private OnFavoriteChangedListener mListener;
 
-    public void setTranslation(TranslateResult translation) {
+    public void setTranslation(Translation translation) {
         mItems.clear();
 
         mItems.add(new MainItem(translation));
@@ -103,7 +103,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView text;
         ImageView favIcon;
 
-        TranslateResult mItem;
+        Translation mItem;
 
         public MainItemViewHolder(View itemView) {
             super(itemView);
@@ -215,9 +215,9 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static class MainItem implements AdapterItem {
         static final int TYPE = 0;
 
-        TranslateResult translation;
+        Translation translation;
 
-        public MainItem(TranslateResult translation) {
+        public MainItem(Translation translation) {
             this.translation = translation;
         }
 
@@ -281,6 +281,6 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public interface OnFavoriteChangedListener {
-        void onFavoriteChanged(TranslateResult item);
+        void onFavoriteChanged(Translation item);
     }
 }

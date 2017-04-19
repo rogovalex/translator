@@ -17,7 +17,7 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  * Date: 02.04.2017
  * Time: 15:30
  */
-public class LoadHistoryInteractor extends Interactor<List<TranslateResult>, Void> {
+public class LoadHistoryInteractor extends Interactor<List<Translation>, Void> {
 
     private final Storage mStorage;
 
@@ -30,10 +30,10 @@ public class LoadHistoryInteractor extends Interactor<List<TranslateResult>, Voi
     }
 
     @Override
-    protected Observable<List<TranslateResult>> buildObservable(Void params) {
-        return Observable.fromCallable(new Callable<List<TranslateResult>>() {
+    protected Observable<List<Translation>> buildObservable(Void params) {
+        return Observable.fromCallable(new Callable<List<Translation>>() {
             @Override
-            public List<TranslateResult> call() throws Exception {
+            public List<Translation> call() throws Exception {
                 return mStorage.getRecentTranslations();
             }
         });

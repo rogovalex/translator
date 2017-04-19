@@ -2,7 +2,7 @@ package ru.rogovalex.translator.presentation.translate;
 
 import java.util.List;
 
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -13,7 +13,7 @@ import ru.rogovalex.translator.domain.translate.TranslateResult;
 public interface FavoriteView {
     void onFavoriteLoading();
 
-    void onFavoriteLoaded(List<TranslateResult> items);
+    void onFavoriteLoaded(List<Translation> items);
 
     void onFavoriteLoadError(Throwable e);
 }

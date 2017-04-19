@@ -8,7 +8,7 @@ import java.util.List;
  * Date: 01.04.2017
  * Time: 18:22
  */
-public class TranslateResult {
+public class Translation {
 
     private String mText;
     private String mTextLang;
@@ -17,8 +17,8 @@ public class TranslateResult {
     private boolean mFavorite;
     private List<Definition> mDefinitions;
 
-    public TranslateResult(String text, String textLang, String translation,
-                           String translationLang, List<Definition> definitions) {
+    public Translation(String text, String textLang, String translation,
+                       String translationLang, List<Definition> definitions) {
         mText = text;
         mTextLang = textLang;
         mTranslation = translation;

@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 import ru.rogovalex.translator.presentation.injection.component.HistoryFragmentComponent;
 import ru.rogovalex.translator.presentation.translate.HistoryView;
 import ru.rogovalex.translator.presentation.translate.HistoryViewPresenter;
@@ -96,7 +96,7 @@ public class HistoryFragment extends SearchableListFragment
     }
 
     @Override
-    public void onHistoryLoaded(List<TranslateResult> items) {
+    public void onHistoryLoaded(List<Translation> items) {
         mAdapter.setItems(items, getQuery());
         showListView();
     }
@@ -107,7 +107,7 @@ public class HistoryFragment extends SearchableListFragment
     }
 
     @Override
-    public void onFavoriteChanged(TranslateResult item) {
+    public void onFavoriteChanged(Translation item) {
         mPresenter.updateFavorite(item);
     }
 

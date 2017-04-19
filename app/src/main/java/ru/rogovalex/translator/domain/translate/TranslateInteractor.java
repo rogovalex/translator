@@ -19,7 +19,7 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  * Date: 01.04.2017
  * Time: 18:18
  */
-public class TranslateInteractor extends Interactor<TranslateResult, TranslateParams> {
+public class TranslateInteractor extends Interactor<Translation, TranslateParams> {
 
     private final TranslateProvider mTranslateProvider;
     private final DictionaryProvider mDictionaryProvider;
@@ -38,18 +38,18 @@ public class TranslateInteractor extends Interactor<TranslateResult, TranslatePa
     }
 
     @Override
-    protected Observable<TranslateResult> buildObservable(final TranslateParams params) {
+    protected Observable<Translation> buildObservable(final TranslateParams params) {
         return mTranslateProvider.translate(params)
-                .zipWith(lookupDictionary(params), new BiFunction<String, List<Definition>, TranslateResult>() {
+                .zipWith(lookupDictionary(params), new BiFunction<String, List<Definition>, Translation>() {
                     @Override
-                    public TranslateResult apply(String translation, List<Definition> definitions) throws Exception {
-                        return new TranslateResult(params.getText(), params.getTextLang(),
+                    public Translation apply(String translation, List<Definition> definitions) throws Exception {
+                        return new Translation(params.getText(), params.getTextLang(),
                                 translation, params.getTranslationLang(), definitions);
                     }
                 })
-                .doOnNext(new Consumer<TranslateResult>() {
+                .doOnNext(new Consumer<Translation>() {
                     @Override
-                    public void accept(TranslateResult result) throws Exception {
+                    public void accept(Translation result) throws Exception {
                         boolean favorite = mStorage.checkFavorite(result);
                         result.setFavorite(favorite);
                         mStorage.saveRecentTranslation(result);

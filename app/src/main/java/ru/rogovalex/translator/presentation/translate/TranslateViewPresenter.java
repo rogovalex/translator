@@ -6,7 +6,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
 import ru.rogovalex.translator.domain.translate.TranslateParams;
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 import ru.rogovalex.translator.domain.translate.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
@@ -23,7 +23,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
     private String mOrigin;
     private String mTranslation;
-    private TranslateResult mResult;
+    private Translation mResult;
 
     private boolean mLoading;
 
@@ -74,9 +74,9 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
         mLoading = true;
         TranslateParams params = new TranslateParams(text, mOrigin, mTranslation);
-        mInteractor.execute(params, new Consumer<TranslateResult>() {
+        mInteractor.execute(params, new Consumer<Translation>() {
             @Override
-            public void accept(TranslateResult translation) throws Exception {
+            public void accept(Translation translation) throws Exception {
                 mLoading = false;
                 mResult = translation;
                 getView().onTranslated(translation);
@@ -90,7 +90,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         });
     }
 
-    public void updateFavorite(TranslateResult item) {
+    public void updateFavorite(Translation item) {
         mUpdateInteractor.execute(item, Functions.<Boolean>emptyConsumer());
     }
 
@@ -107,7 +107,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         }
 
         @Override
-        public void onTranslated(TranslateResult translation) {
+        public void onTranslated(Translation translation) {
         }
 
         @Override

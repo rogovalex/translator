@@ -21,7 +21,7 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import ru.rogovalex.translator.domain.translate.Language;
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
 import ru.rogovalex.translator.presentation.translate.TranslateView;
 import ru.rogovalex.translator.presentation.translate.TranslateViewPresenter;
@@ -141,7 +141,7 @@ public class TranslateFragment extends Fragment
     }
 
     @Override
-    public void onTranslated(TranslateResult translation) {
+    public void onTranslated(Translation translation) {
         mProgress.setVisibility(View.GONE);
         mTranslate.setVisibility(View.VISIBLE);
         mAdapter.setTranslation(translation);
@@ -160,7 +160,7 @@ public class TranslateFragment extends Fragment
     }
 
     @Override
-    public void onFavoriteChanged(TranslateResult item) {
+    public void onFavoriteChanged(Translation item) {
         mPresenter.updateFavorite(item);
     }
 

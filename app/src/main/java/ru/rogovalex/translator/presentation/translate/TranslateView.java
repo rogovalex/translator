@@ -1,6 +1,6 @@
 package ru.rogovalex.translator.presentation.translate;
 
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -11,7 +11,7 @@ import ru.rogovalex.translator.domain.translate.TranslateResult;
 public interface TranslateView {
     void onTranslating();
 
-    void onTranslated(TranslateResult translation);
+    void onTranslated(Translation translation);
 
     void onTranslateError(Throwable e);
 

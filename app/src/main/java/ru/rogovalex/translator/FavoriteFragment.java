@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 import ru.rogovalex.translator.presentation.injection.component.FavoriteFragmentComponent;
 import ru.rogovalex.translator.presentation.translate.FavoriteView;
 import ru.rogovalex.translator.presentation.translate.FavoriteViewPresenter;
@@ -96,7 +96,7 @@ public class FavoriteFragment extends SearchableListFragment
     }
 
     @Override
-    public void onFavoriteLoaded(List<TranslateResult> items) {
+    public void onFavoriteLoaded(List<Translation> items) {
         mAdapter.setItems(items, getQuery());
         showListView();
     }
@@ -107,7 +107,7 @@ public class FavoriteFragment extends SearchableListFragment
     }
 
     @Override
-    public void onFavoriteChanged(TranslateResult item) {
+    public void onFavoriteChanged(Translation item) {
         mPresenter.updateFavorite(item);
     }
 

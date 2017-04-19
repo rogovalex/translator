@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -23,11 +23,11 @@ import ru.rogovalex.translator.domain.translate.TranslateResult;
 public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements Filterable {
 
-    private List<TranslateResult> mItems = new ArrayList<>();
-    private List<TranslateResult> mVisibleItems = new ArrayList<>();
+    private List<Translation> mItems = new ArrayList<>();
+    private List<Translation> mVisibleItems = new ArrayList<>();
     private OnFavoriteChangedListener mListener;
 
-    public void setItems(List<TranslateResult> items, String constraint) {
+    public void setItems(List<Translation> items, String constraint) {
         mItems = items;
         mVisibleItems.clear();
         mVisibleItems.addAll(items);
@@ -61,14 +61,14 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
-                List<TranslateResult> filtered = new ArrayList<>();
-                List<TranslateResult> secondary = new ArrayList<>();
+                List<Translation> filtered = new ArrayList<>();
+                List<Translation> secondary = new ArrayList<>();
 
                 String prefix = constraint.toString().toLowerCase();
                 if (prefix.isEmpty()) {
                     filtered = mItems;
                 } else {
-                    for (TranslateResult item : mItems) {
+                    for (Translation item : mItems) {
                         String text = item.getText().toLowerCase();
                         String translation = item.getTranslation().toLowerCase();
                         if (text.startsWith(prefix) || translation.startsWith(prefix)) {
@@ -89,7 +89,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 mVisibleItems.clear();
                 //noinspection unchecked
-                mVisibleItems.addAll((List<TranslateResult>) results.values);
+                mVisibleItems.addAll((List<Translation>) results.values);
                 notifyDataSetChanged();
             }
         };
@@ -102,7 +102,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView translation;
         TextView lang;
 
-        TranslateResult mItem;
+        Translation mItem;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -131,7 +131,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
         }
 
-        public void bind(TranslateResult item) {
+        public void bind(Translation item) {
             mItem = item;
             updateFavIcon();
             updateTextMaxLines(1);
@@ -155,6 +155,6 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public interface OnFavoriteChangedListener {
-        void onFavoriteChanged(TranslateResult item);
+        void onFavoriteChanged(Translation item);
     }
 }

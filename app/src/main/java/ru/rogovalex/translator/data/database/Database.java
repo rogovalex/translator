@@ -12,7 +12,7 @@ import ru.rogovalex.translator.domain.translate.Definition;
 import ru.rogovalex.translator.domain.translate.DefinitionOption;
 import ru.rogovalex.translator.domain.translate.Language;
 import ru.rogovalex.translator.domain.translate.Storage;
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
  * Created with Android Studio.
@@ -29,12 +29,12 @@ public class Database implements Storage {
     }
 
     @Override
-    public List<TranslateResult> getRecentTranslations() {
+    public List<Translation> getRecentTranslations() {
         return getTranslations(TranslationTable.HISTORY + "=1");
     }
 
-    private List<TranslateResult> getTranslations(String where) {
-        List<TranslateResult> list = new ArrayList<>();
+    private List<Translation> getTranslations(String where) {
+        List<Translation> list = new ArrayList<>();
 
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
@@ -50,7 +50,7 @@ public class Database implements Storage {
             int colFavorite = cursor.getColumnIndex(TranslationTable.FAVORITE);
 
             do {
-                TranslateResult item = new TranslateResult(
+                Translation item = new Translation(
                         cursor.getString(colText),
                         cursor.getString(colTextLang),
                         cursor.getString(colTranslation),
@@ -121,12 +121,12 @@ public class Database implements Storage {
     }
 
     @Override
-    public List<TranslateResult> getFavoriteTranslations() {
+    public List<Translation> getFavoriteTranslations() {
         return getTranslations(TranslationTable.FAVORITE + "=1");
     }
 
     @Override
-    public boolean checkFavorite(TranslateResult translation) {
+    public boolean checkFavorite(Translation translation) {
         boolean favorite = false;
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
@@ -153,7 +153,7 @@ public class Database implements Storage {
     }
 
     @Override
-    public void saveRecentTranslation(TranslateResult translation) {
+    public void saveRecentTranslation(Translation translation) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         try {
@@ -232,7 +232,7 @@ public class Database implements Storage {
     }
 
     @Override
-    public boolean updateFavoriteTranslation(TranslateResult translation) {
+    public boolean updateFavoriteTranslation(Translation translation) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         SQLiteStatement updateFavorite = db.compileStatement(

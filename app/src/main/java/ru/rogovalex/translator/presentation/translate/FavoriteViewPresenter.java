@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.translate.LoadFavoritesInteractor;
-import ru.rogovalex.translator.domain.translate.TranslateResult;
+import ru.rogovalex.translator.domain.translate.Translation;
 import ru.rogovalex.translator.domain.translate.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
@@ -22,7 +22,7 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
     private final LoadFavoritesInteractor mInteractor;
     private final UpdateFavoriteInteractor mUpdateInteractor;
 
-    private List<TranslateResult> mItems;
+    private List<Translation> mItems;
 
     private boolean mLoading;
 
@@ -47,9 +47,9 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
         }
 
         mLoading = true;
-        mInteractor.execute(null, new Consumer<List<TranslateResult>>() {
+        mInteractor.execute(null, new Consumer<List<Translation>>() {
             @Override
-            public void accept(List<TranslateResult> items) throws Exception {
+            public void accept(List<Translation> items) throws Exception {
                 mLoading = false;
                 mItems = items;
                 getView().onFavoriteLoaded(items);
@@ -63,7 +63,7 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
         });
     }
 
-    public void updateFavorite(TranslateResult item) {
+    public void updateFavorite(Translation item) {
         mUpdateInteractor.execute(item, Functions.<Boolean>emptyConsumer());
     }
 
@@ -79,7 +79,7 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
         }
 
         @Override
-        public void onFavoriteLoaded(List<TranslateResult> items) {
+        public void onFavoriteLoaded(List<Translation> items) {
         }
 
         @Override

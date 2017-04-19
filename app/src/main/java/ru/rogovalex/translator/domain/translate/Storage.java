@@ -9,15 +9,15 @@ import java.util.List;
  * Time: 12:10
  */
 public interface Storage {
-    List<TranslateResult> getRecentTranslations();
+    List<Translation> getRecentTranslations();
 
-    List<TranslateResult> getFavoriteTranslations();
+    List<Translation> getFavoriteTranslations();
 
-    boolean checkFavorite(TranslateResult translation);
+    boolean checkFavorite(Translation translation);
 
-    void saveRecentTranslation(TranslateResult translation);
+    void saveRecentTranslation(Translation translation);
 
-    boolean updateFavoriteTranslation(TranslateResult translation);
+    boolean updateFavoriteTranslation(Translation translation);
 
     List<Language> getLanguages(String uiLang);
 
