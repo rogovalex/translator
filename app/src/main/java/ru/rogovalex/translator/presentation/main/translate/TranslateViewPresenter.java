@@ -91,7 +91,8 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     }
 
     public void updateFavorite(Translation item) {
-        mUpdateInteractor.execute(item, Functions.<Boolean>emptyConsumer());
+        mUpdateInteractor.execute(item, Functions.<Boolean>emptyConsumer(),
+                Functions.<Throwable>emptyConsumer());
     }
 
     public void cancel() {
