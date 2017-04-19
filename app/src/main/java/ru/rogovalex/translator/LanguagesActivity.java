@@ -14,11 +14,11 @@ import ru.rogovalex.translator.presentation.injection.component.LanguagesFragmen
 public class LanguagesActivity extends BaseActivity
         implements LanguagesFragment.Callbacks {
 
-    private final static String ORIGIN = "LanguagesActivity.origin";
+    private final static String CHANGE_SOURCE_LANG = "LanguagesActivity.source";
 
-    public static Intent newIntent(Context packageContext, boolean origin) {
+    public static Intent newIntent(Context packageContext, boolean changeSourceLanguage) {
         Intent intent = new Intent(packageContext, LanguagesActivity.class);
-        intent.putExtra(ORIGIN, origin);
+        intent.putExtra(CHANGE_SOURCE_LANG, changeSourceLanguage);
         return intent;
     }
 
@@ -31,8 +31,8 @@ public class LanguagesActivity extends BaseActivity
             addLanguagesFragment();
         }
 
-        boolean origin = getIntent().getBooleanExtra(ORIGIN, false);
-        setTitle(origin ? R.string.title_origin_lang : R.string.title_translation_lang);
+        boolean source = getIntent().getBooleanExtra(CHANGE_SOURCE_LANG, false);
+        setTitle(source ? R.string.title_source_lang : R.string.title_translation_lang);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -65,8 +65,8 @@ public class LanguagesActivity extends BaseActivity
 
     @Override
     public void onLanguageSelected(Language item) {
-        if (getIntent().getBooleanExtra(ORIGIN, false)) {
-            PreferencesHelper.setOriginLanguage(this, item);
+        if (getIntent().getBooleanExtra(CHANGE_SOURCE_LANG, false)) {
+            PreferencesHelper.setSourceLanguage(this, item);
         } else {
             PreferencesHelper.setTranslationLanguage(this, item);
         }

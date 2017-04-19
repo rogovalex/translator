@@ -31,7 +31,7 @@ public abstract class SearchableListFragment extends BaseFragment
 
         final CardView cardView = (CardView) view.findViewById(R.id.search_bar);
         mSearchInput = (EditText) cardView.findViewById(R.id.search_input);
-        mClear = cardView.findViewById(R.id.clear);
+        mClear = cardView.findViewById(R.id.clear_input_btn);
         mClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

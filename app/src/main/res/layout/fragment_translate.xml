@@ -14,7 +14,7 @@
         app:layout_constraintGuide_percent=".45"/>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/languages"
+        android:id="@+id/languages_bar"
         style="@style/TranslateLanguages"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/text_origin"
+                android:id="@+id/source_lang_view"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:background="?selectableItemBackground"
@@ -39,24 +39,24 @@
                 android:padding="8dp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/swap"
+                app:layout_constraintRight_toLeftOf="@+id/swap_lang_btn"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Русский"/>
 
             <ImageView
-                android:id="@+id/swap"
+                android:id="@+id/swap_lang_btn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:tint="@color/colorDecor"
-                app:layout_constraintBottom_toBottomOf="@+id/text_origin"
+                app:layout_constraintBottom_toBottomOf="@+id/source_lang_view"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_origin"
+                app:layout_constraintTop_toTopOf="@+id/source_lang_view"
                 app:srcCompat="@drawable/ic_compare_arrows_black_24dp"/>
 
             <TextView
-                android:id="@+id/text_translation"
+                android:id="@+id/translation_lang_view"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:background="?selectableItemBackground"
@@ -65,7 +65,7 @@
                 android:maxLines="1"
                 android:padding="8dp"
                 android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@+id/swap"
+                app:layout_constraintLeft_toRightOf="@+id/swap_lang_btn"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Английский"/>
@@ -73,7 +73,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/translation_input"
+        android:id="@+id/translation_panel"
         style="@style/TranslateInput"
         android:layout_width="0dp"
         android:layout_marginTop="4dp"
@@ -81,14 +81,14 @@
         app:cardCornerRadius="0dp"
         app:cardElevation="@dimen/cardview_default_elevation"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/languages">
+        app:layout_constraintTop_toBottomOf="@+id/languages_bar">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/text_input"
+                android:id="@+id/translation_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
@@ -103,7 +103,7 @@
         </android.support.v4.widget.NestedScrollView>
 
         <ImageView
-            android:id="@+id/clear"
+            android:id="@+id/clear_input_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="right"
@@ -115,7 +115,7 @@
             app:srcCompat="@drawable/ic_close_black_24dp"/>
 
         <ImageView
-            android:id="@+id/translate"
+            android:id="@+id/translate_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="right|bottom"
@@ -127,7 +127,7 @@
             app:srcCompat="@drawable/ic_arrow_forward_black_24dp"/>
 
         <ProgressBar
-            android:id="@+id/progress"
+            android:id="@+id/progress_view"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="right|bottom"

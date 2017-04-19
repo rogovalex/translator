@@ -15,8 +15,8 @@ public class PreferencesHelper {
 
     private static final String PREFERENCES = "ru.rogovalex.translator.preference";
 
-    private static final String ORIGIN_NAME = "originLangName";
-    private static final String ORIGIN_CODE = "originLangCode";
+    private static final String SOURCE_NAME = "sourceLangName";
+    private static final String SOURCE_CODE = "sourceLangCode";
     private static final String TRANSLATION_NAME = "translationLangName";
     private static final String TRANSLATION_CODE = "translationLangCode";
 
@@ -24,9 +24,9 @@ public class PreferencesHelper {
         return context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    public static Language getOriginLanguage(Context context) {
+    public static Language getSourceLanguage(Context context) {
         SharedPreferences preferences = getPreferences(context);
-        return getOriginLanguage(context, preferences);
+        return getSourceLanguage(context, preferences);
     }
 
     public static Language getTranslationLanguage(Context context) {
@@ -34,35 +34,35 @@ public class PreferencesHelper {
         return getTranslationLanguage(context, preferences);
     }
 
-    public static void setOriginLanguage(Context context, Language language) {
+    public static void setSourceLanguage(Context context, Language language) {
         SharedPreferences preferences = getPreferences(context);
         Language translation = getTranslationLanguage(context, preferences);
         if (translation.getCode().equals(language.getCode())) {
-            updateTranslationLanguage(preferences, getOriginLanguage(context, preferences));
+            updateTranslationLanguage(preferences, getSourceLanguage(context, preferences));
         }
-        updateOriginLanguage(preferences, language);
+        updateSourceLanguage(preferences, language);
     }
 
     public static void setTranslationLanguage(Context context, Language language) {
         SharedPreferences preferences = getPreferences(context);
-        Language origin = getOriginLanguage(context, preferences);
-        if (origin.getCode().equals(language.getCode())) {
-            updateOriginLanguage(preferences, getTranslationLanguage(context, preferences));
+        Language source = getSourceLanguage(context, preferences);
+        if (source.getCode().equals(language.getCode())) {
+            updateSourceLanguage(preferences, getTranslationLanguage(context, preferences));
         }
         updateTranslationLanguage(preferences, language);
     }
 
-    public static void setLanguages(Context context, Language origin, Language translation) {
+    public static void setLanguages(Context context, Language source, Language translation) {
         SharedPreferences preferences = getPreferences(context);
-        updateOriginLanguage(preferences, origin);
+        updateSourceLanguage(preferences, source);
         updateTranslationLanguage(preferences, translation);
     }
 
-    private static Language getOriginLanguage(Context context, SharedPreferences preferences) {
-        String code = preferences.getString(ORIGIN_CODE,
-                context.getString(R.string.origin_code_default));
-        String name = preferences.getString(ORIGIN_NAME,
-                context.getString(R.string.origin_name_default));
+    private static Language getSourceLanguage(Context context, SharedPreferences preferences) {
+        String code = preferences.getString(SOURCE_CODE,
+                context.getString(R.string.source_code_default));
+        String name = preferences.getString(SOURCE_NAME,
+                context.getString(R.string.source_name_default));
         return new Language(code, name);
     }
 
@@ -74,10 +74,10 @@ public class PreferencesHelper {
         return new Language(code, name);
     }
 
-    private static void updateOriginLanguage(SharedPreferences preferences, Language language) {
+    private static void updateSourceLanguage(SharedPreferences preferences, Language language) {
         preferences.edit()
-                .putString(ORIGIN_CODE, language.getCode())
-                .putString(ORIGIN_NAME, language.getName())
+                .putString(SOURCE_CODE, language.getCode())
+                .putString(SOURCE_NAME, language.getName())
                 .apply();
     }
 

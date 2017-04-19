@@ -19,7 +19,7 @@
 
     <style name="TranslateOutput">
         <item name="layout_constraintLeft_toLeftOf">parent</item>
-        <item name="layout_constraintTop_toBottomOf">@+id/translation_input</item>
+        <item name="layout_constraintTop_toBottomOf">@+id/translation_panel</item>
     </style>
 
 </resources>

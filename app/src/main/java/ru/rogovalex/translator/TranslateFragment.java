@@ -33,14 +33,14 @@ public class TranslateFragment extends Fragment
 
     private static final int REQUEST_LANG = 1;
 
-    private TextView mOrigin;
+    private TextView mSource;
     private TextView mTranslation;
     private EditText mTextInput;
     private View mProgress;
     private View mTranslate;
     private TranslationAdapter mAdapter;
 
-    private Language mOriginLang;
+    private Language mSourceLang;
     private Language mTranslationLang;
     private Callbacks mCallbacks;
 
@@ -64,16 +64,16 @@ public class TranslateFragment extends Fragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_translate, container, false);
 
-        mOrigin = (TextView) view.findViewById(R.id.text_origin);
-        mOrigin.setOnClickListener(this);
-        mTranslation = (TextView) view.findViewById(R.id.text_translation);
+        mSource = (TextView) view.findViewById(R.id.source_lang_view);
+        mSource.setOnClickListener(this);
+        mTranslation = (TextView) view.findViewById(R.id.translation_lang_view);
         mTranslation.setOnClickListener(this);
-        View swap = view.findViewById(R.id.swap);
+        View swap = view.findViewById(R.id.swap_lang_btn);
         swap.setOnClickListener(this);
 
-        final CardView cardView = (CardView) view.findViewById(R.id.translation_input);
-        mTextInput = (EditText) cardView.findViewById(R.id.text_input);
-        final View clear = cardView.findViewById(R.id.clear);
+        final CardView cardView = (CardView) view.findViewById(R.id.translation_panel);
+        mTextInput = (EditText) cardView.findViewById(R.id.translation_input);
+        final View clear = cardView.findViewById(R.id.clear_input_btn);
         clear.setOnClickListener(this);
         clear.setVisibility(mTextInput.getText().length() == 0
                 ? View.GONE : View.VISIBLE);
@@ -93,9 +93,9 @@ public class TranslateFragment extends Fragment
             }
         });
 
-        mTranslate = cardView.findViewById(R.id.translate);
+        mTranslate = cardView.findViewById(R.id.translate_btn);
         mTranslate.setOnClickListener(this);
-        mProgress = cardView.findViewById(R.id.progress);
+        mProgress = cardView.findViewById(R.id.progress_view);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.translation_output);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -167,22 +167,22 @@ public class TranslateFragment extends Fragment
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.clear:
+            case R.id.clear_input_btn:
                 mPresenter.cancel();
                 mTextInput.setText("");
                 mAdapter.clear();
                 showKeyboard();
                 break;
-            case R.id.translate:
+            case R.id.translate_btn:
                 mPresenter.translate(mTextInput.getText().toString().trim());
                 break;
-            case R.id.text_origin:
+            case R.id.source_lang_view:
                 changeLanguage(true);
                 break;
-            case R.id.text_translation:
+            case R.id.translation_lang_view:
                 changeLanguage(false);
                 break;
-            case R.id.swap:
+            case R.id.swap_lang_btn:
                 swapLanguages();
                 break;
         }
@@ -204,28 +204,28 @@ public class TranslateFragment extends Fragment
     }
 
     private void updateLanguages() {
-        mOriginLang = PreferencesHelper.getOriginLanguage(getContext());
+        mSourceLang = PreferencesHelper.getSourceLanguage(getContext());
         mTranslationLang = PreferencesHelper.getTranslationLanguage(getContext());
         updateLanguagesDependencies();
     }
 
     private void updateLanguagesDependencies() {
-        mOrigin.setText(mOriginLang.getName());
+        mSource.setText(mSourceLang.getName());
         mTranslation.setText(mTranslationLang.getName());
         mPresenter.setTranslationDirection(mTextInput.getText().toString().trim(),
-                mOriginLang.getCode(), mTranslationLang.getCode());
+                mSourceLang.getCode(), mTranslationLang.getCode());
     }
 
     private void swapLanguages() {
-        Language tmp = mOriginLang;
-        mOriginLang = mTranslationLang;
+        Language tmp = mSourceLang;
+        mSourceLang = mTranslationLang;
         mTranslationLang = tmp;
-        PreferencesHelper.setLanguages(getContext(), mOriginLang, mTranslationLang);
+        PreferencesHelper.setLanguages(getContext(), mSourceLang, mTranslationLang);
         updateLanguagesDependencies();
     }
 
-    private void changeLanguage(boolean origin) {
-        Intent intent = LanguagesActivity.newIntent(getContext(), origin);
+    private void changeLanguage(boolean changeSourceLanguage) {
+        Intent intent = LanguagesActivity.newIntent(getContext(), changeSourceLanguage);
         startActivityForResult(intent, REQUEST_LANG);
     }
 

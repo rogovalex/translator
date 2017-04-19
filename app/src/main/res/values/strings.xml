@@ -9,11 +9,11 @@
     <string name="search_history_hint">Найти в истории</string>
     <string name="search_favorite_hint">Найти в избранном</string>
     <string name="search_language_hint">Найти язык</string>
-    <string name="title_origin_lang">Язык оригинала</string>
+    <string name="title_source_lang">Язык оригинала</string>
     <string name="title_translation_lang">Язык перевода</string>
     <string name="repeat">Повторить</string>
-    <string name="origin_code_default">ru</string>
-    <string name="origin_name_default">Русский</string>
+    <string name="source_code_default">ru</string>
+    <string name="source_name_default">Русский</string>
     <string name="translation_code_default">en</string>
     <string name="translation_name_default">Английский</string>
 </resources>
