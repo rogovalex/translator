@@ -249,7 +249,6 @@ public class Database implements Storage {
         return countRows > 0;
     }
 
-    @Override
     public List<Language> getLanguages(String uiLang) {
         List<Language> list = new ArrayList<>();
 
@@ -276,7 +275,6 @@ public class Database implements Storage {
         return list;
     }
 
-    @Override
     public void saveLanguages(String uiLang, List<Language> languages) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 

@@ -2,7 +2,7 @@ package ru.rogovalex.translator.presentation.injection.module;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.rogovalex.translator.domain.translate.LanguagesInteractor;
+import ru.rogovalex.translator.domain.language.LoadLanguagesInteractor;
 import ru.rogovalex.translator.presentation.injection.scope.ViewScope;
 import ru.rogovalex.translator.presentation.translate.LanguagesViewPresenter;
 
@@ -19,7 +19,7 @@ public class LanguagesFragmentModule {
     @Provides
     @ViewScope
     public LanguagesViewPresenter provideLanguagesViewPresenter(
-            LanguagesInteractor interactor) {
+            LoadLanguagesInteractor interactor) {
         return new LanguagesViewPresenter(interactor);
     }
 }

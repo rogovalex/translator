@@ -5,8 +5,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.functions.Consumer;
+import ru.rogovalex.translator.domain.language.LoadLanguagesInteractor;
 import ru.rogovalex.translator.domain.translate.Language;
-import ru.rogovalex.translator.domain.translate.LanguagesInteractor;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
 /**
@@ -17,14 +17,14 @@ import ru.rogovalex.translator.presentation.common.BasePresenter;
  */
 public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
 
-    private final LanguagesInteractor mInteractor;
+    private final LoadLanguagesInteractor mInteractor;
 
     private List<Language> mItems;
 
     private boolean mLoading;
 
     @Inject
-    public LanguagesViewPresenter(LanguagesInteractor interactor) {
+    public LanguagesViewPresenter(LoadLanguagesInteractor interactor) {
         mInteractor = interactor;
         super.setView(sStubView);
     }

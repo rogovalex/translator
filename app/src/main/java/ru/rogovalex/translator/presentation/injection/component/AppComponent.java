@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.favorite.FavoriteModel;
+import ru.rogovalex.translator.domain.language.LanguageModel;
 import ru.rogovalex.translator.domain.translate.DictionaryProvider;
 import ru.rogovalex.translator.domain.translate.Storage;
 import ru.rogovalex.translator.domain.translate.TranslateProvider;
@@ -43,4 +44,6 @@ public interface AppComponent {
     Storage storage();
 
     FavoriteModel favoriteModel();
+
+    LanguageModel languageModel();
 }

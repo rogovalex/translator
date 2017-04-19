@@ -1,16 +1,16 @@
-package ru.rogovalex.translator.domain.translate;
+package ru.rogovalex.translator.domain.language;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import ru.rogovalex.translator.domain.common.Interactor;
+import ru.rogovalex.translator.domain.translate.Language;
+import ru.rogovalex.translator.domain.translate.TranslateProvider;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
 /**
@@ -19,29 +19,24 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  * Date: 01.04.2017
  * Time: 18:18
  */
-public class LanguagesInteractor extends Interactor<List<Language>, String> {
+public class LoadLanguagesInteractor extends Interactor<List<Language>, String> {
 
     private final TranslateProvider mProvider;
-    private final Storage mStorage;
+    private final LanguageModel mModel;
 
     @Inject
-    public LanguagesInteractor(@Named(DomainModule.JOB) Scheduler jobScheduler,
-                               @Named(DomainModule.UI) Scheduler uiScheduler,
-                               TranslateProvider translateProvider,
-                               Storage storage) {
+    public LoadLanguagesInteractor(@Named(DomainModule.JOB) Scheduler jobScheduler,
+                                   @Named(DomainModule.UI) Scheduler uiScheduler,
+                                   TranslateProvider provider,
+                                   LanguageModel model) {
         super(jobScheduler, uiScheduler);
-        mProvider = translateProvider;
-        mStorage = storage;
+        mProvider = provider;
+        mModel = model;
     }
 
     @Override
     protected Observable<List<Language>> buildObservable(final String uiLang) {
-        return Observable.fromCallable(new Callable<List<Language>>() {
-            @Override
-            public List<Language> call() throws Exception {
-                return mStorage.getLanguages(uiLang);
-            }
-        })
+        return mModel.loadLanguages(uiLang)
                 .flatMap(new Function<List<Language>, Observable<List<Language>>>() {
                     @Override
                     public Observable<List<Language>> apply(List<Language> languages) throws Exception {
@@ -55,16 +50,16 @@ public class LanguagesInteractor extends Interactor<List<Language>, String> {
 
     private Observable<List<Language>> loadFromNetwork(final String uiLang) {
         return mProvider.languages(uiLang)
-                .doOnNext(new Consumer<List<Language>>() {
+                .flatMap(new Function<List<Language>, Observable<Boolean>>() {
                     @Override
-                    public void accept(List<Language> languages) throws Exception {
-                        mStorage.saveLanguages(uiLang, languages);
+                    public Observable<Boolean> apply(List<Language> languages) throws Exception {
+                        return mModel.updateLanguages(uiLang, languages);
                     }
                 })
-                .map(new Function<List<Language>, List<Language>>() {
+                .flatMap(new Function<Boolean, Observable<List<Language>>>() {
                     @Override
-                    public List<Language> apply(List<Language> languages) throws Exception {
-                        return mStorage.getLanguages(uiLang);
+                    public Observable<List<Language>> apply(Boolean value) throws Exception {
+                        return mModel.loadLanguages(uiLang);
                     }
                 });
     }

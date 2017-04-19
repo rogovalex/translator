@@ -14,8 +14,4 @@ public interface Storage {
     boolean checkFavorite(Translation translation);
 
     void saveRecentTranslation(Translation translation);
-
-    List<Language> getLanguages(String uiLang);
-
-    void saveLanguages(String uiLang, List<Language> languages);
 }
