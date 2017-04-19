@@ -1,7 +1,6 @@
-package ru.rogovalex.translator.domain.translate;
+package ru.rogovalex.translator.domain.history;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -9,6 +8,7 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.common.Interactor;
+import ru.rogovalex.translator.domain.translate.Translation;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
 /**
@@ -19,23 +19,18 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  */
 public class LoadHistoryInteractor extends Interactor<List<Translation>, Void> {
 
-    private final Storage mStorage;
+    private final HistoryModel mModel;
 
     @Inject
     public LoadHistoryInteractor(@Named(DomainModule.LOCAL) Scheduler jobScheduler,
                                  @Named(DomainModule.UI) Scheduler uiScheduler,
-                                 Storage storage) {
+                                 HistoryModel model) {
         super(jobScheduler, uiScheduler);
-        mStorage = storage;
+        mModel = model;
     }
 
     @Override
     protected Observable<List<Translation>> buildObservable(Void params) {
-        return Observable.fromCallable(new Callable<List<Translation>>() {
-            @Override
-            public List<Translation> call() throws Exception {
-                return mStorage.getRecentTranslations();
-            }
-        });
+        return mModel.loadHistory();
     }
 }

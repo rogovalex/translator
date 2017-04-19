@@ -40,8 +40,7 @@ public class LocalLanguageModel implements LanguageModel {
         return Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                mDatabase.saveLanguages(uiLang, languages);
-                return Boolean.TRUE;
+                return mDatabase.saveLanguages(uiLang, languages);
             }
         });
     }

@@ -11,7 +11,7 @@ import java.util.List;
 import ru.rogovalex.translator.domain.translate.Definition;
 import ru.rogovalex.translator.domain.translate.DefinitionOption;
 import ru.rogovalex.translator.domain.translate.Language;
-import ru.rogovalex.translator.domain.translate.Storage;
+import ru.rogovalex.translator.domain.translate.TranslateParams;
 import ru.rogovalex.translator.domain.translate.Translation;
 
 /**
@@ -20,7 +20,7 @@ import ru.rogovalex.translator.domain.translate.Translation;
  * Date: 02.04.2017
  * Time: 12:46
  */
-public class Database implements Storage {
+public class Database {
 
     private final SQLiteOpenHelper mOpenHelper;
 
@@ -28,18 +28,25 @@ public class Database implements Storage {
         mOpenHelper = openHelper;
     }
 
-    @Override
     public List<Translation> getRecentTranslations() {
-        return getTranslations(TranslationTable.HISTORY + "=1");
+        return getTranslations(TranslationTable.HISTORY + "=?", new String[]{"1"});
     }
 
-    private List<Translation> getTranslations(String where) {
+    public List<Translation> getTranslations(TranslateParams params) {
+        return getTranslations(TranslationTable.TEXT + "=? AND "
+                        + TranslationTable.TEXT_LANG + "=? AND "
+                        + TranslationTable.TRANSLATION_LANG + "=?",
+                new String[]{params.getText(), params.getTextLang(),
+                        params.getTranslationLang()});
+    }
+
+    private List<Translation> getTranslations(String where, String[] args) {
         List<Translation> list = new ArrayList<>();
 
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
         Cursor cursor = db.query(TranslationTable.TABLE_NAME, null,
-                where, null, null, null, TranslationTable.TIMESTAMP + " DESC");
+                where, args, null, null, TranslationTable.TIMESTAMP + " DESC");
 
         if (cursor != null && cursor.moveToFirst()) {
             int colId = cursor.getColumnIndex(TranslationTable._ID);
@@ -121,38 +128,10 @@ public class Database implements Storage {
     }
 
     public List<Translation> getFavoriteTranslations() {
-        return getTranslations(TranslationTable.FAVORITE + "=1");
+        return getTranslations(TranslationTable.FAVORITE + "=?", new String[]{"1"});
     }
 
-    @Override
-    public boolean checkFavorite(Translation translation) {
-        boolean favorite = false;
-        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-
-        Cursor cursor = db.query(TranslationTable.TABLE_NAME,
-                new String[]{TranslationTable.FAVORITE},
-                TranslationTable.TEXT + "=? AND "
-                        + TranslationTable.TEXT_LANG + "=? AND "
-                        + TranslationTable.TRANSLATION_LANG + "=?",
-                new String[]{translation.getText(),
-                        translation.getTextLang(),
-                        translation.getTranslationLang()}, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            int colFavorite = cursor.getColumnIndex(TranslationTable.FAVORITE);
-
-            do {
-                favorite = cursor.getInt(colFavorite) == 1;
-            } while (cursor.moveToNext());
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
-        return favorite;
-    }
-
-    @Override
-    public void saveRecentTranslation(Translation translation) {
+    public boolean saveRecentTranslation(Translation translation) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         try {
@@ -228,6 +207,7 @@ public class Database implements Storage {
         } finally {
             db.endTransaction();
         }
+        return true;
     }
 
     public boolean updateFavoriteTranslation(Translation translation) {
@@ -275,7 +255,7 @@ public class Database implements Storage {
         return list;
     }
 
-    public void saveLanguages(String uiLang, List<Language> languages) {
+    public boolean saveLanguages(String uiLang, List<Language> languages) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         try {
@@ -301,5 +281,6 @@ public class Database implements Storage {
         } finally {
             db.endTransaction();
         }
+        return true;
     }
 }

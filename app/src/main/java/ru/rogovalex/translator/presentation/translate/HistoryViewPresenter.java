@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
-import ru.rogovalex.translator.domain.translate.LoadHistoryInteractor;
+import ru.rogovalex.translator.domain.history.LoadHistoryInteractor;
 import ru.rogovalex.translator.domain.translate.Translation;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 

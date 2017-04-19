@@ -9,8 +9,9 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import ru.rogovalex.translator.domain.common.Interactor;
+import ru.rogovalex.translator.domain.history.HistoryModel;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
 /**
@@ -23,22 +24,35 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
 
     private final TranslateProvider mTranslateProvider;
     private final DictionaryProvider mDictionaryProvider;
-    private final Storage mStorage;
+    private final HistoryModel mModel;
 
     @Inject
     public TranslateInteractor(@Named(DomainModule.JOB) Scheduler jobScheduler,
                                @Named(DomainModule.UI) Scheduler uiScheduler,
                                TranslateProvider translateProvider,
                                DictionaryProvider dictionaryProvider,
-                               Storage storage) {
+                               HistoryModel model) {
         super(jobScheduler, uiScheduler);
         mTranslateProvider = translateProvider;
         mDictionaryProvider = dictionaryProvider;
-        mStorage = storage;
+        mModel = model;
     }
 
     @Override
     protected Observable<Translation> buildObservable(final TranslateParams params) {
+        return mModel.loadFromHistory(params)
+                .flatMap(new Function<List<Translation>, Observable<Translation>>() {
+                    @Override
+                    public Observable<Translation> apply(List<Translation> translations) throws Exception {
+                        if (!translations.isEmpty()) {
+                            return Observable.just(translations.get(0));
+                        }
+                        return loadFromNetwork(params);
+                    }
+                });
+    }
+
+    private Observable<Translation> loadFromNetwork(final TranslateParams params) {
         return mTranslateProvider.translate(params)
                 .zipWith(lookupDictionary(params), new BiFunction<String, List<Definition>, Translation>() {
                     @Override
@@ -47,12 +61,17 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
                                 translation, params.getTranslationLang(), definitions);
                     }
                 })
-                .doOnNext(new Consumer<Translation>() {
+                .flatMap(new Function<Translation, Observable<Translation>>() {
                     @Override
-                    public void accept(Translation result) throws Exception {
-                        boolean favorite = mStorage.checkFavorite(result);
-                        result.setFavorite(favorite);
-                        mStorage.saveRecentTranslation(result);
+                    public Observable<Translation> apply(final Translation translation) throws Exception {
+                        return mModel.updateHistory(translation)
+                                .map(new Function<Boolean, Translation>() {
+                                    @Override
+                                    public Translation apply(Boolean aBoolean) throws Exception {
+                                        return translation;
+                                    }
+                                })
+                                .onErrorReturnItem(translation);
                     }
                 });
     }
