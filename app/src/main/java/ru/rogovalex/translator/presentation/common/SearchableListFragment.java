@@ -2,7 +2,6 @@ package ru.rogovalex.translator.presentation.common;
 
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -44,8 +43,6 @@ public abstract class SearchableListFragment extends BaseFragment
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(getAdapter());
 
         mProgressView = view.findViewById(R.id.progress_view);
