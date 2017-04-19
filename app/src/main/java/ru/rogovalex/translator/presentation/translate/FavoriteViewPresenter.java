@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
-import ru.rogovalex.translator.domain.translate.LoadFavoritesInteractor;
+import ru.rogovalex.translator.domain.favorite.LoadFavoriteInteractor;
+import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.translate.Translation;
-import ru.rogovalex.translator.domain.translate.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
 /**
@@ -19,7 +19,7 @@ import ru.rogovalex.translator.presentation.common.BasePresenter;
  */
 public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
 
-    private final LoadFavoritesInteractor mInteractor;
+    private final LoadFavoriteInteractor mInteractor;
     private final UpdateFavoriteInteractor mUpdateInteractor;
 
     private List<Translation> mItems;
@@ -27,7 +27,7 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
     private boolean mLoading;
 
     @Inject
-    public FavoriteViewPresenter(LoadFavoritesInteractor interactor,
+    public FavoriteViewPresenter(LoadFavoriteInteractor interactor,
                                  UpdateFavoriteInteractor updateInteractor) {
         mInteractor = interactor;
         mUpdateInteractor = updateInteractor;

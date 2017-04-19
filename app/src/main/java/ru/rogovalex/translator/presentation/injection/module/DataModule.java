@@ -13,10 +13,12 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.rogovalex.translator.api.DictionaryApiService;
 import ru.rogovalex.translator.api.TranslateApiService;
+import ru.rogovalex.translator.data.LocalFavoriteModel;
 import ru.rogovalex.translator.data.database.Database;
 import ru.rogovalex.translator.data.database.DatabaseHelper;
 import ru.rogovalex.translator.data.translate.YandexDictionaryProvider;
 import ru.rogovalex.translator.data.translate.YandexTranslateProvider;
+import ru.rogovalex.translator.domain.favorite.FavoriteModel;
 import ru.rogovalex.translator.domain.translate.DictionaryProvider;
 import ru.rogovalex.translator.domain.translate.Storage;
 import ru.rogovalex.translator.domain.translate.TranslateProvider;
@@ -96,7 +98,19 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public Storage provideStorage(SQLiteOpenHelper sqLiteOpenHelper) {
+    public Database provideDatabase(SQLiteOpenHelper sqLiteOpenHelper) {
         return new Database(sqLiteOpenHelper);
+    }
+
+    @Provides
+    @Singleton
+    public Storage provideStorage(Database database) {
+        return database;
+    }
+
+    @Provides
+    @Singleton
+    public FavoriteModel provideFavoriteModel(Database database) {
+        return new LocalFavoriteModel(database);
     }
 }

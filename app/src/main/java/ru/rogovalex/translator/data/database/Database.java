@@ -120,7 +120,6 @@ public class Database implements Storage {
         return list;
     }
 
-    @Override
     public List<Translation> getFavoriteTranslations() {
         return getTranslations(TranslationTable.FAVORITE + "=1");
     }
@@ -231,7 +230,6 @@ public class Database implements Storage {
         }
     }
 
-    @Override
     public boolean updateFavoriteTranslation(Translation translation) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 

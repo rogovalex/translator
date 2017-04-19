@@ -11,13 +11,9 @@ import java.util.List;
 public interface Storage {
     List<Translation> getRecentTranslations();
 
-    List<Translation> getFavoriteTranslations();
-
     boolean checkFavorite(Translation translation);
 
     void saveRecentTranslation(Translation translation);
-
-    boolean updateFavoriteTranslation(Translation translation);
 
     List<Language> getLanguages(String uiLang);
 
