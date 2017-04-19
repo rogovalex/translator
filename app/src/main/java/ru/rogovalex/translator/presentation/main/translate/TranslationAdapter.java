@@ -229,9 +229,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void bind(RecyclerView.ViewHolder viewHolder) {
-            if (viewHolder instanceof MainItemViewHolder) {
-                ((MainItemViewHolder) viewHolder).bind(this);
-            }
+            ((MainItemViewHolder) viewHolder).bind(this);
         }
     }
 
@@ -251,9 +249,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void bind(RecyclerView.ViewHolder viewHolder) {
-            if (viewHolder instanceof DefinitionItemViewHolder) {
-                ((DefinitionItemViewHolder) viewHolder).bind(this);
-            }
+            ((DefinitionItemViewHolder) viewHolder).bind(this);
         }
     }
 
@@ -275,9 +271,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void bind(RecyclerView.ViewHolder viewHolder) {
-            if (viewHolder instanceof DefinitionOptionItemViewHolder) {
-                ((DefinitionOptionItemViewHolder) viewHolder).bind(this);
-            }
+            ((DefinitionOptionItemViewHolder) viewHolder).bind(this);
         }
     }
 
