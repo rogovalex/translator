@@ -4,6 +4,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import ru.rogovalex.translator.api.response.DictionaryResponse;
 
 /**
  * Created with Android Studio.
