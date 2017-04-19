@@ -12,7 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ru.rogovalex.translator.domain.model.Language;
-import ru.rogovalex.translator.presentation.injection.component.LanguagesFragmentComponent;
+import ru.rogovalex.translator.presentation.injection.component.LanguageFragmentComponent;
 import ru.rogovalex.translator.presentation.translate.LanguagesView;
 import ru.rogovalex.translator.presentation.translate.LanguagesViewPresenter;
 
@@ -22,10 +22,10 @@ import ru.rogovalex.translator.presentation.translate.LanguagesViewPresenter;
  * Date: 18.04.2017
  * Time: 0:05
  */
-public class LanguagesFragment extends SearchableListFragment
-        implements LanguagesAdapter.OnItemClickListener, LanguagesView {
+public class LanguageFragment extends SearchableListFragment
+        implements LanguageAdapter.OnItemClickListener, LanguagesView {
 
-    private LanguagesAdapter mAdapter;
+    private LanguageAdapter mAdapter;
 
     private Callbacks mCallbacks;
 
@@ -47,7 +47,7 @@ public class LanguagesFragment extends SearchableListFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new LanguagesAdapter();
+        mAdapter = new LanguageAdapter();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class LanguagesFragment extends SearchableListFragment
     }
 
     @Override
-    protected LanguagesAdapter getAdapter() {
+    protected LanguageAdapter getAdapter() {
         return mAdapter;
     }
 
@@ -118,7 +118,7 @@ public class LanguagesFragment extends SearchableListFragment
     }
 
     public interface Callbacks {
-        LanguagesFragmentComponent getLanguagesFragmentComponent();
+        LanguageFragmentComponent getLanguagesFragmentComponent();
 
         void onLanguageSelected(Language item);
     }

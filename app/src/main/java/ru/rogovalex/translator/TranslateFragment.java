@@ -225,7 +225,7 @@ public class TranslateFragment extends Fragment
     }
 
     private void changeLanguage(boolean changeSourceLanguage) {
-        Intent intent = LanguagesActivity.newIntent(getContext(), changeSourceLanguage);
+        Intent intent = LanguageActivity.newIntent(getContext(), changeSourceLanguage);
         startActivityForResult(intent, REQUEST_LANG);
     }
 

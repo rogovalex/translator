@@ -19,7 +19,7 @@ import ru.rogovalex.translator.domain.model.Language;
  * Date: 18.04.2017
  * Time: 11:07
  */
-public class LanguagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class LanguageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements Filterable {
 
     private List<Language> mItems = new ArrayList<>();

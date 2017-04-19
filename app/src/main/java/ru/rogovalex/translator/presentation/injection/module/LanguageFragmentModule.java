@@ -14,7 +14,7 @@ import ru.rogovalex.translator.presentation.translate.LanguagesViewPresenter;
  */
 
 @Module
-public class LanguagesFragmentModule {
+public class LanguageFragmentModule {
 
     @Provides
     @ActivityScope

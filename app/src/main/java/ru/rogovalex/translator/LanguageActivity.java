@@ -8,16 +8,16 @@ import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
 import ru.rogovalex.translator.domain.model.Language;
-import ru.rogovalex.translator.presentation.injection.component.DaggerLanguagesFragmentComponent;
-import ru.rogovalex.translator.presentation.injection.component.LanguagesFragmentComponent;
+import ru.rogovalex.translator.presentation.injection.component.DaggerLanguageFragmentComponent;
+import ru.rogovalex.translator.presentation.injection.component.LanguageFragmentComponent;
 
-public class LanguagesActivity extends BaseActivity
-        implements LanguagesFragment.Callbacks {
+public class LanguageActivity extends BaseActivity
+        implements LanguageFragment.Callbacks {
 
-    private final static String CHANGE_SOURCE_LANG = "LanguagesActivity.source";
+    private final static String CHANGE_SOURCE_LANG = "LanguageActivity.source";
 
     public static Intent newIntent(Context packageContext, boolean changeSourceLanguage) {
-        Intent intent = new Intent(packageContext, LanguagesActivity.class);
+        Intent intent = new Intent(packageContext, LanguageActivity.class);
         intent.putExtra(CHANGE_SOURCE_LANG, changeSourceLanguage);
         return intent;
     }
@@ -25,7 +25,7 @@ public class LanguagesActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_languages);
+        setContentView(R.layout.activity_language);
 
         if (savedInstanceState == null) {
             addLanguagesFragment();
@@ -51,12 +51,12 @@ public class LanguagesActivity extends BaseActivity
     }
 
     @Override
-    public LanguagesFragmentComponent getLanguagesFragmentComponent() {
-        return getComponent("main", LanguagesFragmentComponent.class,
-                new ComponentFactory<LanguagesFragmentComponent>() {
+    public LanguageFragmentComponent getLanguagesFragmentComponent() {
+        return getComponent("lang", LanguageFragmentComponent.class,
+                new ComponentFactory<LanguageFragmentComponent>() {
                     @Override
-                    public LanguagesFragmentComponent buildComponent() {
-                        return DaggerLanguagesFragmentComponent.builder()
+                    public LanguageFragmentComponent buildComponent() {
+                        return DaggerLanguageFragmentComponent.builder()
                                 .appComponent(getAppComponent())
                                 .build();
                     }
@@ -79,7 +79,7 @@ public class LanguagesActivity extends BaseActivity
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
 
-            fragment = new LanguagesFragment();
+            fragment = new LanguageFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();
