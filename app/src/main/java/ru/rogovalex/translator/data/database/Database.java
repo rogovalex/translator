@@ -1,5 +1,6 @@
 package ru.rogovalex.translator.data.database;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -33,9 +34,7 @@ public class Database {
     }
 
     public List<Translation> getTranslations(TranslateParams params) {
-        return getTranslations(TranslationTable.TEXT + "=? AND "
-                        + TranslationTable.TEXT_LANG + "=? AND "
-                        + TranslationTable.TRANSLATION_LANG + "=?",
+        return getTranslations(TranslationTable.SELECT_ROW,
                 new String[]{params.getText(), params.getTextLang(),
                         params.getTranslationLang()});
     }
@@ -162,7 +161,7 @@ public class Database {
                             + DefinitionTable.POS
                             + ") VALUES (?, ?, ?, ?)");
 
-            SQLiteStatement insertVariant = db.compileStatement(
+            SQLiteStatement insertOption = db.compileStatement(
                     "INSERT INTO " + DefinitionOptionTable.TABLE_NAME + " ("
                             + DefinitionOptionTable.DEFINITION_ID + ","
                             + DefinitionOptionTable.SYNONYMS + ","
@@ -192,13 +191,13 @@ public class Database {
                 long defId = insertDefinition.executeInsert();
 
                 for (DefinitionOption item : def.getDefinitionOptions()) {
-                    insertVariant.clearBindings();
-                    insertVariant.bindLong(1, defId);
-                    insertVariant.bindString(2, item.getSynonyms());
-                    insertVariant.bindString(3, item.getMeanings());
-                    insertVariant.bindString(4, item.getExamples());
+                    insertOption.clearBindings();
+                    insertOption.bindLong(1, defId);
+                    insertOption.bindString(2, item.getSynonyms());
+                    insertOption.bindString(3, item.getMeanings());
+                    insertOption.bindString(4, item.getExamples());
 
-                    insertVariant.executeInsert();
+                    insertOption.executeInsert();
                 }
             }
 
@@ -213,19 +212,14 @@ public class Database {
     public boolean updateFavoriteTranslation(Translation translation) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-        SQLiteStatement updateFavorite = db.compileStatement(
-                "UPDATE " + TranslationTable.TABLE_NAME + " SET "
-                        + TranslationTable.FAVORITE + "=? WHERE "
-                        + TranslationTable.TEXT + "=? AND "
-                        + TranslationTable.TEXT_LANG + "=? AND "
-                        + TranslationTable.TRANSLATION_LANG + "=?");
+        ContentValues values = new ContentValues();
+        values.put(TranslationTable.FAVORITE, translation.isFavorite() ? 1 : 0);
 
-        updateFavorite.bindLong(1, translation.isFavorite() ? 1 : 0);
-        updateFavorite.bindString(2, translation.getText());
-        updateFavorite.bindString(3, translation.getTextLang());
-        updateFavorite.bindString(4, translation.getTranslationLang());
+        int countRows = db.update(TranslationTable.TABLE_NAME, values,
+                TranslationTable.SELECT_ROW, new String[]{
+                        translation.getText(), translation.getTextLang(),
+                        translation.getTranslationLang()});
 
-        int countRows = updateFavorite.executeUpdateDelete();
         return countRows > 0;
     }
 
@@ -235,7 +229,7 @@ public class Database {
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
 
         Cursor cursor = db.query(LanguageTable.TABLE_NAME, null,
-                LanguageTable.UI + "=?", new String[]{uiLang},
+                LanguageTable.SELECT_BY_UI, new String[]{uiLang},
                 null, null, LanguageTable.NAME + " ASC");
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -267,6 +261,10 @@ public class Database {
                             + LanguageTable.NAME + ","
                             + LanguageTable.UI
                             + ") VALUES (?, ?, ?)");
+
+            db.delete(LanguageTable.TABLE_NAME,
+                    LanguageTable.SELECT_BY_UI,
+                    new String[]{uiLang});
 
             for (Language lang : languages) {
                 insertLang.clearBindings();

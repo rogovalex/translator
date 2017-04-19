@@ -11,6 +11,9 @@ public class LanguageTable implements BaseColumns {
     public static final String UI = "ui";
 
     public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+    public static final String SELECT_BY_UI = UI + "=?";
+
     public static final String CREATE_TABLE
             = "CREATE TABLE " + TABLE_NAME + " ("
             + CODE + " TEXT,"

@@ -15,6 +15,10 @@ public class TranslationTable implements BaseColumns {
     public static final String TIMESTAMP = "timestamp";
 
     public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+    public static final String SELECT_ROW = TEXT + "=? AND "
+            + TEXT_LANG + "=? AND " + TRANSLATION_LANG + "=?";
+
     public static final String CREATE_TABLE
             = "CREATE TABLE " + TABLE_NAME + " ("
             + _ID + " INTEGER PRIMARY KEY,"
