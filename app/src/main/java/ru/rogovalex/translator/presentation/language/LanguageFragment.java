@@ -25,12 +25,22 @@ import ru.rogovalex.translator.presentation.injection.component.LanguageFragment
 public class LanguageFragment extends SearchableListFragment
         implements LanguageAdapter.OnItemClickListener, LanguagesView {
 
+    private static final String SELECTED_CODE = "selected_code";
+
     private LanguageAdapter mAdapter;
 
     private Callbacks mCallbacks;
 
     @Inject
     LanguagesViewPresenter mPresenter;
+
+    public static LanguageFragment newInstance(Language language) {
+        Bundle args = new Bundle();
+        args.putString(SELECTED_CODE, language.getCode());
+        LanguageFragment fragment = new LanguageFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -47,7 +57,8 @@ public class LanguageFragment extends SearchableListFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new LanguageAdapter();
+        String selectedCode = getArguments().getString(SELECTED_CODE);
+        mAdapter = new LanguageAdapter(selectedCode);
     }
 
     @Override

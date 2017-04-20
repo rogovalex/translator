@@ -16,6 +16,7 @@
         android:layout_gravity="center_vertical"
         android:scaleType="center"
         android:visibility="gone"
+        android:tint="?colorAccent"
         app:srcCompat="@drawable/ic_check_black_16dp"
         tools:visibility="visible"/>
 

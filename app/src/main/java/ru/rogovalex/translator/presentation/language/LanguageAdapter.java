@@ -25,9 +25,14 @@ import ru.rogovalex.translator.domain.model.Language;
 public class LanguageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements Filterable {
 
+    private String mSelectedCode;
     private List<Language> mItems = new ArrayList<>();
     private List<Language> mVisibleItems = new ArrayList<>();
     private OnItemClickListener mListener;
+
+    public LanguageAdapter(String selectedLanguageCode) {
+        mSelectedCode = selectedLanguageCode;
+    }
 
     public void setItems(List<Language> items, String constraint) {
         mItems = items;
@@ -100,6 +105,8 @@ public class LanguageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @BindView(R.id.title)
         TextView title;
+        @BindView(R.id.check_icon)
+        View checkIcon;
 
         Language mItem;
 
@@ -120,6 +127,8 @@ public class LanguageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void bind(Language item) {
             mItem = item;
             title.setText(item.getName());
+            checkIcon.setVisibility(item.getCode().equals(mSelectedCode)
+                    ? View.VISIBLE : View.GONE);
         }
     }
 

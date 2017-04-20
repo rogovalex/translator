@@ -31,12 +31,12 @@ public class LanguageActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language);
 
-        if (savedInstanceState == null) {
-            addLanguagesFragment();
-        }
-
         boolean source = getIntent().getBooleanExtra(CHANGE_SOURCE_LANG, false);
         setTitle(source ? R.string.title_source_lang : R.string.title_translation_lang);
+
+        if (savedInstanceState == null) {
+            addLanguagesFragment(source);
+        }
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,12 +78,13 @@ public class LanguageActivity extends BaseActivity
         supportFinishAfterTransition();
     }
 
-    private void addLanguagesFragment() {
+    private void addLanguagesFragment(boolean source) {
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
-
-            fragment = new LanguageFragment();
+            Language language = source ? PreferencesHelper.getSourceLanguage(this)
+                    : PreferencesHelper.getTranslationLanguage(this);
+            fragment = LanguageFragment.newInstance(language);
             fm.beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();
