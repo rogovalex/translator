@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,10 +24,11 @@ import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.api.ApiException;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.Translation;
+import ru.rogovalex.translator.presentation.common.BaseFragment;
 import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
 import ru.rogovalex.translator.presentation.language.LanguageActivity;
 
-public class TranslateFragment extends Fragment
+public class TranslateFragment extends BaseFragment
         implements TranslateView,
         TranslationAdapter.OnFavoriteChangedListener,
         View.OnClickListener {
@@ -120,6 +120,12 @@ public class TranslateFragment extends Fragment
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        updateLanguagesDependencies();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         mPresenter.setView(this);
@@ -136,6 +142,11 @@ public class TranslateFragment extends Fragment
         if (requestCode == REQUEST_LANG && resultCode == Activity.RESULT_OK) {
             updateLanguages();
         }
+    }
+
+    @Override
+    protected void cancelLoading() {
+        mPresenter.cancel();
     }
 
     @Override
@@ -180,7 +191,7 @@ public class TranslateFragment extends Fragment
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.clear_input_btn:
-                mPresenter.cancel();
+                mPresenter.cancelTranslate();
                 mTextInput.setText("");
                 mAdapter.clear();
                 showKeyboard();
@@ -196,6 +207,7 @@ public class TranslateFragment extends Fragment
                 break;
             case R.id.swap_lang_btn:
                 swapLanguages();
+                updateLanguagesDependencies();
                 break;
         }
     }
@@ -218,7 +230,6 @@ public class TranslateFragment extends Fragment
     private void updateLanguages() {
         mSourceLang = PreferencesHelper.getSourceLanguage(getContext());
         mTranslationLang = PreferencesHelper.getTranslationLanguage(getContext());
-        updateLanguagesDependencies();
     }
 
     private void updateLanguagesDependencies() {
@@ -233,7 +244,6 @@ public class TranslateFragment extends Fragment
         mSourceLang = mTranslationLang;
         mTranslationLang = tmp;
         PreferencesHelper.setLanguages(getContext(), mSourceLang, mTranslationLang);
-        updateLanguagesDependencies();
     }
 
     private void changeLanguage(boolean changeSourceLanguage) {

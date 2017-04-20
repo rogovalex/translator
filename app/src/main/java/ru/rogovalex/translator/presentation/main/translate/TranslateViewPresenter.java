@@ -52,6 +52,9 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
     public void setTranslationDirection(String text, String source, String translation) {
         if (source.equals(mSource) && translation.equals(mTranslation)) {
+            if (mResult != null && !mResult.getText().equals(text)) {
+                cancelTranslate();
+            }
             return;
         }
         if (source.equals(mTranslation) && translation.equals(mSource)
@@ -59,7 +62,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
             text = mResult.getTranslation();
         }
         getView().onTranslationDirectionChanged(text);
-        cancel();
+        cancelTranslate();
         mSource = source;
         mTranslation = translation;
         translate(text);
@@ -95,10 +98,14 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
                 Functions.<Throwable>emptyConsumer());
     }
 
-    public void cancel() {
+    public void cancelTranslate() {
         mResult = null;
         mLoading = false;
         mInteractor.cancel();
+    }
+
+    public void cancel() {
+        cancelTranslate();
         mUpdateInteractor.cancel();
     }
 
