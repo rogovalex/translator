@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Consumer;
 import ru.rogovalex.translator.domain.language.LoadLanguagesInteractor;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
@@ -51,19 +50,13 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
         }
 
         mLoading = true;
-        mInteractor.execute(mUiLangCode, new Consumer<List<Language>>() {
-            @Override
-            public void accept(List<Language> items) throws Exception {
-                mLoading = false;
-                mItems = items;
-                getView().onLanguagesLoaded(items);
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable e) throws Exception {
-                mLoading = false;
-                getView().onLanguagesLoadError(e);
-            }
+        mInteractor.execute(mUiLangCode, items -> {
+            mLoading = false;
+            mItems = items;
+            getView().onLanguagesLoaded(items);
+        }, e -> {
+            mLoading = false;
+            getView().onLanguagesLoadError(e);
         });
     }
 

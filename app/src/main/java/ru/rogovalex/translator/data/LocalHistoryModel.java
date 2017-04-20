@@ -1,12 +1,10 @@
 package ru.rogovalex.translator.data;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
 import ru.rogovalex.translator.data.database.Database;
 import ru.rogovalex.translator.domain.history.HistoryModel;
 import ru.rogovalex.translator.domain.model.TranslateParams;
@@ -29,33 +27,18 @@ public class LocalHistoryModel implements HistoryModel {
 
     @Override
     public Observable<List<Translation>> loadHistory() {
-        return Observable.fromCallable(new Callable<List<Translation>>() {
-            @Override
-            public List<Translation> call() throws Exception {
-                return mDatabase.getRecentTranslations();
-            }
-        });
+        return Observable.fromCallable(mDatabase::getRecentTranslations);
     }
 
     @Override
     public Observable<Boolean> updateHistory(Translation translation) {
         return Observable.just(translation)
-                .map(new Function<Translation, Boolean>() {
-                    @Override
-                    public Boolean apply(Translation translation) throws Exception {
-                        return mDatabase.saveRecentTranslation(translation);
-                    }
-                });
+                .map(mDatabase::saveRecentTranslation);
     }
 
     @Override
     public Observable<List<Translation>> loadFromHistory(TranslateParams params) {
         return Observable.just(params)
-                .map(new Function<TranslateParams, List<Translation>>() {
-                    @Override
-                    public List<Translation> apply(TranslateParams params) throws Exception {
-                        return mDatabase.getTranslations(params);
-                    }
-                });
+                .map(mDatabase::getTranslations);
     }
 }

@@ -11,7 +11,6 @@ import ru.rogovalex.translator.PreferencesHelper;
 import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.presentation.common.BaseActivity;
-import ru.rogovalex.translator.presentation.common.ComponentFactory;
 import ru.rogovalex.translator.presentation.injection.component.DaggerLanguageFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.LanguageFragmentComponent;
 
@@ -57,14 +56,9 @@ public class LanguageActivity extends BaseActivity
     @Override
     public LanguageFragmentComponent getLanguagesFragmentComponent() {
         return getComponent("lang", LanguageFragmentComponent.class,
-                new ComponentFactory<LanguageFragmentComponent>() {
-                    @Override
-                    public LanguageFragmentComponent buildComponent() {
-                        return DaggerLanguageFragmentComponent.builder()
-                                .appComponent(getAppComponent())
-                                .build();
-                    }
-                });
+                () -> DaggerLanguageFragmentComponent.builder()
+                        .appComponent(getAppComponent())
+                        .build());
     }
 
     @Override

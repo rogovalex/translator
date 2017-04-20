@@ -2,7 +2,6 @@ package ru.rogovalex.translator.presentation.main.translate;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.model.TranslateParams;
@@ -77,25 +76,19 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
         mLoading = true;
         TranslateParams params = new TranslateParams(text, mSource, mTranslation);
-        mInteractor.execute(params, new Consumer<Translation>() {
-            @Override
-            public void accept(Translation translation) throws Exception {
-                mLoading = false;
-                mResult = translation;
-                getView().onTranslated(translation);
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                mLoading = false;
-                getView().onTranslateError(throwable);
-            }
+        mInteractor.execute(params, translation -> {
+            mLoading = false;
+            mResult = translation;
+            getView().onTranslated(translation);
+        }, throwable -> {
+            mLoading = false;
+            getView().onTranslateError(throwable);
         });
     }
 
     public void updateFavorite(Translation item) {
-        mUpdateInteractor.execute(item, Functions.<Boolean>emptyConsumer(),
-                Functions.<Throwable>emptyConsumer());
+        mUpdateInteractor.execute(item, Functions.emptyConsumer(),
+                Functions.emptyConsumer());
     }
 
     public void cancelTranslate() {

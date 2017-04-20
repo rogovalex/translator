@@ -114,12 +114,9 @@ public class LanguageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mListener != null) {
-                        mListener.onItemClick(mItem);
-                    }
+            itemView.setOnClickListener(v -> {
+                if (mListener != null) {
+                    mListener.onItemClick(mItem);
                 }
             });
         }

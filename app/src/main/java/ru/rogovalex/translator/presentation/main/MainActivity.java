@@ -5,13 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.presentation.common.BaseActivity;
-import ru.rogovalex.translator.presentation.common.ComponentFactory;
 import ru.rogovalex.translator.presentation.injection.component.DaggerFavoriteFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.DaggerHistoryFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.DaggerTranslateFragmentComponent;
@@ -36,12 +34,9 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                showFragment(item.getItemId());
-                return true;
-            }
+        mNavigation.setOnNavigationItemSelectedListener(item -> {
+            showFragment(item.getItemId());
+            return true;
         });
 
         if (savedInstanceState == null) {
@@ -52,40 +47,25 @@ public class MainActivity extends BaseActivity
     @Override
     public TranslateFragmentComponent getTranslateFragmentComponent() {
         return getComponent("main", TranslateFragmentComponent.class,
-                new ComponentFactory<TranslateFragmentComponent>() {
-                    @Override
-                    public TranslateFragmentComponent buildComponent() {
-                        return DaggerTranslateFragmentComponent.builder()
-                                .appComponent(getAppComponent())
-                                .build();
-                    }
-                });
+                () -> DaggerTranslateFragmentComponent.builder()
+                        .appComponent(getAppComponent())
+                        .build());
     }
 
     @Override
     public HistoryFragmentComponent getHistoryFragmentComponent() {
         return getComponent("main", HistoryFragmentComponent.class,
-                new ComponentFactory<HistoryFragmentComponent>() {
-                    @Override
-                    public HistoryFragmentComponent buildComponent() {
-                        return DaggerHistoryFragmentComponent.builder()
-                                .appComponent(getAppComponent())
-                                .build();
-                    }
-                });
+                () -> DaggerHistoryFragmentComponent.builder()
+                        .appComponent(getAppComponent())
+                        .build());
     }
 
     @Override
     public FavoriteFragmentComponent getFavoriteFragmentComponent() {
         return getComponent("main", FavoriteFragmentComponent.class,
-                new ComponentFactory<FavoriteFragmentComponent>() {
-                    @Override
-                    public FavoriteFragmentComponent buildComponent() {
-                        return DaggerFavoriteFragmentComponent.builder()
-                                .appComponent(getAppComponent())
-                                .build();
-                    }
-                });
+                () -> DaggerFavoriteFragmentComponent.builder()
+                        .appComponent(getAppComponent())
+                        .build());
     }
 
     private void showFragment(int id) {

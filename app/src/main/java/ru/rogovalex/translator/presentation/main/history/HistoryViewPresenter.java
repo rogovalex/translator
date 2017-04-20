@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.history.LoadHistoryInteractor;
@@ -47,25 +46,19 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
         }
 
         mLoading = true;
-        mInteractor.execute(null, new Consumer<List<Translation>>() {
-            @Override
-            public void accept(List<Translation> items) throws Exception {
-                mLoading = false;
-                mItems = items;
-                getView().onHistoryLoaded(items);
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable e) throws Exception {
-                mLoading = false;
-                getView().onHistoryLoadError(e);
-            }
+        mInteractor.execute(null, items -> {
+            mLoading = false;
+            mItems = items;
+            getView().onHistoryLoaded(items);
+        }, e -> {
+            mLoading = false;
+            getView().onHistoryLoadError(e);
         });
     }
 
     public void updateFavorite(Translation item) {
-        mUpdateInteractor.execute(item, Functions.<Boolean>emptyConsumer(),
-                Functions.<Throwable>emptyConsumer());
+        mUpdateInteractor.execute(item, Functions.emptyConsumer(),
+                Functions.emptyConsumer());
     }
 
     public void cancel() {

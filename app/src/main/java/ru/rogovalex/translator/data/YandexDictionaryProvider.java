@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
 import ru.rogovalex.translator.api.ApiException;
 import ru.rogovalex.translator.api.DictionaryApiService;
 import ru.rogovalex.translator.api.response.DictionaryEntry;
@@ -39,42 +38,35 @@ public class YandexDictionaryProvider implements DictionaryProvider {
         return mService.lookup(API_KEY, params.getText(),
                 params.getTextLang() + "-" + params.getTranslationLang(),
                 UI_LANG, SHORT_POS)
-                .flatMap(new Function<DictionaryResponse, Observable<DictionaryResponse>>() {
-                    @Override
-                    public Observable<DictionaryResponse> apply(DictionaryResponse response) throws Exception {
-                        if (response.getCode() != 200) {
-                            return Observable.error(new ApiException(response.getCode()));
-                        }
-                        return Observable.just(response);
-                    }
-                })
-                .flatMapIterable(new Function<DictionaryResponse, Iterable<DictionaryEntry>>() {
-                    @Override
-                    public Iterable<DictionaryEntry> apply(DictionaryResponse response) throws Exception {
-                        return response.getEntries() != null
-                                ? Arrays.asList(response.getEntries())
-                                : new ArrayList<DictionaryEntry>();
-                    }
-                })
-                .map(new Function<DictionaryEntry, Definition>() {
-                    @Override
-                    public Definition apply(DictionaryEntry entry) throws Exception {
-                        Definition result = new Definition(entry.getText(),
-                                notNull(entry.getTranscription()),
-                                notNull(entry.getPos()),
-                                new ArrayList<DefinitionOption>());
-
-                        if (entry.getTranslations() != null) {
-                            for (DictionaryTranslation t : entry.getTranslations()) {
-                                result.getDefinitionOptions().add(convert(t));
-                            }
-                        }
-
-                        return result;
-                    }
-                })
+                .flatMap(this::handleDictionaryResponse)
+                .flatMapIterable(list -> list)
+                .map(this::convert)
                 .toList()
                 .toObservable();
+    }
+
+    private Observable<List<DictionaryEntry>> handleDictionaryResponse(DictionaryResponse response) {
+        if (response.getCode() != 200) {
+            return Observable.error(new ApiException(response.getCode()));
+        }
+        return Observable.just(response.getEntries() != null
+                ? Arrays.asList(response.getEntries())
+                : new ArrayList<>());
+    }
+
+    private Definition convert(DictionaryEntry entry) {
+        Definition result = new Definition(entry.getText(),
+                notNull(entry.getTranscription()),
+                notNull(entry.getPos()),
+                new ArrayList<>());
+
+        if (entry.getTranslations() != null) {
+            for (DictionaryTranslation t : entry.getTranslations()) {
+                result.getDefinitionOptions().add(convert(t));
+            }
+        }
+
+        return result;
     }
 
     private String notNull(String value) {

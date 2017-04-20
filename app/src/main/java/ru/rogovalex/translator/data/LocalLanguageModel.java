@@ -1,7 +1,6 @@
 package ru.rogovalex.translator.data;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
@@ -27,21 +26,11 @@ public class LocalLanguageModel implements LanguageModel {
 
     @Override
     public Observable<List<Language>> loadLanguages(final String uiLang) {
-        return Observable.fromCallable(new Callable<List<Language>>() {
-            @Override
-            public List<Language> call() throws Exception {
-                return mDatabase.getLanguages(uiLang);
-            }
-        });
+        return Observable.fromCallable(() -> mDatabase.getLanguages(uiLang));
     }
 
     @Override
     public Observable<Boolean> updateLanguages(final String uiLang, final List<Language> languages) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return mDatabase.saveLanguages(uiLang, languages);
-            }
-        });
+        return Observable.fromCallable(() -> mDatabase.saveLanguages(uiLang, languages));
     }
 }

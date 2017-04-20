@@ -8,8 +8,6 @@ import javax.inject.Named;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Function;
 import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.common.Interactor;
@@ -46,43 +44,34 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
     @Override
     protected Observable<Translation> buildObservable(final TranslateParams params) {
         return mModel.loadFromHistory(params)
-                .flatMap(new Function<List<Translation>, Observable<Translation>>() {
-                    @Override
-                    public Observable<Translation> apply(List<Translation> translations) throws Exception {
-                        if (!translations.isEmpty()) {
-                            return Observable.just(translations.get(0));
-                        }
-                        return loadFromNetwork(params);
-                    }
-                });
+                .flatMap(translations -> loadFromNetworkIfEmpty(params, translations));
+    }
+
+    private Observable<Translation> loadFromNetworkIfEmpty(TranslateParams params,
+                                                           List<Translation> translations) {
+        if (translations.isEmpty()) {
+            return loadFromNetwork(params);
+        }
+        return Observable.just(translations.get(0));
     }
 
     private Observable<Translation> loadFromNetwork(final TranslateParams params) {
         return mTranslateProvider.translate(params)
-                .zipWith(lookupDictionary(params), new BiFunction<String, List<Definition>, Translation>() {
-                    @Override
-                    public Translation apply(String translation, List<Definition> definitions) throws Exception {
-                        return new Translation(params.getText(), params.getTextLang(),
-                                translation, params.getTranslationLang(), definitions);
-                    }
-                })
-                .flatMap(new Function<Translation, Observable<Translation>>() {
-                    @Override
-                    public Observable<Translation> apply(final Translation translation) throws Exception {
-                        return mModel.updateHistory(translation)
-                                .map(new Function<Boolean, Translation>() {
-                                    @Override
-                                    public Translation apply(Boolean aBoolean) throws Exception {
-                                        return translation;
-                                    }
-                                })
-                                .onErrorReturnItem(translation);
-                    }
-                });
+                .zipWith(lookupDictionary(params),
+                        (translation, definitions) -> new Translation(params.getText(),
+                                params.getTextLang(), translation,
+                                params.getTranslationLang(), definitions))
+                .flatMap(this::updateHistory);
     }
 
     private Observable<List<Definition>> lookupDictionary(TranslateParams params) {
         return mDictionaryProvider.lookup(params)
-                .onErrorReturnItem(Collections.<Definition>emptyList());
+                .onErrorReturnItem(Collections.emptyList());
+    }
+
+    private Observable<Translation> updateHistory(Translation translation) {
+        return mModel.updateHistory(translation)
+                .map(value -> translation)
+                .onErrorReturnItem(translation);
     }
 }

@@ -7,7 +7,6 @@ import javax.inject.Named;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.functions.Function;
 import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.common.Interactor;
 import ru.rogovalex.translator.domain.model.Language;
@@ -37,30 +36,19 @@ public class LoadLanguagesInteractor extends Interactor<List<Language>, String> 
     @Override
     protected Observable<List<Language>> buildObservable(final String uiLang) {
         return mModel.loadLanguages(uiLang)
-                .flatMap(new Function<List<Language>, Observable<List<Language>>>() {
-                    @Override
-                    public Observable<List<Language>> apply(List<Language> languages) throws Exception {
-                        if (!languages.isEmpty()) {
-                            return Observable.just(languages);
-                        }
-                        return loadFromNetwork(uiLang);
-                    }
-                });
+                .flatMap(languages -> loadFromNetworkIfEmpty(uiLang, languages));
+    }
+
+    private Observable<List<Language>> loadFromNetworkIfEmpty(String uiLang, List<Language> languages) {
+        if (languages.isEmpty()) {
+            return loadFromNetwork(uiLang);
+        }
+        return Observable.just(languages);
     }
 
     private Observable<List<Language>> loadFromNetwork(final String uiLang) {
         return mProvider.languages(uiLang)
-                .flatMap(new Function<List<Language>, Observable<Boolean>>() {
-                    @Override
-                    public Observable<Boolean> apply(List<Language> languages) throws Exception {
-                        return mModel.updateLanguages(uiLang, languages);
-                    }
-                })
-                .flatMap(new Function<Boolean, Observable<List<Language>>>() {
-                    @Override
-                    public Observable<List<Language>> apply(Boolean value) throws Exception {
-                        return mModel.loadLanguages(uiLang);
-                    }
-                });
+                .flatMap(languages -> mModel.updateLanguages(uiLang, languages))
+                .flatMap(value -> mModel.loadLanguages(uiLang));
     }
 }

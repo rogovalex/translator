@@ -116,12 +116,9 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int maxLines = text.getMaxLines() == 1 ? Integer.MAX_VALUE : 1;
-                    updateTextMaxLines(maxLines);
-                }
+            itemView.setOnClickListener(v -> {
+                int maxLines = text.getMaxLines() == 1 ? Integer.MAX_VALUE : 1;
+                updateTextMaxLines(maxLines);
             });
         }
 
