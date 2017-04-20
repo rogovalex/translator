@@ -4,9 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Filter;
 
 import java.util.List;
@@ -49,11 +47,10 @@ public class FavoriteFragment extends SearchableListFragment
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        ((EditText) view.findViewById(R.id.search_input))
-                .setHint(R.string.search_favorite_hint);
-        ((RecyclerView) view.findViewById(R.id.recycler_view))
-                .addItemDecoration(new DividerItemDecoration(getContext(),
-                        DividerItemDecoration.VERTICAL));
+        super.onViewCreated(view, savedInstanceState);
+        getSearchInput().setHint(R.string.search_favorite_hint);
+        getRecyclerView().addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
         mAdapter.setFavoriteChangedListener(this);
     }
 

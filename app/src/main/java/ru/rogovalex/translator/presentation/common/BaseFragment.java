@@ -1,6 +1,12 @@
 package ru.rogovalex.translator.presentation.common;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.View;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created with Android Studio.
@@ -10,11 +16,19 @@ import android.support.v4.app.Fragment;
  */
 public abstract class BaseFragment extends Fragment {
 
+    private Unbinder mUnbinder;
+
     private boolean mLoadingCanceled = false;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mUnbinder = ButterKnife.bind(this, view);
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mUnbinder.unbind();
         cancelLoadingIfRequired();
     }
 

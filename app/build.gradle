@@ -44,4 +44,6 @@ dependencies {
     testCompile 'com.google.dagger:dagger:2.9'
     apt 'com.google.dagger:dagger-compiler:2.9'
     testApt 'com.google.dagger:dagger-compiler:2.9'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    apt 'com.jakewharton:butterknife-compiler:8.5.1'
 }

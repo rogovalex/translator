@@ -11,6 +11,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.domain.model.Language;
 
@@ -94,16 +96,16 @@ public class LanguageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         };
     }
 
-    private class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.title)
         TextView title;
 
         Language mItem;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-
-            title = (TextView) itemView.findViewById(R.id.title);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

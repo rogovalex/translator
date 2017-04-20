@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.presentation.common.BaseActivity;
 import ru.rogovalex.translator.presentation.common.ComponentFactory;
@@ -25,13 +27,16 @@ public class MainActivity extends BaseActivity
         HistoryFragment.Callbacks,
         FavoriteFragment.Callbacks {
 
+    @BindView(R.id.navigation)
+    BottomNavigationView mNavigation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        mNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 showFragment(item.getItemId());
@@ -40,7 +45,7 @@ public class MainActivity extends BaseActivity
         });
 
         if (savedInstanceState == null) {
-            showFragment(navigation.getSelectedItemId());
+            showFragment(mNavigation.getSelectedItemId());
         }
     }
 

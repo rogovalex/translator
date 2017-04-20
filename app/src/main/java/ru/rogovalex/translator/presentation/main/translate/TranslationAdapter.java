@@ -11,6 +11,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.domain.model.Definition;
 import ru.rogovalex.translator.domain.model.DefinitionOption;
@@ -99,35 +102,33 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return mItems.size();
     }
 
-    private class MainItemViewHolder extends RecyclerView.ViewHolder {
+    class MainItemViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.text)
         TextView text;
+        @BindView(R.id.fav_icon)
         ImageView favIcon;
 
         Translation mItem;
 
         public MainItemViewHolder(View itemView) {
             super(itemView);
-
-            text = (TextView) itemView.findViewById(R.id.text);
-            favIcon = (ImageView) itemView.findViewById(R.id.fav_icon);
-
-            favIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mItem.setFavorite(!mItem.isFavorite());
-                    updateFavIcon();
-                    if (mListener != null) {
-                        mListener.onFavoriteChanged(mItem);
-                    }
-                }
-            });
+            ButterKnife.bind(this, itemView);
         }
 
         public void bind(MainItem item) {
             mItem = item.translation;
             updateFavIcon();
             text.setText(mItem.getTranslation());
+        }
+
+        @OnClick(R.id.fav_icon)
+        void favoriteIconClick() {
+            mItem.setFavorite(!mItem.isFavorite());
+            updateFavIcon();
+            if (mListener != null) {
+                mListener.onFavoriteChanged(mItem);
+            }
         }
 
         private void updateFavIcon() {
@@ -137,18 +138,18 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private class DefinitionItemViewHolder extends RecyclerView.ViewHolder {
+    class DefinitionItemViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.text)
         TextView text;
+        @BindView(R.id.transcription)
         TextView transcription;
+        @BindView(R.id.pos)
         TextView pos;
 
         public DefinitionItemViewHolder(View itemView) {
             super(itemView);
-
-            text = (TextView) itemView.findViewById(R.id.text);
-            transcription = (TextView) itemView.findViewById(R.id.transcription);
-            pos = (TextView) itemView.findViewById(R.id.pos);
+            ButterKnife.bind(this, itemView);
         }
 
         public void bind(DefinitionItem item) {
@@ -171,20 +172,20 @@ public class TranslationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private class DefinitionOptionItemViewHolder extends RecyclerView.ViewHolder {
+    class DefinitionOptionItemViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.index)
         TextView index;
+        @BindView(R.id.synonyms)
         TextView synonyms;
+        @BindView(R.id.meanings)
         TextView meanings;
+        @BindView(R.id.examples)
         TextView examples;
 
         public DefinitionOptionItemViewHolder(View itemView) {
             super(itemView);
-
-            index = (TextView) itemView.findViewById(R.id.index);
-            synonyms = (TextView) itemView.findViewById(R.id.synonyms);
-            meanings = (TextView) itemView.findViewById(R.id.meanings);
-            examples = (TextView) itemView.findViewById(R.id.examples);
+            ButterKnife.bind(this, itemView);
         }
 
         public void bind(DefinitionOptionItem item) {

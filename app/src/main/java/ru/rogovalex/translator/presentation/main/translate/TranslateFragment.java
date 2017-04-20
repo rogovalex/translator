@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -19,6 +18,8 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import ru.rogovalex.translator.PreferencesHelper;
 import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.api.ApiException;
@@ -30,18 +31,28 @@ import ru.rogovalex.translator.presentation.language.LanguageActivity;
 
 public class TranslateFragment extends BaseFragment
         implements TranslateView,
-        TranslationAdapter.OnFavoriteChangedListener,
-        View.OnClickListener {
+        TranslationAdapter.OnFavoriteChangedListener {
 
     private static final int REQUEST_LANG = 1;
 
-    private TextView mSource;
-    private TextView mTranslation;
-    private EditText mTextInput;
-    private View mProgress;
-    private View mTranslate;
+    @BindView(R.id.source_lang_view)
+    TextView mSource;
+    @BindView(R.id.translation_lang_view)
+    TextView mTranslation;
+    @BindView(R.id.translation_input)
+    EditText mTextInput;
+    @BindView(R.id.clear_input_btn)
+    View mClear;
+    @BindView(R.id.progress_view)
+    View mProgress;
+    @BindView(R.id.translate_btn)
+    View mTranslate;
+    @BindView(R.id.error_message)
+    TextView mErrorMessage;
+    @BindView(R.id.translation_output)
+    RecyclerView mRecyclerView;
+
     private TranslationAdapter mAdapter;
-    private TextView mErrorMessage;
 
     private Language mSourceLang;
     private Language mTranslationLang;
@@ -65,21 +76,12 @@ public class TranslateFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_translate, container, false);
+        return inflater.inflate(R.layout.fragment_translate, container, false);
+    }
 
-        mSource = (TextView) view.findViewById(R.id.source_lang_view);
-        mSource.setOnClickListener(this);
-        mTranslation = (TextView) view.findViewById(R.id.translation_lang_view);
-        mTranslation.setOnClickListener(this);
-        View swap = view.findViewById(R.id.swap_lang_btn);
-        swap.setOnClickListener(this);
-
-        final CardView cardView = (CardView) view.findViewById(R.id.translation_panel);
-        mTextInput = (EditText) cardView.findViewById(R.id.translation_input);
-        final View clear = cardView.findViewById(R.id.clear_input_btn);
-        clear.setOnClickListener(this);
-        clear.setVisibility(mTextInput.getText().length() == 0
-                ? View.GONE : View.VISIBLE);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mTextInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,7 +90,7 @@ public class TranslateFragment extends BaseFragment
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                clear.setVisibility(s.length() == 0 ? View.GONE : View.VISIBLE);
+                mClear.setVisibility(s.length() == 0 ? View.GONE : View.VISIBLE);
             }
 
             @Override
@@ -96,20 +98,11 @@ public class TranslateFragment extends BaseFragment
             }
         });
 
-        mTranslate = cardView.findViewById(R.id.translate_btn);
-        mTranslate.setOnClickListener(this);
-        mProgress = cardView.findViewById(R.id.progress_view);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.translation_output);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setHasFixedSize(true);
         mAdapter = new TranslationAdapter();
         mAdapter.setFavoriteChangedListener(this);
-        recyclerView.setAdapter(mAdapter);
-
-        mErrorMessage = (TextView) view.findViewById(R.id.error_message);
-
-        return view;
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -141,6 +134,7 @@ public class TranslateFragment extends BaseFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_LANG && resultCode == Activity.RESULT_OK) {
             updateLanguages();
+            updateLanguagesDependencies();
         }
     }
 
@@ -187,29 +181,33 @@ public class TranslateFragment extends BaseFragment
         mPresenter.updateFavorite(item);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.clear_input_btn:
-                mPresenter.cancelTranslate();
-                mTextInput.setText("");
-                mAdapter.clear();
-                showKeyboard();
-                break;
-            case R.id.translate_btn:
-                mPresenter.translate(mTextInput.getText().toString().trim());
-                break;
-            case R.id.source_lang_view:
-                changeLanguage(true);
-                break;
-            case R.id.translation_lang_view:
-                changeLanguage(false);
-                break;
-            case R.id.swap_lang_btn:
-                swapLanguages();
-                updateLanguagesDependencies();
-                break;
-        }
+    @OnClick(R.id.source_lang_view)
+    void sourceLanguageClick() {
+        changeLanguage(true);
+    }
+
+    @OnClick(R.id.translation_lang_view)
+    void translationLanguageClick() {
+        changeLanguage(false);
+    }
+
+    @OnClick(R.id.swap_lang_btn)
+    void swapLanguageClick() {
+        swapLanguages();
+        updateLanguagesDependencies();
+    }
+
+    @OnClick(R.id.translate_btn)
+    void translateTextClick() {
+        mPresenter.translate(mTextInput.getText().toString().trim());
+    }
+
+    @OnClick(R.id.clear_input_btn)
+    void clearTextClick() {
+        mPresenter.cancelTranslate();
+        mTextInput.setText("");
+        mAdapter.clear();
+        showKeyboard();
     }
 
     private void dismissKeyboard() {

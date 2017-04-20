@@ -1,7 +1,7 @@
 package ru.rogovalex.translator.presentation.common;
 
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -13,50 +13,39 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import ru.rogovalex.translator.R;
 
 public abstract class SearchableListFragment extends BaseFragment
         implements TextWatcher {
 
-    private EditText mSearchInput;
-    private View mClear;
-    private RecyclerView mRecyclerView;
-    private View mProgressView;
-    private View mErrorView;
-    private TextView mErrorMessage;
+    @BindView(R.id.search_input)
+    EditText mSearchInput;
+    @BindView(R.id.clear_input_btn)
+    View mClear;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.progress_view)
+    View mProgressView;
+    @BindView(R.id.error_view)
+    View mErrorView;
+    @BindView(R.id.error_message)
+    TextView mErrorMessage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        return inflater.inflate(R.layout.fragment_list, container, false);
+    }
 
-        final CardView cardView = (CardView) view.findViewById(R.id.search_bar);
-        mSearchInput = (EditText) cardView.findViewById(R.id.search_input);
-        mClear = cardView.findViewById(R.id.clear_input_btn);
-        mClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSearchInput.setText("");
-            }
-        });
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(getAdapter());
-
-        mProgressView = view.findViewById(R.id.progress_view);
-        mErrorView = view.findViewById(R.id.error_view);
-        mErrorMessage = (TextView) mErrorView.findViewById(R.id.error_message);
-        View errorButton = mErrorView.findViewById(R.id.error_button);
-        errorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onErrorButtonClick();
-            }
-        });
-
-        return view;
     }
 
     @Override
@@ -85,6 +74,24 @@ public abstract class SearchableListFragment extends BaseFragment
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    @OnClick(R.id.clear_input_btn)
+    void clearButtonClick() {
+        mSearchInput.setText("");
+    }
+
+    @OnClick(R.id.error_button)
+    void errorButtonClick() {
+        onErrorButtonClick();
+    }
+
+    protected EditText getSearchInput() {
+        return mSearchInput;
+    }
+
+    protected RecyclerView getRecyclerView() {
+        return mRecyclerView;
     }
 
     protected String getQuery() {

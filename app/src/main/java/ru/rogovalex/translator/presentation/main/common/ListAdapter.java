@@ -12,6 +12,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.domain.model.Translation;
 
@@ -96,33 +99,23 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         };
     }
 
-    private class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.fav_icon)
         ImageView favIcon;
+        @BindView(R.id.text)
         TextView text;
+        @BindView(R.id.translation)
         TextView translation;
+        @BindView(R.id.lang)
         TextView lang;
 
         Translation mItem;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
 
-            favIcon = (ImageView) itemView.findViewById(R.id.fav_icon);
-            text = (TextView) itemView.findViewById(R.id.text);
-            translation = (TextView) itemView.findViewById(R.id.translation);
-            lang = (TextView) itemView.findViewById(R.id.lang);
-
-            favIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mItem.setFavorite(!mItem.isFavorite());
-                    updateFavIcon();
-                    if (mListener != null) {
-                        mListener.onFavoriteChanged(mItem);
-                    }
-                }
-            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -141,6 +134,15 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             lang.setText(itemView.getResources().getString(
                     R.string.translation_direction, item.getTextLang(),
                     item.getTranslationLang()));
+        }
+
+        @OnClick(R.id.fav_icon)
+        void favoriteIconClick() {
+            mItem.setFavorite(!mItem.isFavorite());
+            updateFavIcon();
+            if (mListener != null) {
+                mListener.onFavoriteChanged(mItem);
+            }
         }
 
         private void updateFavIcon() {

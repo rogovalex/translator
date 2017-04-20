@@ -112,7 +112,9 @@
             android:background="?selectableItemBackgroundBorderless"
             android:scaleType="center"
             android:tint="@color/colorDecor"
-            app:srcCompat="@drawable/ic_close_black_24dp"/>
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_close_black_24dp"
+            tools:visibility="visible"/>
 
         <ImageView
             android:id="@+id/translate_btn"
