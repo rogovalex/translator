@@ -30,7 +30,7 @@ public class Database {
     }
 
     public List<Translation> getRecentTranslations() {
-        return getTranslations(TranslationTable.HISTORY + "=?", new String[]{"1"});
+        return getTranslations(TranslationTable.TIMESTAMP + ">0", null);
     }
 
     public List<Translation> getTranslations(TranslateParams params) {
@@ -127,7 +127,7 @@ public class Database {
     }
 
     public List<Translation> getFavoriteTranslations() {
-        return getTranslations(TranslationTable.FAVORITE + "=?", new String[]{"1"});
+        return getTranslations(TranslationTable.FAVORITE + "=1", null);
     }
 
     public boolean saveRecentTranslation(Translation translation) {
@@ -143,7 +143,6 @@ public class Database {
                             + TranslationTable.TEXT_LANG + ","
                             + TranslationTable.TRANSLATION + ","
                             + TranslationTable.TRANSLATION_LANG + ","
-                            + TranslationTable.HISTORY + ","
                             + TranslationTable.FAVORITE + ","
                             + TranslationTable.TIMESTAMP
                             + ") VALUES ((SELECT " + TranslationTable._ID
@@ -151,7 +150,7 @@ public class Database {
                             + TranslationTable.TEXT + "=? AND "
                             + TranslationTable.TEXT_LANG + "=? AND "
                             + TranslationTable.TRANSLATION_LANG + "=?"
-                            + "), ?, ?, ?, ?, 1, ?, ?)");
+                            + "), ?, ?, ?, ?, ?, ?)");
 
             SQLiteStatement insertDefinition = db.compileStatement(
                     "INSERT INTO " + DefinitionTable.TABLE_NAME + " ("
@@ -280,5 +279,32 @@ public class Database {
             db.endTransaction();
         }
         return true;
+    }
+
+    public boolean removeRecentTranslations() {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        int count = 0;
+
+        try {
+            db.beginTransaction();
+
+            count = db.delete(TranslationTable.TABLE_NAME,
+                    TranslationTable.FAVORITE + "<>1",
+                    null);
+
+            ContentValues values = new ContentValues();
+            values.put(TranslationTable.TIMESTAMP, 0);
+
+            count += db.update(TranslationTable.TABLE_NAME, values,
+                    TranslationTable.FAVORITE + "=1", null);
+
+            db.setTransactionSuccessful();
+
+        } finally {
+            db.endTransaction();
+        }
+
+        return count > 0;
     }
 }

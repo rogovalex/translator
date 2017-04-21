@@ -18,4 +18,8 @@
     <string name="translation_name_default">Английский</string>
     <string name="ui_lang_code">ru</string>
     <string name="error_default">Во время загрузки произошла ошибка. Проверьте подключение к интернету.</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="confirm_clear_history">Очистить историю?</string>
+    <string name="action_clear">Очистить</string>
+    <string name="action_cancel">Отменить</string>
 </resources>

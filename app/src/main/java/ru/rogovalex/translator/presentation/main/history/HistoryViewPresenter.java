@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
+import ru.rogovalex.translator.domain.history.ClearHistoryInteractor;
 import ru.rogovalex.translator.domain.history.LoadHistoryInteractor;
 import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
@@ -19,6 +20,7 @@ import ru.rogovalex.translator.presentation.common.BasePresenter;
 public class HistoryViewPresenter extends BasePresenter<HistoryView> {
 
     private final LoadHistoryInteractor mInteractor;
+    private final ClearHistoryInteractor mClearInteractor;
     private final UpdateFavoriteInteractor mUpdateInteractor;
 
     private List<Translation> mItems;
@@ -27,8 +29,10 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
 
     @Inject
     public HistoryViewPresenter(LoadHistoryInteractor interactor,
+                                ClearHistoryInteractor clearInteractor,
                                 UpdateFavoriteInteractor updateInteractor) {
         mInteractor = interactor;
+        mClearInteractor = clearInteractor;
         mUpdateInteractor = updateInteractor;
         super.setView(sStubView);
     }
@@ -56,6 +60,13 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
         });
     }
 
+    public void clearHistory() {
+        mClearInteractor.execute(null, value -> {
+            mItems = null;
+            getView().onHistoryCleared();
+        }, Functions.emptyConsumer());
+    }
+
     public void updateFavorite(Translation item) {
         mUpdateInteractor.execute(item, Functions.emptyConsumer(),
                 Functions.emptyConsumer());
@@ -78,6 +89,10 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
 
         @Override
         public void onHistoryLoadError(Throwable e) {
+        }
+
+        @Override
+        public void onHistoryCleared() {
         }
     };
 }

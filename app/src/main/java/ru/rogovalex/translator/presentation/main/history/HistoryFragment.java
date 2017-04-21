@@ -1,12 +1,17 @@
 package ru.rogovalex.translator.presentation.main.history;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Filter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,6 +26,7 @@ public class HistoryFragment extends SearchableListFragment
         implements ListAdapter.OnFavoriteChangedListener, HistoryView {
 
     private ListAdapter mAdapter;
+    private Dialog mDialog;
 
     private Callbacks mCallbacks;
 
@@ -43,6 +49,7 @@ public class HistoryFragment extends SearchableListFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new ListAdapter();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -52,6 +59,14 @@ public class HistoryFragment extends SearchableListFragment
         getRecyclerView().addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         mAdapter.setFavoriteChangedListener(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
     }
 
     @Override
@@ -71,6 +86,16 @@ public class HistoryFragment extends SearchableListFragment
     public void onStop() {
         super.onStop();
         mPresenter.setView(null);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.history, menu);
+
+        menu.findItem(R.id.clear).setOnMenuItemClickListener(item -> {
+            showConfirmDialog();
+            return true;
+        });
     }
 
     @Override
@@ -110,8 +135,25 @@ public class HistoryFragment extends SearchableListFragment
     }
 
     @Override
+    public void onHistoryCleared() {
+        mAdapter.setItems(new ArrayList<>(), getQuery());
+    }
+
+    @Override
     public void onFavoriteChanged(Translation item) {
         mPresenter.updateFavorite(item);
+    }
+
+    private void showConfirmDialog() {
+        if (mDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage(R.string.confirm_clear_history);
+            builder.setPositiveButton(R.string.action_clear,
+                    ((dialog, which) -> mPresenter.clearHistory()));
+            builder.setNegativeButton(R.string.action_cancel, null);
+            mDialog = builder.create();
+        }
+        mDialog.show();
     }
 
     public interface Callbacks {

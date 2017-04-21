@@ -16,4 +16,6 @@ public interface HistoryView {
     void onHistoryLoaded(List<Translation> items);
 
     void onHistoryLoadError(Throwable e);
+
+    void onHistoryCleared();
 }

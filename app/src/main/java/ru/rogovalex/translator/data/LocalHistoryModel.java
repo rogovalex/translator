@@ -41,4 +41,9 @@ public class LocalHistoryModel implements HistoryModel {
         return Observable.just(params)
                 .map(mDatabase::getTranslations);
     }
+
+    @Override
+    public Observable<Boolean> clearHistory() {
+        return Observable.fromCallable(mDatabase::removeRecentTranslations);
+    }
 }

@@ -18,4 +18,6 @@ public interface HistoryModel {
     Observable<Boolean> updateHistory(Translation translation);
 
     Observable<List<Translation>> loadFromHistory(TranslateParams params);
+
+    Observable<Boolean> clearHistory();
 }

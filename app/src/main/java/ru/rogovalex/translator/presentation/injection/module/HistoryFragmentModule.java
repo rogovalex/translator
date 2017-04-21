@@ -7,6 +7,7 @@ import dagger.Provides;
 import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.favorite.FavoriteModel;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
+import ru.rogovalex.translator.domain.history.ClearHistoryInteractor;
 import ru.rogovalex.translator.domain.history.HistoryModel;
 import ru.rogovalex.translator.domain.history.LoadHistoryInteractor;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
@@ -33,6 +34,15 @@ public class HistoryFragmentModule {
 
     @Provides
     @ActivityScope
+    public ClearHistoryInteractor provideClearHistoryInteractor(
+            @Named(DomainModule.LOCAL) Scheduler jobScheduler,
+            @Named(DomainModule.UI) Scheduler uiScheduler,
+            HistoryModel historyModel) {
+        return new ClearHistoryInteractor(jobScheduler, uiScheduler, historyModel);
+    }
+
+    @Provides
+    @ActivityScope
     public UpdateFavoriteInteractor provideUpdateFavoriteInteractor(
             @Named(DomainModule.LOCAL) Scheduler jobScheduler,
             @Named(DomainModule.UI) Scheduler uiScheduler,
@@ -44,7 +54,8 @@ public class HistoryFragmentModule {
     @ActivityScope
     public HistoryViewPresenter provideHistoryViewPresenter(
             LoadHistoryInteractor interactor,
+            ClearHistoryInteractor clearInteractor,
             UpdateFavoriteInteractor updateInteractor) {
-        return new HistoryViewPresenter(interactor, updateInteractor);
+        return new HistoryViewPresenter(interactor, clearInteractor, updateInteractor);
     }
 }
