@@ -43,25 +43,20 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
 
     @Override
     protected Observable<Translation> buildObservable(final TranslateParams params) {
-        return mModel.loadFromHistory(params)
-                .flatMap(translations -> loadFromNetworkIfEmpty(params, translations));
-    }
+        Observable<Translation> fromModel = mModel.loadFromHistory(params)
+                .filter(list -> list.size() > 0)
+                .map(list -> list.get(0));
 
-    private Observable<Translation> loadFromNetworkIfEmpty(TranslateParams params,
-                                                           List<Translation> translations) {
-        if (translations.isEmpty()) {
-            return loadFromNetwork(params);
-        }
-        return Observable.just(translations.get(0));
-    }
-
-    private Observable<Translation> loadFromNetwork(final TranslateParams params) {
-        return mTranslateProvider.translate(params)
+        Observable<Translation> fromApi = mTranslateProvider.translate(params)
                 .zipWith(lookupDictionary(params),
                         (translation, definitions) -> new Translation(params.getText(),
                                 params.getTextLang(), translation,
                                 params.getTranslationLang(), definitions))
                 .flatMap(this::updateHistory);
+
+        return Observable.concat(fromModel, fromApi)
+                .firstElement()
+                .toObservable();
     }
 
     private Observable<List<Definition>> lookupDictionary(TranslateParams params) {

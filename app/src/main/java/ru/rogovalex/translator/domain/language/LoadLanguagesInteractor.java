@@ -35,20 +35,15 @@ public class LoadLanguagesInteractor extends Interactor<List<Language>, String> 
 
     @Override
     protected Observable<List<Language>> buildObservable(final String uiLang) {
-        return mModel.loadLanguages(uiLang)
-                .flatMap(languages -> loadFromNetworkIfEmpty(uiLang, languages));
-    }
+        Observable<List<Language>> fromModel = mModel.loadLanguages(uiLang)
+                .filter(list -> list.size() > 0);
 
-    private Observable<List<Language>> loadFromNetworkIfEmpty(String uiLang, List<Language> languages) {
-        if (languages.isEmpty()) {
-            return loadFromNetwork(uiLang);
-        }
-        return Observable.just(languages);
-    }
-
-    private Observable<List<Language>> loadFromNetwork(final String uiLang) {
-        return mProvider.languages(uiLang)
+        Observable<List<Language>> fromApi = mProvider.languages(uiLang)
                 .flatMap(languages -> mModel.updateLanguages(uiLang, languages))
                 .flatMap(value -> mModel.loadLanguages(uiLang));
+
+        return Observable.concat(fromModel, fromApi)
+                .firstElement()
+                .toObservable();
     }
 }
