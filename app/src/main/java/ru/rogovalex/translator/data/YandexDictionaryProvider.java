@@ -24,7 +24,6 @@ import ru.rogovalex.translator.domain.model.TranslateParams;
 public class YandexDictionaryProvider implements DictionaryProvider {
 
     private static final String API_KEY = "dict.1.1.20170401T161610Z.c2b221b76a508a30.06c55e1216f351abaedfbd9c37f1964e5ff7b21a";
-    private static final String UI_LANG = "ru";
     private static final int SHORT_POS = 2;
 
     private final DictionaryApiService mService;
@@ -37,7 +36,7 @@ public class YandexDictionaryProvider implements DictionaryProvider {
     public Observable<List<Definition>> lookup(final TranslateParams params) {
         return mService.lookup(API_KEY, params.getText(),
                 params.getTextLang() + "-" + params.getTranslationLang(),
-                UI_LANG, SHORT_POS)
+                params.getUiLangCode(), SHORT_POS)
                 .flatMap(this::handleDictionaryResponse)
                 .flatMapIterable(list -> list)
                 .map(this::convert)

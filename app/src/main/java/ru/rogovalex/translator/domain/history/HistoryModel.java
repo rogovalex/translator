@@ -15,7 +15,7 @@ import ru.rogovalex.translator.domain.model.Translation;
 public interface HistoryModel {
     Observable<List<Translation>> loadHistory();
 
-    Observable<Boolean> updateHistory(Translation translation);
+    Observable<Boolean> updateHistory(Translation translation, String uiLangCode);
 
     Observable<List<Translation>> loadFromHistory(TranslateParams params);
 

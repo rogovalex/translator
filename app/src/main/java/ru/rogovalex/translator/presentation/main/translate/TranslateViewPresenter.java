@@ -22,6 +22,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
     private String mSource;
     private String mTranslation;
+    private String mUiLangCode;
     private Translation mResult;
 
     private boolean mLoading;
@@ -46,6 +47,13 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         }
         if (mLoading) {
             getView().onTranslating();
+        }
+    }
+
+    public void setUiLanguageCode(String uiLangCode) {
+        if (!uiLangCode.equals(mUiLangCode)) {
+            cancelTranslate();
+            mUiLangCode = uiLangCode;
         }
     }
 
@@ -75,7 +83,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         getView().onTranslating();
 
         mLoading = true;
-        TranslateParams params = new TranslateParams(text, mSource, mTranslation);
+        TranslateParams params = new TranslateParams(text, mSource, mTranslation, mUiLangCode);
         mInteractor.execute(params, translation -> {
             mLoading = false;
             mResult = translation;

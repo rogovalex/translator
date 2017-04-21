@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Translator</string>
+    <string name="title_translate">Translation</string>
+    <string name="title_history">History</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="translate_hint">Enter text</string>
+    <string name="search_history_hint">Search in history</string>
+    <string name="search_favorite_hint">Search in favorite</string>
+    <string name="search_language_hint">Search language</string>
+    <string name="title_source_lang">Original language</string>
+    <string name="title_translation_lang">Translation language</string>
+    <string name="repeat">Repeat</string>
+    <string name="source_code_default">en</string>
+    <string name="source_name_default">English</string>
+    <string name="translation_code_default">ru</string>
+    <string name="translation_name_default">Russian</string>
+    <string name="ui_lang_code">en</string>
+    <string name="error_default">An error occurred. Check your internet connection.</string>
+    <string name="clear_history">Clear history</string>
+    <string name="confirm_clear_history">Clear history?</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_cancel">Cancel</string>
+</resources>

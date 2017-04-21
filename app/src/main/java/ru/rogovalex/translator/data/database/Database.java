@@ -36,7 +36,7 @@ public class Database {
     public List<Translation> getTranslations(TranslateParams params) {
         return getTranslations(TranslationTable.SELECT_ROW,
                 new String[]{params.getText(), params.getTextLang(),
-                        params.getTranslationLang()});
+                        params.getTranslationLang(), params.getUiLangCode()});
     }
 
     private List<Translation> getTranslations(String where, String[] args) {
@@ -130,7 +130,7 @@ public class Database {
         return getTranslations(TranslationTable.FAVORITE + "=1", null);
     }
 
-    public boolean saveRecentTranslation(Translation translation) {
+    public boolean saveRecentTranslation(Translation translation, String uiLangCode) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         try {
@@ -144,13 +144,14 @@ public class Database {
                             + TranslationTable.TRANSLATION + ","
                             + TranslationTable.TRANSLATION_LANG + ","
                             + TranslationTable.FAVORITE + ","
-                            + TranslationTable.TIMESTAMP
+                            + TranslationTable.TIMESTAMP + ","
+                            + TranslationTable.UI_LANG
                             + ") VALUES ((SELECT " + TranslationTable._ID
                             + " FROM " + TranslationTable.TABLE_NAME + " WHERE "
                             + TranslationTable.TEXT + "=? AND "
                             + TranslationTable.TEXT_LANG + "=? AND "
                             + TranslationTable.TRANSLATION_LANG + "=?"
-                            + "), ?, ?, ?, ?, ?, ?)");
+                            + "), ?, ?, ?, ?, ?, ?, ?)");
 
             SQLiteStatement insertDefinition = db.compileStatement(
                     "INSERT INTO " + DefinitionTable.TABLE_NAME + " ("
@@ -177,6 +178,7 @@ public class Database {
             insertTranslation.bindString(7, translation.getTranslationLang());
             insertTranslation.bindLong(8, translation.isFavorite() ? 1 : 0);
             insertTranslation.bindLong(9, System.currentTimeMillis());
+            insertTranslation.bindString(10, uiLangCode);
 
             long id = insertTranslation.executeInsert();
 

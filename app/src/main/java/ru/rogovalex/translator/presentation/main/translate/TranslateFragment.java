@@ -109,6 +109,7 @@ public class TranslateFragment extends BaseFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mCallbacks.getTranslateFragmentComponent().inject(this);
+        mPresenter.setUiLanguageCode(getString(R.string.ui_lang_code));
         updateLanguages();
     }
 

@@ -31,9 +31,8 @@ public class LocalHistoryModel implements HistoryModel {
     }
 
     @Override
-    public Observable<Boolean> updateHistory(Translation translation) {
-        return Observable.just(translation)
-                .map(mDatabase::saveRecentTranslation);
+    public Observable<Boolean> updateHistory(Translation translation, String uiLangCode) {
+        return Observable.fromCallable(() -> mDatabase.saveRecentTranslation(translation, uiLangCode));
     }
 
     @Override

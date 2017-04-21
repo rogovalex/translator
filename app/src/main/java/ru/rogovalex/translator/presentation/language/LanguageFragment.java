@@ -72,12 +72,12 @@ public class LanguageFragment extends SearchableListFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mCallbacks.getLanguagesFragmentComponent().inject(this);
+        mPresenter.setUiLanguageCode(getString(R.string.ui_lang_code));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mPresenter.setUiLanguageCode(getString(R.string.ui_lang_code));
         mPresenter.setView(this);
         mPresenter.loadLanguages();
     }

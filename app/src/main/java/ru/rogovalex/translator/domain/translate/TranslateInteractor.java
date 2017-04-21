@@ -56,7 +56,7 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
         return Observable.concat(fromModel, fromApi)
                 .firstElement()
                 .toObservable()
-                .flatMap(this::updateHistory);
+                .flatMap(translation -> updateHistory(translation, params.getUiLangCode()));
     }
 
     private Observable<List<Definition>> lookupDictionary(TranslateParams params) {
@@ -64,8 +64,8 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
                 .onErrorReturnItem(Collections.emptyList());
     }
 
-    private Observable<Translation> updateHistory(Translation translation) {
-        return mModel.updateHistory(translation)
+    private Observable<Translation> updateHistory(Translation translation, String uiLangCode) {
+        return mModel.updateHistory(translation, uiLangCode)
                 .map(value -> translation)
                 .onErrorReturnItem(translation);
     }
