@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,10 +87,38 @@ public class MainActivity extends BaseActivity
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null || !fragment.getClass().equals(cls)) {
-            fragment = Fragment.instantiate(this, cls.getName());
-            fm.beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
+            Fragment newFragment = Fragment.instantiate(this, cls.getName());
+            FragmentTransaction tr = fm.beginTransaction();
+            if (fragment != null) {
+                tr.setCustomAnimations(getEnterAnimation(fragment, newFragment),
+                        getExitAnimation(fragment, newFragment));
+            }
+            tr.replace(R.id.fragment_container, newFragment)
                     .commit();
         }
+    }
+
+    private int getEnterAnimation(Fragment remove, Fragment add) {
+        if (remove instanceof FavoriteFragment
+                || add instanceof TranslateFragment) {
+            return R.anim.slide_from_left;
+        }
+        if (remove instanceof TranslateFragment
+                || add instanceof FavoriteFragment) {
+            return R.anim.slide_from_right;
+        }
+        return 0;
+    }
+
+    private int getExitAnimation(Fragment remove, Fragment add) {
+        if (remove instanceof FavoriteFragment
+                || add instanceof TranslateFragment) {
+            return R.anim.slide_to_right;
+        }
+        if (remove instanceof TranslateFragment
+                || add instanceof FavoriteFragment) {
+            return R.anim.slide_to_left;
+        }
+        return 0;
     }
 }
