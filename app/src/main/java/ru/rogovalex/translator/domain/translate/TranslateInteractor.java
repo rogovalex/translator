@@ -51,12 +51,12 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
                 .zipWith(lookupDictionary(params),
                         (translation, definitions) -> new Translation(params.getText(),
                                 params.getTextLang(), translation,
-                                params.getTranslationLang(), definitions))
-                .flatMap(this::updateHistory);
+                                params.getTranslationLang(), definitions));
 
         return Observable.concat(fromModel, fromApi)
                 .firstElement()
-                .toObservable();
+                .toObservable()
+                .flatMap(this::updateHistory);
     }
 
     private Observable<List<Definition>> lookupDictionary(TranslateParams params) {
