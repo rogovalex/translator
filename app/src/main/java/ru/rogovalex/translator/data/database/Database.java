@@ -34,7 +34,7 @@ public class Database {
     }
 
     public List<Translation> getTranslations(TranslateParams params) {
-        return getTranslations(TranslationTable.SELECT_ROW,
+        return getTranslations(TranslationTable.SELECT_ROW_BY_UI,
                 new String[]{params.getText(), params.getTextLang(),
                         params.getTranslationLang(), params.getUiLangCode()});
     }
