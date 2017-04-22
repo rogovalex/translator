@@ -25,8 +25,6 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     private String mUiLangCode;
     private Translation mResult;
 
-    private boolean mLoading;
-
     @Inject
     public TranslateViewPresenter(TranslateInteractor interactor,
                                   UpdateFavoriteInteractor updateInteractor) {
@@ -45,7 +43,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         if (mResult != null) {
             getView().onTranslated(mResult);
         }
-        if (mLoading) {
+        if (mInteractor.isRunning()) {
             getView().onTranslating();
         }
     }
@@ -82,16 +80,15 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
         getView().onTranslating();
 
-        mLoading = true;
+        if (mInteractor.isRunning()) {
+            return;
+        }
+
         TranslateParams params = new TranslateParams(text, mSource, mTranslation, mUiLangCode);
         mInteractor.execute(params, translation -> {
-            mLoading = false;
             mResult = translation;
             getView().onTranslated(translation);
-        }, throwable -> {
-            mLoading = false;
-            getView().onTranslateError(throwable);
-        });
+        }, e -> getView().onTranslateError(e));
     }
 
     public void updateFavorite(Translation item) {
@@ -101,7 +98,6 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
     public void cancelTranslate() {
         mResult = null;
-        mLoading = false;
         mInteractor.cancel();
     }
 

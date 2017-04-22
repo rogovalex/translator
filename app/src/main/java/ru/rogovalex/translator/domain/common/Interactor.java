@@ -2,7 +2,6 @@ package ru.rogovalex.translator.domain.common;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -16,7 +15,7 @@ import io.reactivex.internal.functions.Functions;
  */
 public abstract class Interactor<ResultType, ParameterType> {
 
-    private final CompositeDisposable mSubscription = new CompositeDisposable();
+    private Disposable mSubscription;
     private final Scheduler mJobScheduler;
     private final Scheduler mUiScheduler;
 
@@ -28,7 +27,7 @@ public abstract class Interactor<ResultType, ParameterType> {
     protected abstract Observable<ResultType> buildObservable(ParameterType parameter);
 
     public Disposable execute(ParameterType parameter, Consumer<ResultType> onNext) {
-        return execute(parameter, onNext, Functions.ERROR_CONSUMER, Functions.EMPTY_ACTION);
+        return execute(parameter, onNext, Functions.ERROR_CONSUMER);
     }
 
     public Disposable execute(ParameterType parameter, Consumer<ResultType> onNext,
@@ -38,15 +37,20 @@ public abstract class Interactor<ResultType, ParameterType> {
 
     public Disposable execute(ParameterType parameter, Consumer<ResultType> onNext,
                               Consumer<? super Throwable> onError, Action onComplete) {
-        Disposable s = buildObservable(parameter)
+        mSubscription = buildObservable(parameter)
                 .subscribeOn(mJobScheduler)
                 .observeOn(mUiScheduler)
                 .subscribe(onNext, onError, onComplete);
-        mSubscription.add(s);
-        return s;
+        return mSubscription;
     }
 
     public void cancel() {
-        mSubscription.clear();
+        if (isRunning()) {
+            mSubscription.dispose();
+        }
+    }
+
+    public boolean isRunning() {
+        return mSubscription != null && !mSubscription.isDisposed();
     }
 }

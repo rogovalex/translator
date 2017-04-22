@@ -21,8 +21,6 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
     private String mUiLangCode;
     private List<Language> mItems;
 
-    private boolean mLoading;
-
     @Inject
     public LanguagesViewPresenter(LoadLanguagesInteractor interactor) {
         mInteractor = interactor;
@@ -45,23 +43,17 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
 
         getView().onLanguagesLoading();
 
-        if (mLoading) {
+        if (mInteractor.isRunning()) {
             return;
         }
 
-        mLoading = true;
         mInteractor.execute(mUiLangCode, items -> {
-            mLoading = false;
             mItems = items;
             getView().onLanguagesLoaded(items);
-        }, e -> {
-            mLoading = false;
-            getView().onLanguagesLoadError(e);
-        });
+        }, e -> getView().onLanguagesLoadError(e));
     }
 
     public void cancel() {
-        mLoading = false;
         mInteractor.cancel();
     }
 

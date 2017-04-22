@@ -23,8 +23,6 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
 
     private List<Translation> mItems;
 
-    private boolean mLoading;
-
     @Inject
     public FavoriteViewPresenter(LoadFavoriteInteractor interactor,
                                  UpdateFavoriteInteractor updateInteractor) {
@@ -41,19 +39,14 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
 
         getView().onFavoriteLoading();
 
-        if (mLoading) {
+        if (mInteractor.isRunning()) {
             return;
         }
 
-        mLoading = true;
         mInteractor.execute(null, items -> {
-            mLoading = false;
             mItems = items;
             getView().onFavoriteLoaded(items);
-        }, e -> {
-            mLoading = false;
-            getView().onFavoriteLoadError(e);
-        });
+        }, e -> getView().onFavoriteLoadError(e));
     }
 
     public void updateFavorite(Translation item) {
@@ -62,7 +55,6 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
     }
 
     public void cancel() {
-        mLoading = false;
         mInteractor.cancel();
         mUpdateInteractor.cancel();
     }

@@ -25,8 +25,6 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
 
     private List<Translation> mItems;
 
-    private boolean mLoading;
-
     @Inject
     public HistoryViewPresenter(LoadHistoryInteractor interactor,
                                 ClearHistoryInteractor clearInteractor,
@@ -45,19 +43,14 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
 
         getView().onHistoryLoading();
 
-        if (mLoading) {
+        if (mInteractor.isRunning()) {
             return;
         }
 
-        mLoading = true;
         mInteractor.execute(null, items -> {
-            mLoading = false;
             mItems = items;
             getView().onHistoryLoaded(items);
-        }, e -> {
-            mLoading = false;
-            getView().onHistoryLoadError(e);
-        });
+        }, e -> getView().onHistoryLoadError(e));
     }
 
     public void clearHistory() {
@@ -73,8 +66,8 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
     }
 
     public void cancel() {
-        mLoading = false;
         mInteractor.cancel();
+        mClearInteractor.cancel();
         mUpdateInteractor.cancel();
     }
 
