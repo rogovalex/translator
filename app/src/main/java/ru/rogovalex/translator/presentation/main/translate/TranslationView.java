@@ -9,7 +9,7 @@ import ru.rogovalex.translator.domain.model.Translation;
  * Date: 01.04.2017
  * Time: 19:33
  */
-public interface TranslateView {
+public interface TranslationView {
     void onTranslating();
 
     void onTranslated(Translation translation);

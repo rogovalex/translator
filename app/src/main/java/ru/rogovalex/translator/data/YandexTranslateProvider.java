@@ -10,7 +10,7 @@ import ru.rogovalex.translator.api.response.LanguagesResponse;
 import ru.rogovalex.translator.api.response.TranslateResponse;
 import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.model.Language;
-import ru.rogovalex.translator.domain.model.TranslateParams;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 
 /**
  * Created with Android Studio.
@@ -31,7 +31,7 @@ public class YandexTranslateProvider implements TranslateProvider {
     }
 
     @Override
-    public Observable<String> translate(final TranslateParams params) {
+    public Observable<String> translate(final TranslationParams params) {
         return mService.translate(API_KEY, params.getText(),
                 params.getTextLang() + "-" + params.getTranslationLang(),
                 FORMAT_PLAIN, DISABLE_AUTO_DETERMINATION)

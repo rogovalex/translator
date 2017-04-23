@@ -25,11 +25,11 @@ import ru.rogovalex.translator.api.ApiException;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.presentation.common.BaseFragment;
-import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
+import ru.rogovalex.translator.presentation.injection.component.TranslationFragmentComponent;
 import ru.rogovalex.translator.presentation.language.LanguageActivity;
 
-public class TranslateFragment extends BaseFragment
-        implements TranslateView,
+public class TranslationFragment extends BaseFragment
+        implements TranslationView,
         TranslationAdapter.OnFavoriteChangedListener {
 
     private static final int REQUEST_LANG = 1;
@@ -56,7 +56,7 @@ public class TranslateFragment extends BaseFragment
     private Callbacks mCallbacks;
 
     @Inject
-    TranslateViewPresenter mPresenter;
+    TranslationViewPresenter mPresenter;
 
     @Override
     public void onAttach(Context context) {
@@ -73,7 +73,7 @@ public class TranslateFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_translate, container, false);
+        return inflater.inflate(R.layout.fragment_translation, container, false);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class TranslateFragment extends BaseFragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mCallbacks.getTranslateFragmentComponent().inject(this);
+        mCallbacks.getTranslationFragmentComponent().inject(this);
         mPresenter.setUiLanguageCode(getString(R.string.ui_lang_code));
         mPresenter.updateLanguages();
     }
@@ -205,13 +205,13 @@ public class TranslateFragment extends BaseFragment
     }
 
     @OnClick(R.id.translate_btn)
-    void translateTextClick() {
+    void translateClick() {
         mPresenter.translate();
     }
 
     @OnClick(R.id.clear_input_btn)
-    void clearTextClick() {
-        mPresenter.cancelTranslate();
+    void clearClick() {
+        mPresenter.cancelTranslation();
         mTextInput.setText("");
         mAdapter.clear();
         showKeyboard();
@@ -238,6 +238,6 @@ public class TranslateFragment extends BaseFragment
     }
 
     public interface Callbacks {
-        TranslateFragmentComponent getTranslateFragmentComponent();
+        TranslationFragmentComponent getTranslationFragmentComponent();
     }
 }

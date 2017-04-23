@@ -13,16 +13,16 @@ import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.presentation.common.BaseActivity;
 import ru.rogovalex.translator.presentation.injection.component.DaggerFavoriteFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.DaggerHistoryFragmentComponent;
-import ru.rogovalex.translator.presentation.injection.component.DaggerTranslateFragmentComponent;
+import ru.rogovalex.translator.presentation.injection.component.DaggerTranslationFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.FavoriteFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.HistoryFragmentComponent;
-import ru.rogovalex.translator.presentation.injection.component.TranslateFragmentComponent;
+import ru.rogovalex.translator.presentation.injection.component.TranslationFragmentComponent;
 import ru.rogovalex.translator.presentation.main.favorite.FavoriteFragment;
 import ru.rogovalex.translator.presentation.main.history.HistoryFragment;
-import ru.rogovalex.translator.presentation.main.translate.TranslateFragment;
+import ru.rogovalex.translator.presentation.main.translate.TranslationFragment;
 
 public class MainActivity extends BaseActivity
-        implements TranslateFragment.Callbacks,
+        implements TranslationFragment.Callbacks,
         HistoryFragment.Callbacks,
         FavoriteFragment.Callbacks {
 
@@ -46,9 +46,9 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public TranslateFragmentComponent getTranslateFragmentComponent() {
-        return getComponent("main", TranslateFragmentComponent.class,
-                () -> DaggerTranslateFragmentComponent.builder()
+    public TranslationFragmentComponent getTranslationFragmentComponent() {
+        return getComponent("main", TranslationFragmentComponent.class,
+                () -> DaggerTranslationFragmentComponent.builder()
                         .appComponent(getAppComponent())
                         .build());
     }
@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity
     private void showFragment(int id) {
         switch (id) {
             case R.id.navigation_translate:
-                showFragment(TranslateFragment.class);
+                showFragment(TranslationFragment.class);
                 break;
             case R.id.navigation_history:
                 showFragment(HistoryFragment.class);
@@ -100,10 +100,10 @@ public class MainActivity extends BaseActivity
 
     private int getEnterAnimation(Fragment remove, Fragment add) {
         if (remove instanceof FavoriteFragment
-                || add instanceof TranslateFragment) {
+                || add instanceof TranslationFragment) {
             return R.anim.slide_from_left;
         }
-        if (remove instanceof TranslateFragment
+        if (remove instanceof TranslationFragment
                 || add instanceof FavoriteFragment) {
             return R.anim.slide_from_right;
         }
@@ -112,10 +112,10 @@ public class MainActivity extends BaseActivity
 
     private int getExitAnimation(Fragment remove, Fragment add) {
         if (remove instanceof FavoriteFragment
-                || add instanceof TranslateFragment) {
+                || add instanceof TranslationFragment) {
             return R.anim.slide_to_right;
         }
-        if (remove instanceof TranslateFragment
+        if (remove instanceof TranslationFragment
                 || add instanceof FavoriteFragment) {
             return R.anim.slide_to_left;
         }

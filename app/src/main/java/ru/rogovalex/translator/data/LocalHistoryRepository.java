@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import ru.rogovalex.translator.data.database.Database;
 import ru.rogovalex.translator.domain.history.HistoryRepository;
-import ru.rogovalex.translator.domain.model.TranslateParams;
 import ru.rogovalex.translator.domain.model.Translation;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 
 /**
  * Created with Android Studio.
@@ -36,7 +36,7 @@ public class LocalHistoryRepository implements HistoryRepository {
     }
 
     @Override
-    public Observable<List<Translation>> loadFromHistory(TranslateParams params) {
+    public Observable<List<Translation>> loadFromHistory(TranslationParams params) {
         return Observable.just(params)
                 .map(mDatabase::getTranslations);
     }

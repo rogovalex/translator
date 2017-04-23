@@ -6,14 +6,14 @@ package ru.rogovalex.translator.domain.model;
  * Date: 01.04.2017
  * Time: 18:22
  */
-public class TranslateParams {
+public class TranslationParams {
 
     private String mText;
     private String mTextLang;
     private String mTranslationLang;
     private String mUiLangCode;
 
-    public TranslateParams(String text, String textLang, String translationLang, String uiLangCode) {
+    public TranslationParams(String text, String textLang, String translationLang, String uiLangCode) {
         mText = text;
         mTextLang = textLang;
         mTranslationLang = translationLang;

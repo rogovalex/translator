@@ -15,7 +15,7 @@ import ru.rogovalex.translator.api.response.DictionaryTranslation;
 import ru.rogovalex.translator.data.YandexDictionaryProvider;
 import ru.rogovalex.translator.domain.model.Definition;
 import ru.rogovalex.translator.domain.model.DefinitionOption;
-import ru.rogovalex.translator.domain.model.TranslateParams;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
@@ -33,7 +33,7 @@ public class YandexDictionaryProviderTest {
 
         YandexDictionaryProvider provider = new YandexDictionaryProvider(service);
 
-        TranslateParams p = new TranslateParams("test", "en", "ru", "ru");
+        TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<List<Definition>> observer = provider.lookup(p).test();
 
         observer.assertNoErrors();
@@ -53,7 +53,7 @@ public class YandexDictionaryProviderTest {
 
         YandexDictionaryProvider provider = new YandexDictionaryProvider(service);
 
-        TranslateParams p = new TranslateParams("test", "en", "ru", "ru");
+        TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<List<Definition>> observer = provider.lookup(p).test();
 
         Assert.assertEquals(1, observer.errors().size());
@@ -71,7 +71,7 @@ public class YandexDictionaryProviderTest {
 
         YandexDictionaryProvider provider = new YandexDictionaryProvider(service);
 
-        TranslateParams p = new TranslateParams("test", "en", "ru", "ru");
+        TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<List<Definition>> observer = provider.lookup(p).test();
 
         Assert.assertEquals(1, observer.errors().size());
@@ -124,7 +124,7 @@ public class YandexDictionaryProviderTest {
 
         YandexDictionaryProvider provider = new YandexDictionaryProvider(service);
 
-        TranslateParams p = new TranslateParams("test", "en", "ru", "ru");
+        TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<List<Definition>> observer = provider.lookup(p).test();
 
         observer.assertNoErrors();
@@ -160,7 +160,7 @@ public class YandexDictionaryProviderTest {
 
         YandexDictionaryProvider provider = new YandexDictionaryProvider(service);
 
-        TranslateParams p = new TranslateParams("test", "en", "ru", "ru");
+        TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<List<Definition>> observer = provider.lookup(p).test();
 
         observer.assertNoErrors();

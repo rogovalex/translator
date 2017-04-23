@@ -14,7 +14,7 @@ import ru.rogovalex.translator.api.response.LanguagesResponse;
 import ru.rogovalex.translator.api.response.TranslateResponse;
 import ru.rogovalex.translator.data.YandexTranslateProvider;
 import ru.rogovalex.translator.domain.model.Language;
-import ru.rogovalex.translator.domain.model.TranslateParams;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -37,7 +37,7 @@ public class YandexTranslateProviderTest {
 
         YandexTranslateProvider provider = new YandexTranslateProvider(service);
 
-        TranslateParams p = new TranslateParams("test", "en", "ru", "ru");
+        TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<String> observer = provider.translate(p).test();
 
         Assert.assertEquals(1, observer.errors().size());
@@ -57,7 +57,7 @@ public class YandexTranslateProviderTest {
 
         YandexTranslateProvider provider = new YandexTranslateProvider(service);
 
-        TranslateParams p = new TranslateParams("test", "en", "ru", "ru");
+        TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<String> observer = provider.translate(p).test();
 
         Assert.assertEquals(1, observer.errors().size());
@@ -77,7 +77,7 @@ public class YandexTranslateProviderTest {
 
         YandexTranslateProvider provider = new YandexTranslateProvider(service);
 
-        TranslateParams p = new TranslateParams("test", "en", "ru", "ru");
+        TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<String> observer = provider.translate(p).test();
 
         observer.assertNoErrors();

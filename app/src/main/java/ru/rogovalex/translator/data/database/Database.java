@@ -12,8 +12,8 @@ import java.util.List;
 import ru.rogovalex.translator.domain.model.Definition;
 import ru.rogovalex.translator.domain.model.DefinitionOption;
 import ru.rogovalex.translator.domain.model.Language;
-import ru.rogovalex.translator.domain.model.TranslateParams;
 import ru.rogovalex.translator.domain.model.Translation;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 
 /**
  * Created with Android Studio.
@@ -33,7 +33,7 @@ public class Database {
         return getTranslations(TranslationTable.TIMESTAMP + ">0", null);
     }
 
-    public List<Translation> getTranslations(TranslateParams params) {
+    public List<Translation> getTranslations(TranslationParams params) {
         return getTranslations(TranslationTable.SELECT_ROW_BY_UI,
                 new String[]{params.getText(), params.getTextLang(),
                         params.getTranslationLang(), params.getUiLangCode()});

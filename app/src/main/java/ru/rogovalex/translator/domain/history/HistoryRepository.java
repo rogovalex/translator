@@ -3,8 +3,8 @@ package ru.rogovalex.translator.domain.history;
 import java.util.List;
 
 import io.reactivex.Observable;
-import ru.rogovalex.translator.domain.model.TranslateParams;
 import ru.rogovalex.translator.domain.model.Translation;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 
 /**
  * Created with Android Studio.
@@ -17,7 +17,7 @@ public interface HistoryRepository {
 
     Observable<Boolean> updateHistory(Translation translation, String uiLangCode);
 
-    Observable<List<Translation>> loadFromHistory(TranslateParams params);
+    Observable<List<Translation>> loadFromHistory(TranslationParams params);
 
     Observable<Boolean> clearHistory();
 }

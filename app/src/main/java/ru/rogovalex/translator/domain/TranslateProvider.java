@@ -4,7 +4,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import ru.rogovalex.translator.domain.model.Language;
-import ru.rogovalex.translator.domain.model.TranslateParams;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 
 /**
  * Created with Android Studio.
@@ -13,7 +13,7 @@ import ru.rogovalex.translator.domain.model.TranslateParams;
  * Time: 18:21
  */
 public interface TranslateProvider {
-    Observable<String> translate(TranslateParams params);
+    Observable<String> translate(TranslationParams params);
 
     Observable<List<Language>> languages(String uiLang);
 }

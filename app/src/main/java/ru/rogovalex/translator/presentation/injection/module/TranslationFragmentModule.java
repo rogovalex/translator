@@ -13,7 +13,7 @@ import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
-import ru.rogovalex.translator.presentation.main.translate.TranslateViewPresenter;
+import ru.rogovalex.translator.presentation.main.translate.TranslationViewPresenter;
 
 /**
  * Created with Android Studio.
@@ -23,7 +23,7 @@ import ru.rogovalex.translator.presentation.main.translate.TranslateViewPresente
  */
 
 @Module
-public class TranslateFragmentModule {
+public class TranslationFragmentModule {
 
     @Provides
     @ActivityScope
@@ -48,10 +48,10 @@ public class TranslateFragmentModule {
 
     @Provides
     @ActivityScope
-    public TranslateViewPresenter provideTranslateViewPresenter(
+    public TranslationViewPresenter provideTranslateViewPresenter(
             TranslateInteractor interactor,
             UpdateFavoriteInteractor updateInteractor,
             TranslationPreferences translationPreferences) {
-        return new TranslateViewPresenter(interactor, updateInteractor, translationPreferences);
+        return new TranslationViewPresenter(interactor, updateInteractor, translationPreferences);
     }
 }

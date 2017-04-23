@@ -13,7 +13,7 @@ import ru.rogovalex.translator.api.response.DictionaryTranslation;
 import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.model.Definition;
 import ru.rogovalex.translator.domain.model.DefinitionOption;
-import ru.rogovalex.translator.domain.model.TranslateParams;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 
 /**
  * Created with Android Studio.
@@ -33,7 +33,7 @@ public class YandexDictionaryProvider implements DictionaryProvider {
     }
 
     @Override
-    public Observable<List<Definition>> lookup(final TranslateParams params) {
+    public Observable<List<Definition>> lookup(final TranslationParams params) {
         return mService.lookup(API_KEY, params.getText(),
                 params.getTextLang() + "-" + params.getTranslationLang(),
                 params.getUiLangCode(), SHORT_POS)

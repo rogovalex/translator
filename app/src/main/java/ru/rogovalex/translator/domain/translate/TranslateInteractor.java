@@ -13,8 +13,8 @@ import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.common.Interactor;
 import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.model.Definition;
-import ru.rogovalex.translator.domain.model.TranslateParams;
 import ru.rogovalex.translator.domain.model.Translation;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
 
 /**
@@ -23,7 +23,7 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  * Date: 01.04.2017
  * Time: 18:18
  */
-public class TranslateInteractor extends Interactor<Translation, TranslateParams> {
+public class TranslateInteractor extends Interactor<Translation, TranslationParams> {
 
     private final TranslateProvider mTranslateProvider;
     private final DictionaryProvider mDictionaryProvider;
@@ -42,7 +42,7 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
     }
 
     @Override
-    protected Observable<Translation> buildObservable(final TranslateParams params) {
+    protected Observable<Translation> buildObservable(final TranslationParams params) {
         Observable<Translation> fromModel = mHistoryRepository.loadFromHistory(params)
                 .filter(list -> list.size() > 0)
                 .map(list -> list.get(0));
@@ -59,7 +59,7 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
                 .flatMap(translation -> updateHistory(translation, params.getUiLangCode()));
     }
 
-    private Observable<List<Definition>> lookupDictionary(TranslateParams params) {
+    private Observable<List<Definition>> lookupDictionary(TranslationParams params) {
         return mDictionaryProvider.lookup(params)
                 .onErrorReturnItem(Collections.emptyList());
     }

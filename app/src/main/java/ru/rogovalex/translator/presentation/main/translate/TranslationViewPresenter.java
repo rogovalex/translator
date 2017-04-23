@@ -5,8 +5,8 @@ import javax.inject.Inject;
 import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.model.Language;
-import ru.rogovalex.translator.domain.model.TranslateParams;
 import ru.rogovalex.translator.domain.model.Translation;
+import ru.rogovalex.translator.domain.model.TranslationParams;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
@@ -17,7 +17,7 @@ import ru.rogovalex.translator.presentation.common.BasePresenter;
  * Date: 01.04.2017
  * Time: 19:32
  */
-public class TranslateViewPresenter extends BasePresenter<TranslateView> {
+public class TranslationViewPresenter extends BasePresenter<TranslationView> {
 
     private final TranslateInteractor mInteractor;
     private final UpdateFavoriteInteractor mUpdateInteractor;
@@ -30,9 +30,9 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     private Translation mResult;
 
     @Inject
-    public TranslateViewPresenter(TranslateInteractor interactor,
-                                  UpdateFavoriteInteractor updateInteractor,
-                                  TranslationPreferences translationPreferences) {
+    public TranslationViewPresenter(TranslateInteractor interactor,
+                                    UpdateFavoriteInteractor updateInteractor,
+                                    TranslationPreferences translationPreferences) {
         mInteractor = interactor;
         mUpdateInteractor = updateInteractor;
         mTranslationPreferences = translationPreferences;
@@ -40,12 +40,12 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     }
 
     @Override
-    protected TranslateView getStubView() {
+    protected TranslationView getStubView() {
         return sStubView;
     }
 
     @Override
-    public void setView(TranslateView view) {
+    public void setView(TranslationView view) {
         super.setView(view);
 
         getView().setLanguages(mSourceLang, mTranslationLang);
@@ -60,7 +60,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
     public void setUiLanguageCode(String uiLangCode) {
         if (!uiLangCode.equals(mUiLangCode)) {
-            cancelTranslate();
+            cancelTranslation();
             mUiLangCode = uiLangCode;
         }
     }
@@ -88,7 +88,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     }
 
     private void setLanguages(Language sourceLang, Language translationLang) {
-        cancelTranslate();
+        cancelTranslation();
         mSourceLang = sourceLang;
         mTranslationLang = translationLang;
         getView().onTranslationDirectionChanged(mText, mSourceLang, mTranslationLang);
@@ -115,7 +115,7 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
             return;
         }
 
-        TranslateParams params = new TranslateParams(mText, mSourceLang.getCode(),
+        TranslationParams params = new TranslationParams(mText, mSourceLang.getCode(),
                 mTranslationLang.getCode(), mUiLangCode);
         mInteractor.execute(params, translation -> {
             mResult = translation;
@@ -128,17 +128,17 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
                 Functions.emptyConsumer());
     }
 
-    public void cancelTranslate() {
+    public void cancelTranslation() {
         mResult = null;
         mInteractor.cancel();
     }
 
     public void cancel() {
-        cancelTranslate();
+        cancelTranslation();
         mUpdateInteractor.cancel();
     }
 
-    private static TranslateView sStubView = new TranslateView() {
+    private static TranslationView sStubView = new TranslationView() {
         @Override
         public void onTranslating() {
         }
