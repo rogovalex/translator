@@ -5,13 +5,11 @@ import javax.inject.Named;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.Scheduler;
-import ru.rogovalex.translator.domain.DictionaryProvider;
-import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
-import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
+import ru.rogovalex.translator.domain.translate.TranslationRepository;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
 import ru.rogovalex.translator.presentation.main.translate.TranslationViewPresenter;
 
@@ -30,11 +28,8 @@ public class TranslationFragmentModule {
     public TranslateInteractor provideTranslateInteractor(
             @Named(DomainModule.JOB) Scheduler jobScheduler,
             @Named(DomainModule.UI) Scheduler uiScheduler,
-            TranslateProvider translateProvider,
-            DictionaryProvider dictionaryProvider,
-            HistoryRepository historyRepository) {
-        return new TranslateInteractor(jobScheduler, uiScheduler, translateProvider,
-                dictionaryProvider, historyRepository);
+            TranslationRepository translationRepository) {
+        return new TranslateInteractor(jobScheduler, uiScheduler, translationRepository);
     }
 
     @Provides

@@ -7,12 +7,11 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import io.reactivex.Scheduler;
-import ru.rogovalex.translator.domain.DictionaryProvider;
-import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.language.LanguagesRepository;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
+import ru.rogovalex.translator.domain.translate.TranslationRepository;
 import ru.rogovalex.translator.presentation.injection.module.AppModule;
 import ru.rogovalex.translator.presentation.injection.module.DataModule;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
@@ -39,9 +38,7 @@ public interface AppComponent {
     @Named(DomainModule.LOCAL)
     Scheduler localScheduler();
 
-    TranslateProvider translateProvider();
-
-    DictionaryProvider dictionaryProvider();
+    TranslationRepository translationRepository();
 
     FavoriteRepository favoriteRepository();
 

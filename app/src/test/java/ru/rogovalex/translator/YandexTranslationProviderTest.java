@@ -12,7 +12,7 @@ import ru.rogovalex.translator.api.ApiException;
 import ru.rogovalex.translator.api.TranslateApiService;
 import ru.rogovalex.translator.api.response.LanguagesResponse;
 import ru.rogovalex.translator.api.response.TranslateResponse;
-import ru.rogovalex.translator.data.YandexTranslateProvider;
+import ru.rogovalex.translator.data.YandexTranslationProvider;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.TranslationParams;
 
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
  * Date: 22.04.2017
  * Time: 23:27
  */
-public class YandexTranslateProviderTest {
+public class YandexTranslationProviderTest {
 
     @Test
     public void translate_responseEmpty() throws Exception {
@@ -35,7 +35,7 @@ public class YandexTranslateProviderTest {
         when(service.translate(anyString(), anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(Observable.just(new TranslateResponse()));
 
-        YandexTranslateProvider provider = new YandexTranslateProvider(service);
+        YandexTranslationProvider provider = new YandexTranslationProvider(service);
 
         TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<String> observer = provider.translate(p).test();
@@ -55,7 +55,7 @@ public class YandexTranslateProviderTest {
                     setCode(401);
                 }}));
 
-        YandexTranslateProvider provider = new YandexTranslateProvider(service);
+        YandexTranslationProvider provider = new YandexTranslationProvider(service);
 
         TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<String> observer = provider.translate(p).test();
@@ -75,7 +75,7 @@ public class YandexTranslateProviderTest {
                     setText(new String[]{"тест"});
                 }}));
 
-        YandexTranslateProvider provider = new YandexTranslateProvider(service);
+        YandexTranslationProvider provider = new YandexTranslationProvider(service);
 
         TranslationParams p = new TranslationParams("test", "en", "ru", "ru");
         TestObserver<String> observer = provider.translate(p).test();
@@ -91,7 +91,7 @@ public class YandexTranslateProviderTest {
         when(service.languages(anyString(), anyString()))
                 .thenReturn(Observable.just(new LanguagesResponse()));
 
-        YandexTranslateProvider provider = new YandexTranslateProvider(service);
+        YandexTranslationProvider provider = new YandexTranslationProvider(service);
 
         TestObserver<List<Language>> observer = provider.languages("ru").test();
 
@@ -107,7 +107,7 @@ public class YandexTranslateProviderTest {
                     setCode(401);
                 }}));
 
-        YandexTranslateProvider provider = new YandexTranslateProvider(service);
+        YandexTranslationProvider provider = new YandexTranslationProvider(service);
 
         TestObserver<List<Language>> observer = provider.languages("ru").test();
 
@@ -129,7 +129,7 @@ public class YandexTranslateProviderTest {
                     }});
                 }}));
 
-        YandexTranslateProvider provider = new YandexTranslateProvider(service);
+        YandexTranslationProvider provider = new YandexTranslationProvider(service);
 
         TestObserver<List<Language>> observer = provider.languages("ru").test();
 

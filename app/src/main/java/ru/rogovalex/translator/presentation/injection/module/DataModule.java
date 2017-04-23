@@ -13,20 +13,22 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.rogovalex.translator.api.DictionaryApiService;
 import ru.rogovalex.translator.api.TranslateApiService;
+import ru.rogovalex.translator.data.CachingLanguagesRepository;
+import ru.rogovalex.translator.data.CachingTranslationRepository;
+import ru.rogovalex.translator.data.DictionaryProvider;
 import ru.rogovalex.translator.data.LocalFavoriteRepository;
 import ru.rogovalex.translator.data.LocalHistoryRepository;
-import ru.rogovalex.translator.data.TranslationLanguagesRepository;
+import ru.rogovalex.translator.data.TranslationProvider;
 import ru.rogovalex.translator.data.TranslationSharedPreferences;
 import ru.rogovalex.translator.data.YandexDictionaryProvider;
-import ru.rogovalex.translator.data.YandexTranslateProvider;
+import ru.rogovalex.translator.data.YandexTranslationProvider;
 import ru.rogovalex.translator.data.database.Database;
 import ru.rogovalex.translator.data.database.DatabaseHelper;
-import ru.rogovalex.translator.domain.DictionaryProvider;
-import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.language.LanguagesRepository;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
+import ru.rogovalex.translator.domain.translate.TranslationRepository;
 
 /**
  * Created with Android Studio.
@@ -71,8 +73,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public TranslateProvider provideTranslateProvider(TranslateApiService apiService) {
-        return new YandexTranslateProvider(apiService);
+    public TranslationProvider provideTranslationProvider(TranslateApiService apiService) {
+        return new YandexTranslationProvider(apiService);
     }
 
     @Provides
@@ -109,14 +111,24 @@ public class DataModule {
 
     @Provides
     @Singleton
+    public TranslationRepository provideTranslationRepository(
+            Database database, TranslationProvider translateProvider,
+            DictionaryProvider dictionaryProvider) {
+        return new CachingTranslationRepository(database, translateProvider,
+                dictionaryProvider);
+    }
+
+    @Provides
+    @Singleton
     public FavoriteRepository provideFavoriteRepository(Database database) {
         return new LocalFavoriteRepository(database);
     }
 
     @Provides
     @Singleton
-    public LanguagesRepository provideLanguagesRepository(Database database, TranslateProvider provider) {
-        return new TranslationLanguagesRepository(database, provider);
+    public LanguagesRepository provideLanguagesRepository(
+            Database database, TranslationProvider provider) {
+        return new CachingLanguagesRepository(database, provider);
     }
 
     @Provides

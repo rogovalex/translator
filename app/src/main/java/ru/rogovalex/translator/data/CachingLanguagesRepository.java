@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import ru.rogovalex.translator.data.database.Database;
-import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.language.LanguagesRepository;
 import ru.rogovalex.translator.domain.model.Language;
 
@@ -16,13 +15,13 @@ import ru.rogovalex.translator.domain.model.Language;
  * Date: 19.04.2017
  * Time: 13:34
  */
-public class TranslationLanguagesRepository implements LanguagesRepository {
+public class CachingLanguagesRepository implements LanguagesRepository {
 
     private final Database mDatabase;
-    private final TranslateProvider mProvider;
+    private final TranslationProvider mProvider;
 
     @Inject
-    public TranslationLanguagesRepository(Database database, TranslateProvider provider) {
+    public CachingLanguagesRepository(Database database, TranslationProvider provider) {
         mDatabase = database;
         mProvider = provider;
     }

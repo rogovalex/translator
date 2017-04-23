@@ -10,7 +10,6 @@ import ru.rogovalex.translator.api.DictionaryApiService;
 import ru.rogovalex.translator.api.response.DictionaryEntry;
 import ru.rogovalex.translator.api.response.DictionaryResponse;
 import ru.rogovalex.translator.api.response.DictionaryTranslation;
-import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.model.Definition;
 import ru.rogovalex.translator.domain.model.DefinitionOption;
 import ru.rogovalex.translator.domain.model.TranslationParams;
