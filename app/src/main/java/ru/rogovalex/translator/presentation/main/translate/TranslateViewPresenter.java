@@ -4,9 +4,11 @@ import javax.inject.Inject;
 
 import io.reactivex.internal.functions.Functions;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
+import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.TranslateParams;
 import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
+import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 import ru.rogovalex.translator.presentation.common.BasePresenter;
 
 /**
@@ -19,32 +21,39 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
 
     private final TranslateInteractor mInteractor;
     private final UpdateFavoriteInteractor mUpdateInteractor;
+    private final TranslationPreferences mTranslationPreferences;
 
-    private String mSource;
-    private String mTranslation;
+    private String mText = "";
+    private Language mSourceLang;
+    private Language mTranslationLang;
     private String mUiLangCode;
     private Translation mResult;
 
     @Inject
     public TranslateViewPresenter(TranslateInteractor interactor,
-                                  UpdateFavoriteInteractor updateInteractor) {
+                                  UpdateFavoriteInteractor updateInteractor,
+                                  TranslationPreferences translationPreferences) {
         mInteractor = interactor;
         mUpdateInteractor = updateInteractor;
+        mTranslationPreferences = translationPreferences;
         super.setView(sStubView);
     }
 
     @Override
     public void setView(TranslateView view) {
         if (view == null) {
-            view = sStubView;
+            super.setView(sStubView);
+            return;
         }
         super.setView(view);
 
+        view.setLanguages(mSourceLang, mTranslationLang);
+
         if (mResult != null) {
-            getView().onTranslated(mResult);
+            view.onTranslated(mResult);
         }
         if (mInteractor.isRunning()) {
-            getView().onTranslating();
+            view.onTranslating();
         }
     }
 
@@ -55,26 +64,47 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         }
     }
 
-    public void setTranslationDirection(String text, String source, String translation) {
-        if (source.equals(mSource) && translation.equals(mTranslation)) {
-            if (mResult != null && !mResult.getText().equals(text)) {
-                cancelTranslate();
-            }
+    public void updateLanguages() {
+        Language sourceLang = mTranslationPreferences.getSourceLanguage();
+        Language translationLang = mTranslationPreferences.getTranslationLanguage();
+
+        if (sourceLang.equals(mSourceLang) && translationLang.equals(mTranslationLang)) {
             return;
         }
-        if (source.equals(mTranslation) && translation.equals(mSource)
-                && mResult != null && mResult.getText().equals(text)) {
-            text = mResult.getTranslation();
+        if (sourceLang.equals(mTranslationLang) && translationLang.equals(mSourceLang)
+                && mResult != null && mResult.getText().equals(mText)) {
+            mText = mResult.getTranslation();
         }
-        getView().onTranslationDirectionChanged(text);
-        cancelTranslate();
-        mSource = source;
-        mTranslation = translation;
-        translate(text);
+        setLanguages(sourceLang, translationLang);
     }
 
-    public void translate(String text) {
+    public void swapLanguages() {
+        mTranslationPreferences.setLanguages(mTranslationLang, mSourceLang);
+        if (mResult != null && mResult.getText().equals(mText)) {
+            mText = mResult.getTranslation();
+        }
+        setLanguages(mTranslationLang, mSourceLang);
+    }
+
+    private void setLanguages(Language sourceLang, Language translationLang) {
+        cancelTranslate();
+        mSourceLang = sourceLang;
+        mTranslationLang = translationLang;
+        getView().onTranslationDirectionChanged(mText, mSourceLang, mTranslationLang);
+        translate();
+    }
+
+    public void onTextChanged(String text) {
+        mText = text;
         if (text.isEmpty()) {
+            getView().onTextEmpty();
+        } else {
+            getView().onTextNotEmpty();
+        }
+    }
+
+    public void translate() {
+        if (mText.isEmpty()) {
             return;
         }
 
@@ -84,7 +114,8 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
             return;
         }
 
-        TranslateParams params = new TranslateParams(text, mSource, mTranslation, mUiLangCode);
+        TranslateParams params = new TranslateParams(mText, mSourceLang.getCode(),
+                mTranslationLang.getCode(), mUiLangCode);
         mInteractor.execute(params, translation -> {
             mResult = translation;
             getView().onTranslated(translation);
@@ -120,7 +151,19 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
         }
 
         @Override
-        public void onTranslationDirectionChanged(String text) {
+        public void onTranslationDirectionChanged(String text, Language source, Language translation) {
+        }
+
+        @Override
+        public void onTextEmpty() {
+        }
+
+        @Override
+        public void onTextNotEmpty() {
+        }
+
+        @Override
+        public void setLanguages(Language source, Language translation) {
         }
     };
 }

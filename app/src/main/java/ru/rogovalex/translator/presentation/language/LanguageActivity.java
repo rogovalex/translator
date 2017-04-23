@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
-import ru.rogovalex.translator.PreferencesHelper;
+import javax.inject.Inject;
+
 import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.domain.model.Language;
+import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 import ru.rogovalex.translator.presentation.common.BaseActivity;
 import ru.rogovalex.translator.presentation.injection.component.DaggerLanguageFragmentComponent;
 import ru.rogovalex.translator.presentation.injection.component.LanguageFragmentComponent;
@@ -18,6 +20,9 @@ public class LanguageActivity extends BaseActivity
         implements LanguageFragment.Callbacks {
 
     private final static String CHANGE_SOURCE_LANG = "LanguageActivity.source";
+
+    @Inject
+    TranslationPreferences mTranslationPreferences;
 
     public static Intent newIntent(Context packageContext, boolean changeSourceLanguage) {
         Intent intent = new Intent(packageContext, LanguageActivity.class);
@@ -29,6 +34,7 @@ public class LanguageActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language);
+        getAppComponent().inject(this);
 
         boolean source = getIntent().getBooleanExtra(CHANGE_SOURCE_LANG, false);
         setTitle(source ? R.string.title_source_lang : R.string.title_translation_lang);
@@ -64,9 +70,9 @@ public class LanguageActivity extends BaseActivity
     @Override
     public void onLanguageSelected(Language item) {
         if (getIntent().getBooleanExtra(CHANGE_SOURCE_LANG, false)) {
-            PreferencesHelper.setSourceLanguage(this, item);
+            mTranslationPreferences.setSourceLanguage(item);
         } else {
-            PreferencesHelper.setTranslationLanguage(this, item);
+            mTranslationPreferences.setTranslationLanguage(item);
         }
         setResult(RESULT_OK);
         supportFinishAfterTransition();
@@ -76,8 +82,8 @@ public class LanguageActivity extends BaseActivity
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null) {
-            Language language = source ? PreferencesHelper.getSourceLanguage(this)
-                    : PreferencesHelper.getTranslationLanguage(this);
+            Language language = source ? mTranslationPreferences.getSourceLanguage()
+                    : mTranslationPreferences.getTranslationLanguage();
             fragment = LanguageFragment.newInstance(language);
             fm.beginTransaction()
                     .add(R.id.fragment_container, fragment)

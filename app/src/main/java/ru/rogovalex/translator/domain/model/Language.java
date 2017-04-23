@@ -23,4 +23,23 @@ public class Language {
     public String getName() {
         return mName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Language language = (Language) o;
+
+        if (mCode != null ? !mCode.equals(language.mCode) : language.mCode != null) return false;
+        return mName != null ? mName.equals(language.mName) : language.mName == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mCode != null ? mCode.hashCode() : 0;
+        result = 31 * result + (mName != null ? mName.hashCode() : 0);
+        return result;
+    }
 }

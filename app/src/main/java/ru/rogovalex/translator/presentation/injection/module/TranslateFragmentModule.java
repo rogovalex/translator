@@ -11,6 +11,7 @@ import ru.rogovalex.translator.domain.favorite.FavoriteModel;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.history.HistoryModel;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
+import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
 import ru.rogovalex.translator.presentation.main.translate.TranslateViewPresenter;
 
@@ -49,7 +50,8 @@ public class TranslateFragmentModule {
     @ActivityScope
     public TranslateViewPresenter provideTranslateViewPresenter(
             TranslateInteractor interactor,
-            UpdateFavoriteInteractor updateInteractor) {
-        return new TranslateViewPresenter(interactor, updateInteractor);
+            UpdateFavoriteInteractor updateInteractor,
+            TranslationPreferences translationPreferences) {
+        return new TranslateViewPresenter(interactor, updateInteractor, translationPreferences);
     }
 }

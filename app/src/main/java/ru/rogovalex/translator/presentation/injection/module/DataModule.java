@@ -16,6 +16,7 @@ import ru.rogovalex.translator.api.TranslateApiService;
 import ru.rogovalex.translator.data.LocalFavoriteModel;
 import ru.rogovalex.translator.data.LocalHistoryModel;
 import ru.rogovalex.translator.data.LocalLanguageModel;
+import ru.rogovalex.translator.data.TranslationSharedPreferences;
 import ru.rogovalex.translator.data.YandexDictionaryProvider;
 import ru.rogovalex.translator.data.YandexTranslateProvider;
 import ru.rogovalex.translator.data.database.Database;
@@ -25,6 +26,7 @@ import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.favorite.FavoriteModel;
 import ru.rogovalex.translator.domain.history.HistoryModel;
 import ru.rogovalex.translator.domain.language.LanguageModel;
+import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 
 /**
  * Created with Android Studio.
@@ -121,5 +123,11 @@ public class DataModule {
     @Singleton
     public HistoryModel provideHistoryModel(Database database) {
         return new LocalHistoryModel(database);
+    }
+
+    @Provides
+    @Singleton
+    public TranslationPreferences provideTranslationPreferences(Context context) {
+        return new TranslationSharedPreferences(context);
     }
 }

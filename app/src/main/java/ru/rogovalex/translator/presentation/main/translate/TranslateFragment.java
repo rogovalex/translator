@@ -20,7 +20,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import ru.rogovalex.translator.PreferencesHelper;
 import ru.rogovalex.translator.R;
 import ru.rogovalex.translator.api.ApiException;
 import ru.rogovalex.translator.domain.model.Language;
@@ -54,8 +53,6 @@ public class TranslateFragment extends BaseFragment
 
     private TranslationAdapter mAdapter;
 
-    private Language mSourceLang;
-    private Language mTranslationLang;
     private Callbacks mCallbacks;
 
     @Inject
@@ -90,7 +87,7 @@ public class TranslateFragment extends BaseFragment
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mClear.setVisibility(s.length() == 0 ? View.GONE : View.VISIBLE);
+                mPresenter.onTextChanged(s.toString());
             }
 
             @Override
@@ -110,13 +107,7 @@ public class TranslateFragment extends BaseFragment
         super.onActivityCreated(savedInstanceState);
         mCallbacks.getTranslateFragmentComponent().inject(this);
         mPresenter.setUiLanguageCode(getString(R.string.ui_lang_code));
-        updateLanguages();
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        updateLanguagesDependencies();
+        mPresenter.updateLanguages();
     }
 
     @Override
@@ -134,8 +125,7 @@ public class TranslateFragment extends BaseFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_LANG && resultCode == Activity.RESULT_OK) {
-            updateLanguages();
-            updateLanguagesDependencies();
+            mPresenter.updateLanguages();
         }
     }
 
@@ -172,9 +162,26 @@ public class TranslateFragment extends BaseFragment
     }
 
     @Override
-    public void onTranslationDirectionChanged(String text) {
+    public void onTranslationDirectionChanged(String text, Language source, Language translation) {
+        setLanguages(source, translation);
         mTextInput.setText(text);
         mAdapter.clear();
+    }
+
+    @Override
+    public void onTextEmpty() {
+        mClear.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onTextNotEmpty() {
+        mClear.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setLanguages(Language source, Language translation) {
+        mSource.setText(source.getName());
+        mTranslation.setText(translation.getName());
     }
 
     @Override
@@ -194,13 +201,12 @@ public class TranslateFragment extends BaseFragment
 
     @OnClick(R.id.swap_lang_btn)
     void swapLanguageClick() {
-        swapLanguages();
-        updateLanguagesDependencies();
+        mPresenter.swapLanguages();
     }
 
     @OnClick(R.id.translate_btn)
     void translateTextClick() {
-        mPresenter.translate(mTextInput.getText().toString().trim());
+        mPresenter.translate();
     }
 
     @OnClick(R.id.clear_input_btn)
@@ -224,25 +230,6 @@ public class TranslateFragment extends BaseFragment
         InputMethodManager imm = (InputMethodManager) getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(mTextInput, InputMethodManager.SHOW_FORCED);
-    }
-
-    private void updateLanguages() {
-        mSourceLang = PreferencesHelper.getSourceLanguage(getContext());
-        mTranslationLang = PreferencesHelper.getTranslationLanguage(getContext());
-    }
-
-    private void updateLanguagesDependencies() {
-        mSource.setText(mSourceLang.getName());
-        mTranslation.setText(mTranslationLang.getName());
-        mPresenter.setTranslationDirection(mTextInput.getText().toString().trim(),
-                mSourceLang.getCode(), mTranslationLang.getCode());
-    }
-
-    private void swapLanguages() {
-        Language tmp = mSourceLang;
-        mSourceLang = mTranslationLang;
-        mTranslationLang = tmp;
-        PreferencesHelper.setLanguages(getContext(), mSourceLang, mTranslationLang);
     }
 
     private void changeLanguage(boolean changeSourceLanguage) {

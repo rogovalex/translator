@@ -1,5 +1,6 @@
 package ru.rogovalex.translator.presentation.main.translate;
 
+import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.Translation;
 
 /**
@@ -15,5 +16,11 @@ public interface TranslateView {
 
     void onTranslateError(Throwable e);
 
-    void onTranslationDirectionChanged(String text);
+    void onTranslationDirectionChanged(String text, Language sourceLang, Language translationLang);
+
+    void onTextEmpty();
+
+    void onTextNotEmpty();
+
+    void setLanguages(Language source, Language translation);
 }
