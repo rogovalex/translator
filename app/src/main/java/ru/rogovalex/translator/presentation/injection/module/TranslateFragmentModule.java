@@ -7,7 +7,7 @@ import dagger.Provides;
 import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.TranslateProvider;
-import ru.rogovalex.translator.domain.favorite.FavoriteModel;
+import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.history.HistoryModel;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
@@ -42,8 +42,8 @@ public class TranslateFragmentModule {
     public UpdateFavoriteInteractor provideUpdateFavoriteInteractor(
             @Named(DomainModule.LOCAL) Scheduler jobScheduler,
             @Named(DomainModule.UI) Scheduler uiScheduler,
-            FavoriteModel favoriteModel) {
-        return new UpdateFavoriteInteractor(jobScheduler, uiScheduler, favoriteModel);
+            FavoriteRepository favoriteRepository) {
+        return new UpdateFavoriteInteractor(jobScheduler, uiScheduler, favoriteRepository);
     }
 
     @Provides

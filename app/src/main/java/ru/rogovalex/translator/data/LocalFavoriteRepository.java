@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import ru.rogovalex.translator.data.database.Database;
-import ru.rogovalex.translator.domain.favorite.FavoriteModel;
+import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.model.Translation;
 
 /**
@@ -15,12 +15,12 @@ import ru.rogovalex.translator.domain.model.Translation;
  * Date: 19.04.2017
  * Time: 13:08
  */
-public class LocalFavoriteModel implements FavoriteModel {
+public class LocalFavoriteRepository implements FavoriteRepository {
 
     private final Database mDatabase;
 
     @Inject
-    public LocalFavoriteModel(Database database) {
+    public LocalFavoriteRepository(Database database) {
         mDatabase = database;
     }
 

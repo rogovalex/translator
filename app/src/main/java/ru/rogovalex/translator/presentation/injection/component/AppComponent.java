@@ -9,7 +9,7 @@ import dagger.Component;
 import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.TranslateProvider;
-import ru.rogovalex.translator.domain.favorite.FavoriteModel;
+import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.history.HistoryModel;
 import ru.rogovalex.translator.domain.language.LanguageModel;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
@@ -43,7 +43,7 @@ public interface AppComponent {
 
     DictionaryProvider dictionaryProvider();
 
-    FavoriteModel favoriteModel();
+    FavoriteRepository favoriteRepository();
 
     LanguageModel languageModel();
 

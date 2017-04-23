@@ -5,7 +5,7 @@ import javax.inject.Named;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.Scheduler;
-import ru.rogovalex.translator.domain.favorite.FavoriteModel;
+import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.favorite.LoadFavoriteInteractor;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
@@ -26,8 +26,8 @@ public class FavoriteFragmentModule {
     public LoadFavoriteInteractor provideLoadFavoriteInteractor(
             @Named(DomainModule.LOCAL) Scheduler jobScheduler,
             @Named(DomainModule.UI) Scheduler uiScheduler,
-            FavoriteModel favoriteModel) {
-        return new LoadFavoriteInteractor(jobScheduler, uiScheduler, favoriteModel);
+            FavoriteRepository favoriteRepository) {
+        return new LoadFavoriteInteractor(jobScheduler, uiScheduler, favoriteRepository);
     }
 
     @Provides
@@ -35,8 +35,8 @@ public class FavoriteFragmentModule {
     public UpdateFavoriteInteractor provideUpdateFavoriteInteractor(
             @Named(DomainModule.LOCAL) Scheduler jobScheduler,
             @Named(DomainModule.UI) Scheduler uiScheduler,
-            FavoriteModel favoriteModel) {
-        return new UpdateFavoriteInteractor(jobScheduler, uiScheduler, favoriteModel);
+            FavoriteRepository favoriteRepository) {
+        return new UpdateFavoriteInteractor(jobScheduler, uiScheduler, favoriteRepository);
     }
 
     @Provides

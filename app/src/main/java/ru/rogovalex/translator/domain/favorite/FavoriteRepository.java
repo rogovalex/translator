@@ -11,7 +11,7 @@ import ru.rogovalex.translator.domain.model.Translation;
  * Date: 02.04.2017
  * Time: 12:10
  */
-public interface FavoriteModel {
+public interface FavoriteRepository {
     Observable<List<Translation>> loadFavorite();
 
     Observable<Boolean> updateFavorite(Translation translation);

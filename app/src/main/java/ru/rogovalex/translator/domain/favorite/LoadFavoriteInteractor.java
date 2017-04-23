@@ -19,18 +19,18 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  */
 public class LoadFavoriteInteractor extends Interactor<List<Translation>, Void> {
 
-    private final FavoriteModel mModel;
+    private final FavoriteRepository mRepository;
 
     @Inject
     public LoadFavoriteInteractor(@Named(DomainModule.LOCAL) Scheduler jobScheduler,
                                   @Named(DomainModule.UI) Scheduler uiScheduler,
-                                  FavoriteModel model) {
+                                  FavoriteRepository repository) {
         super(jobScheduler, uiScheduler);
-        mModel = model;
+        mRepository = repository;
     }
 
     @Override
     protected Observable<List<Translation>> buildObservable(Void params) {
-        return mModel.loadFavorite();
+        return mRepository.loadFavorite();
     }
 }
