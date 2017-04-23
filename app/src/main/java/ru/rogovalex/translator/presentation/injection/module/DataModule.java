@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.rogovalex.translator.api.DictionaryApiService;
 import ru.rogovalex.translator.api.TranslateApiService;
 import ru.rogovalex.translator.data.LocalFavoriteRepository;
-import ru.rogovalex.translator.data.LocalHistoryModel;
+import ru.rogovalex.translator.data.LocalHistoryRepository;
 import ru.rogovalex.translator.data.LocalLanguageModel;
 import ru.rogovalex.translator.data.TranslationSharedPreferences;
 import ru.rogovalex.translator.data.YandexDictionaryProvider;
@@ -24,7 +24,7 @@ import ru.rogovalex.translator.data.database.DatabaseHelper;
 import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
-import ru.rogovalex.translator.domain.history.HistoryModel;
+import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.language.LanguageModel;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 
@@ -121,8 +121,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public HistoryModel provideHistoryModel(Database database) {
-        return new LocalHistoryModel(database);
+    public HistoryRepository provideHistoryRepository(Database database) {
+        return new LocalHistoryRepository(database);
     }
 
     @Provides

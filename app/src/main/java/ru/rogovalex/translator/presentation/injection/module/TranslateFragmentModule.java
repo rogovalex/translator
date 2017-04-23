@@ -9,7 +9,7 @@ import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
-import ru.rogovalex.translator.domain.history.HistoryModel;
+import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.translate.TranslateInteractor;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
@@ -32,9 +32,9 @@ public class TranslateFragmentModule {
             @Named(DomainModule.UI) Scheduler uiScheduler,
             TranslateProvider translateProvider,
             DictionaryProvider dictionaryProvider,
-            HistoryModel historyModel) {
+            HistoryRepository historyRepository) {
         return new TranslateInteractor(jobScheduler, uiScheduler, translateProvider,
-                dictionaryProvider, historyModel);
+                dictionaryProvider, historyRepository);
     }
 
     @Provides

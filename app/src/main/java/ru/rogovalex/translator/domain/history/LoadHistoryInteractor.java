@@ -19,18 +19,18 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  */
 public class LoadHistoryInteractor extends Interactor<List<Translation>, Void> {
 
-    private final HistoryModel mModel;
+    private final HistoryRepository mRepository;
 
     @Inject
     public LoadHistoryInteractor(@Named(DomainModule.LOCAL) Scheduler jobScheduler,
                                  @Named(DomainModule.UI) Scheduler uiScheduler,
-                                 HistoryModel model) {
+                                 HistoryRepository repository) {
         super(jobScheduler, uiScheduler);
-        mModel = model;
+        mRepository = repository;
     }
 
     @Override
     protected Observable<List<Translation>> buildObservable(Void params) {
-        return mModel.loadHistory();
+        return mRepository.loadHistory();
     }
 }

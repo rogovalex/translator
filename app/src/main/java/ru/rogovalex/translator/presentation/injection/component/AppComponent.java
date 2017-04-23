@@ -10,7 +10,7 @@ import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
-import ru.rogovalex.translator.domain.history.HistoryModel;
+import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.language.LanguageModel;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 import ru.rogovalex.translator.presentation.injection.module.AppModule;
@@ -47,7 +47,7 @@ public interface AppComponent {
 
     LanguageModel languageModel();
 
-    HistoryModel historyModel();
+    HistoryRepository historyRepository();
 
     TranslationPreferences translationPreferences();
 

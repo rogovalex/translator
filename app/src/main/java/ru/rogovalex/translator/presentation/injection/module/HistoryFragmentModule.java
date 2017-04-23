@@ -8,7 +8,7 @@ import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.favorite.UpdateFavoriteInteractor;
 import ru.rogovalex.translator.domain.history.ClearHistoryInteractor;
-import ru.rogovalex.translator.domain.history.HistoryModel;
+import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.history.LoadHistoryInteractor;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
 import ru.rogovalex.translator.presentation.main.history.HistoryViewPresenter;
@@ -28,8 +28,8 @@ public class HistoryFragmentModule {
     public LoadHistoryInteractor provideLoadHistoryInteractor(
             @Named(DomainModule.LOCAL) Scheduler jobScheduler,
             @Named(DomainModule.UI) Scheduler uiScheduler,
-            HistoryModel historyModel) {
-        return new LoadHistoryInteractor(jobScheduler, uiScheduler, historyModel);
+            HistoryRepository historyRepository) {
+        return new LoadHistoryInteractor(jobScheduler, uiScheduler, historyRepository);
     }
 
     @Provides
@@ -37,8 +37,8 @@ public class HistoryFragmentModule {
     public ClearHistoryInteractor provideClearHistoryInteractor(
             @Named(DomainModule.LOCAL) Scheduler jobScheduler,
             @Named(DomainModule.UI) Scheduler uiScheduler,
-            HistoryModel historyModel) {
-        return new ClearHistoryInteractor(jobScheduler, uiScheduler, historyModel);
+            HistoryRepository historyRepository) {
+        return new ClearHistoryInteractor(jobScheduler, uiScheduler, historyRepository);
     }
 
     @Provides

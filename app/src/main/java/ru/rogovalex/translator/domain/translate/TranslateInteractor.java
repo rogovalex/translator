@@ -11,7 +11,7 @@ import io.reactivex.Scheduler;
 import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.common.Interactor;
-import ru.rogovalex.translator.domain.history.HistoryModel;
+import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.model.Definition;
 import ru.rogovalex.translator.domain.model.TranslateParams;
 import ru.rogovalex.translator.domain.model.Translation;
@@ -27,23 +27,23 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
 
     private final TranslateProvider mTranslateProvider;
     private final DictionaryProvider mDictionaryProvider;
-    private final HistoryModel mModel;
+    private final HistoryRepository mHistoryRepository;
 
     @Inject
     public TranslateInteractor(@Named(DomainModule.JOB) Scheduler jobScheduler,
                                @Named(DomainModule.UI) Scheduler uiScheduler,
                                TranslateProvider translateProvider,
                                DictionaryProvider dictionaryProvider,
-                               HistoryModel model) {
+                               HistoryRepository historyRepository) {
         super(jobScheduler, uiScheduler);
         mTranslateProvider = translateProvider;
         mDictionaryProvider = dictionaryProvider;
-        mModel = model;
+        mHistoryRepository = historyRepository;
     }
 
     @Override
     protected Observable<Translation> buildObservable(final TranslateParams params) {
-        Observable<Translation> fromModel = mModel.loadFromHistory(params)
+        Observable<Translation> fromModel = mHistoryRepository.loadFromHistory(params)
                 .filter(list -> list.size() > 0)
                 .map(list -> list.get(0));
 
@@ -65,7 +65,7 @@ public class TranslateInteractor extends Interactor<Translation, TranslateParams
     }
 
     private Observable<Translation> updateHistory(Translation translation, String uiLangCode) {
-        return mModel.updateHistory(translation, uiLangCode)
+        return mHistoryRepository.updateHistory(translation, uiLangCode)
                 .map(value -> translation)
                 .onErrorReturnItem(translation);
     }

@@ -12,7 +12,7 @@ import ru.rogovalex.translator.domain.model.Translation;
  * Date: 02.04.2017
  * Time: 12:10
  */
-public interface HistoryModel {
+public interface HistoryRepository {
     Observable<List<Translation>> loadHistory();
 
     Observable<Boolean> updateHistory(Translation translation, String uiLangCode);

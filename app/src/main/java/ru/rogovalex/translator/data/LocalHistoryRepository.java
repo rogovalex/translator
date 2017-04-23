@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import ru.rogovalex.translator.data.database.Database;
-import ru.rogovalex.translator.domain.history.HistoryModel;
+import ru.rogovalex.translator.domain.history.HistoryRepository;
 import ru.rogovalex.translator.domain.model.TranslateParams;
 import ru.rogovalex.translator.domain.model.Translation;
 
@@ -16,12 +16,12 @@ import ru.rogovalex.translator.domain.model.Translation;
  * Date: 19.04.2017
  * Time: 13:08
  */
-public class LocalHistoryModel implements HistoryModel {
+public class LocalHistoryRepository implements HistoryRepository {
 
     private final Database mDatabase;
 
     @Inject
-    public LocalHistoryModel(Database database) {
+    public LocalHistoryRepository(Database database) {
         mDatabase = database;
     }
 

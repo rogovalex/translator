@@ -17,18 +17,18 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  */
 public class ClearHistoryInteractor extends Interactor<Boolean, Void> {
 
-    private final HistoryModel mModel;
+    private final HistoryRepository mRepository;
 
     @Inject
     public ClearHistoryInteractor(@Named(DomainModule.LOCAL) Scheduler jobScheduler,
                                   @Named(DomainModule.UI) Scheduler uiScheduler,
-                                  HistoryModel model) {
+                                  HistoryRepository repository) {
         super(jobScheduler, uiScheduler);
-        mModel = model;
+        mRepository = repository;
     }
 
     @Override
     protected Observable<Boolean> buildObservable(Void params) {
-        return mModel.clearHistory();
+        return mRepository.clearHistory();
     }
 }
