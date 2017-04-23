@@ -15,7 +15,7 @@ import ru.rogovalex.translator.api.DictionaryApiService;
 import ru.rogovalex.translator.api.TranslateApiService;
 import ru.rogovalex.translator.data.LocalFavoriteRepository;
 import ru.rogovalex.translator.data.LocalHistoryRepository;
-import ru.rogovalex.translator.data.LocalLanguageRepository;
+import ru.rogovalex.translator.data.TranslationLanguageRepository;
 import ru.rogovalex.translator.data.TranslationSharedPreferences;
 import ru.rogovalex.translator.data.YandexDictionaryProvider;
 import ru.rogovalex.translator.data.YandexTranslateProvider;
@@ -116,7 +116,7 @@ public class DataModule {
     @Provides
     @Singleton
     public LanguageRepository provideLanguageRepository(Database database, TranslateProvider provider) {
-        return new LocalLanguageRepository(database, provider);
+        return new TranslationLanguageRepository(database, provider);
     }
 
     @Provides

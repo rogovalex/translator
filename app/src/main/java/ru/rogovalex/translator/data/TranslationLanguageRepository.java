@@ -16,13 +16,13 @@ import ru.rogovalex.translator.domain.model.Language;
  * Date: 19.04.2017
  * Time: 13:34
  */
-public class LocalLanguageRepository implements LanguageRepository {
+public class TranslationLanguageRepository implements LanguageRepository {
 
     private final Database mDatabase;
     private final TranslateProvider mProvider;
 
     @Inject
-    public LocalLanguageRepository(Database database, TranslateProvider provider) {
+    public TranslationLanguageRepository(Database database, TranslateProvider provider) {
         mDatabase = database;
         mProvider = provider;
     }
