@@ -48,13 +48,13 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     public void setView(TranslateView view) {
         super.setView(view);
 
-        view.setLanguages(mSourceLang, mTranslationLang);
+        getView().setLanguages(mSourceLang, mTranslationLang);
 
         if (mResult != null) {
-            view.onTranslated(mResult);
+            getView().onTranslated(mResult);
         }
         if (mInteractor.isRunning()) {
-            view.onTranslating();
+            getView().onTranslating();
         }
     }
 
