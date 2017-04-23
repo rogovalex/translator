@@ -5,7 +5,7 @@ import javax.inject.Named;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.Scheduler;
-import ru.rogovalex.translator.domain.language.LanguageRepository;
+import ru.rogovalex.translator.domain.language.LanguagesRepository;
 import ru.rogovalex.translator.domain.language.LoadLanguagesInteractor;
 import ru.rogovalex.translator.presentation.injection.scope.ActivityScope;
 import ru.rogovalex.translator.presentation.language.LanguagesViewPresenter;
@@ -25,9 +25,9 @@ public class LanguageFragmentModule {
     public LoadLanguagesInteractor provideLoadLanguagesInteractor(
             @Named(DomainModule.JOB) Scheduler jobScheduler,
             @Named(DomainModule.UI) Scheduler uiScheduler,
-            LanguageRepository languageRepository) {
+            LanguagesRepository languagesRepository) {
         return new LoadLanguagesInteractor(jobScheduler, uiScheduler,
-                languageRepository);
+                languagesRepository);
     }
 
     @Provides

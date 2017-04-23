@@ -11,7 +11,7 @@ import ru.rogovalex.translator.domain.DictionaryProvider;
 import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.favorite.FavoriteRepository;
 import ru.rogovalex.translator.domain.history.HistoryRepository;
-import ru.rogovalex.translator.domain.language.LanguageRepository;
+import ru.rogovalex.translator.domain.language.LanguagesRepository;
 import ru.rogovalex.translator.domain.translate.TranslationPreferences;
 import ru.rogovalex.translator.presentation.injection.module.AppModule;
 import ru.rogovalex.translator.presentation.injection.module.DataModule;
@@ -45,7 +45,7 @@ public interface AppComponent {
 
     FavoriteRepository favoriteRepository();
 
-    LanguageRepository languageRepository();
+    LanguagesRepository languagesRepository();
 
     HistoryRepository historyRepository();
 

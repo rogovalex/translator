@@ -19,18 +19,18 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  */
 public class LoadLanguagesInteractor extends Interactor<List<Language>, String> {
 
-    private final LanguageRepository mRepository;
+    private final LanguagesRepository mRepository;
 
     @Inject
     public LoadLanguagesInteractor(@Named(DomainModule.JOB) Scheduler jobScheduler,
                                    @Named(DomainModule.UI) Scheduler uiScheduler,
-                                   LanguageRepository repository) {
+                                   LanguagesRepository repository) {
         super(jobScheduler, uiScheduler);
         mRepository = repository;
     }
 
     @Override
     protected Observable<List<Language>> buildObservable(final String uiLang) {
-        return mRepository.loadLanguages(uiLang);
+        return mRepository.getLanguages(uiLang);
     }
 }
