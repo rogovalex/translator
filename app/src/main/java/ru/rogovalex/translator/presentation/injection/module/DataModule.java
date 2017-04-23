@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.rogovalex.translator.data.CachingLanguagesRepository;
 import ru.rogovalex.translator.data.CachingTranslationRepository;
 import ru.rogovalex.translator.data.DictionaryProvider;
+import ru.rogovalex.translator.data.LanguagesProvider;
 import ru.rogovalex.translator.data.LocalFavoriteRepository;
 import ru.rogovalex.translator.data.LocalHistoryRepository;
 import ru.rogovalex.translator.data.TranslationProvider;
@@ -73,8 +74,20 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public TranslationProvider provideTranslationProvider(TranslateApiService apiService) {
+    YandexTranslationProvider provideYandexTranslationProvider(TranslateApiService apiService) {
         return new YandexTranslationProvider(apiService);
+    }
+
+    @Provides
+    @Singleton
+    public TranslationProvider provideTranslationProvider(YandexTranslationProvider provider) {
+        return provider;
+    }
+
+    @Provides
+    @Singleton
+    public LanguagesProvider provideLanguagesProvider(YandexTranslationProvider provider) {
+        return provider;
     }
 
     @Provides
@@ -127,7 +140,7 @@ public class DataModule {
     @Provides
     @Singleton
     public LanguagesRepository provideLanguagesRepository(
-            Database database, TranslationProvider provider) {
+            Database database, LanguagesProvider provider) {
         return new CachingLanguagesRepository(database, provider);
     }
 

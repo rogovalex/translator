@@ -1,6 +1,9 @@
 package ru.rogovalex.translator.data;
 
+import java.util.List;
+
 import io.reactivex.Observable;
+import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.TranslationParams;
 
 /**
@@ -9,6 +12,8 @@ import ru.rogovalex.translator.domain.model.TranslationParams;
  * Date: 01.04.2017
  * Time: 18:21
  */
-public interface TranslationProvider {
+public interface LanguagesProvider {
     Observable<String> translate(TranslationParams params);
+
+    Observable<List<Language>> languages(String uiLang);
 }

@@ -18,10 +18,10 @@ import ru.rogovalex.translator.domain.model.Language;
 public class CachingLanguagesRepository implements LanguagesRepository {
 
     private final Database mDatabase;
-    private final TranslationProvider mProvider;
+    private final LanguagesProvider mProvider;
 
     @Inject
-    public CachingLanguagesRepository(Database database, TranslationProvider provider) {
+    public CachingLanguagesRepository(Database database, LanguagesProvider provider) {
         mDatabase = database;
         mProvider = provider;
     }

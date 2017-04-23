@@ -17,7 +17,7 @@ import ru.rogovalex.translator.domain.model.TranslationParams;
  * Date: 01.04.2017
  * Time: 18:28
  */
-public class YandexTranslationProvider implements TranslationProvider {
+public class YandexTranslationProvider implements TranslationProvider, LanguagesProvider {
 
     private static final String API_KEY = "trnsl.1.1.20170401T123903Z.821a542db77c4103.831126fb02a869cdd86f9c876690e4c437f83f65";
     private static final String FORMAT_PLAIN = "plain";
