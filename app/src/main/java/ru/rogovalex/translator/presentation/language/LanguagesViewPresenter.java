@@ -27,6 +27,11 @@ public class LanguagesViewPresenter extends BasePresenter<LanguagesView> {
         super.setView(sStubView);
     }
 
+    @Override
+    public LanguagesView getStubView() {
+        return sStubView;
+    }
+
     public void setUiLanguageCode(String uiLangCode) {
         if (!uiLangCode.equals(mUiLangCode)) {
             cancel();

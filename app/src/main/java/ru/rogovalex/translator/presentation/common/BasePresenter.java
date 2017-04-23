@@ -15,6 +15,13 @@ public abstract class BasePresenter<View> {
     }
 
     public void setView(View view) {
-        this.mView = view;
+        if (view == null) {
+            view = getStubView();
+        }
+        mView = view;
+    }
+
+    protected View getStubView() {
+        return null;
     }
 }

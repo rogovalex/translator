@@ -40,11 +40,12 @@ public class TranslateViewPresenter extends BasePresenter<TranslateView> {
     }
 
     @Override
+    protected TranslateView getStubView() {
+        return sStubView;
+    }
+
+    @Override
     public void setView(TranslateView view) {
-        if (view == null) {
-            super.setView(sStubView);
-            return;
-        }
         super.setView(view);
 
         view.setLanguages(mSourceLang, mTranslationLang);

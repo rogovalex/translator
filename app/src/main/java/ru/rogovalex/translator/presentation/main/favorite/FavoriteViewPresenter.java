@@ -31,6 +31,11 @@ public class FavoriteViewPresenter extends BasePresenter<FavoriteView> {
         super.setView(sStubView);
     }
 
+    @Override
+    public FavoriteView getStubView() {
+        return sStubView;
+    }
+
     public void loadFavorite() {
         if (mItems != null) {
             getView().onFavoriteLoaded(mItems);

@@ -35,6 +35,11 @@ public class HistoryViewPresenter extends BasePresenter<HistoryView> {
         super.setView(sStubView);
     }
 
+    @Override
+    public HistoryView getStubView() {
+        return sStubView;
+    }
+
     public void loadHistory() {
         if (mItems != null) {
             getView().onHistoryLoaded(mItems);
