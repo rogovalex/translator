@@ -7,7 +7,6 @@ import javax.inject.Named;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import ru.rogovalex.translator.domain.TranslateProvider;
 import ru.rogovalex.translator.domain.common.Interactor;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.presentation.injection.module.DomainModule;
@@ -20,30 +19,18 @@ import ru.rogovalex.translator.presentation.injection.module.DomainModule;
  */
 public class LoadLanguagesInteractor extends Interactor<List<Language>, String> {
 
-    private final TranslateProvider mProvider;
-    private final LanguageModel mModel;
+    private final LanguageRepository mRepository;
 
     @Inject
     public LoadLanguagesInteractor(@Named(DomainModule.JOB) Scheduler jobScheduler,
                                    @Named(DomainModule.UI) Scheduler uiScheduler,
-                                   TranslateProvider provider,
-                                   LanguageModel model) {
+                                   LanguageRepository repository) {
         super(jobScheduler, uiScheduler);
-        mProvider = provider;
-        mModel = model;
+        mRepository = repository;
     }
 
     @Override
     protected Observable<List<Language>> buildObservable(final String uiLang) {
-        Observable<List<Language>> fromModel = mModel.loadLanguages(uiLang)
-                .filter(list -> list.size() > 0);
-
-        Observable<List<Language>> fromApi = mProvider.languages(uiLang)
-                .flatMap(languages -> mModel.updateLanguages(uiLang, languages))
-                .flatMap(value -> mModel.loadLanguages(uiLang));
-
-        return Observable.concat(fromModel, fromApi)
-                .firstElement()
-                .toObservable();
+        return mRepository.loadLanguages(uiLang);
     }
 }

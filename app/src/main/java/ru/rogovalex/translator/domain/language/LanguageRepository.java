@@ -11,7 +11,7 @@ import ru.rogovalex.translator.domain.model.Language;
  * Date: 02.04.2017
  * Time: 12:10
  */
-public interface LanguageModel {
+public interface LanguageRepository {
     Observable<List<Language>> loadLanguages(String uiLang);
 
     Observable<Boolean> updateLanguages(String uiLang, List<Language> languages);
