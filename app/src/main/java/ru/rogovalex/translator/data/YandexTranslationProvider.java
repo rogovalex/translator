@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import ru.rogovalex.translator.api.ApiException;
-import ru.rogovalex.translator.api.TranslateApiService;
-import ru.rogovalex.translator.api.response.LanguagesResponse;
-import ru.rogovalex.translator.api.response.TranslateResponse;
+import ru.rogovalex.translator.data.api.TranslateApiService;
+import ru.rogovalex.translator.data.api.YandexApiException;
+import ru.rogovalex.translator.data.api.response.LanguagesResponse;
+import ru.rogovalex.translator.data.api.response.TranslateResponse;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.TranslationParams;
 
@@ -49,17 +49,17 @@ public class YandexTranslationProvider implements TranslationProvider {
 
     private Observable<String> handleTranslateResponse(TranslateResponse response) {
         if (response.getCode() != 200) {
-            return Observable.error(new ApiException(response.getCode()));
+            return Observable.error(new YandexApiException(response.getCode()));
         }
         if (response.getText() == null || response.getText().length == 0) {
-            return Observable.error(new ApiException(422));
+            return Observable.error(new YandexApiException(422));
         }
         return Observable.just(response.getText()[0]);
     }
 
     private Observable<Map<String, String>> handleLanguagesResponse(LanguagesResponse response) {
         if (response.getCode() != 200) {
-            return Observable.error(new ApiException(response.getCode()));
+            return Observable.error(new YandexApiException(response.getCode()));
         }
         return Observable.just(response.getLangs());
     }

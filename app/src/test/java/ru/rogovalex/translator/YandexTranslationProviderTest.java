@@ -8,11 +8,11 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
-import ru.rogovalex.translator.api.ApiException;
-import ru.rogovalex.translator.api.TranslateApiService;
-import ru.rogovalex.translator.api.response.LanguagesResponse;
-import ru.rogovalex.translator.api.response.TranslateResponse;
 import ru.rogovalex.translator.data.YandexTranslationProvider;
+import ru.rogovalex.translator.data.api.TranslateApiService;
+import ru.rogovalex.translator.data.api.YandexApiException;
+import ru.rogovalex.translator.data.api.response.LanguagesResponse;
+import ru.rogovalex.translator.data.api.response.TranslateResponse;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.TranslationParams;
 
@@ -42,7 +42,7 @@ public class YandexTranslationProviderTest {
 
         Assert.assertEquals(1, observer.errors().size());
         //noinspection ThrowableResultOfMethodCallIgnored
-        ApiException e = (ApiException) observer.errors().get(0);
+        YandexApiException e = (YandexApiException) observer.errors().get(0);
         Assert.assertEquals(422, e.getCode());
     }
 
@@ -62,7 +62,7 @@ public class YandexTranslationProviderTest {
 
         Assert.assertEquals(1, observer.errors().size());
         //noinspection ThrowableResultOfMethodCallIgnored
-        ApiException e = (ApiException) observer.errors().get(0);
+        YandexApiException e = (YandexApiException) observer.errors().get(0);
         Assert.assertEquals(401, e.getCode());
     }
 
@@ -113,7 +113,7 @@ public class YandexTranslationProviderTest {
 
         Assert.assertEquals(1, observer.errors().size());
         //noinspection ThrowableResultOfMethodCallIgnored
-        ApiException e = (ApiException) observer.errors().get(0);
+        YandexApiException e = (YandexApiException) observer.errors().get(0);
         Assert.assertEquals(401, e.getCode());
     }
 

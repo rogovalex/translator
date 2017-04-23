@@ -7,12 +7,12 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
-import ru.rogovalex.translator.api.ApiException;
-import ru.rogovalex.translator.api.DictionaryApiService;
-import ru.rogovalex.translator.api.response.DictionaryEntry;
-import ru.rogovalex.translator.api.response.DictionaryResponse;
-import ru.rogovalex.translator.api.response.DictionaryTranslation;
 import ru.rogovalex.translator.data.YandexDictionaryProvider;
+import ru.rogovalex.translator.data.api.DictionaryApiService;
+import ru.rogovalex.translator.data.api.YandexApiException;
+import ru.rogovalex.translator.data.api.response.DictionaryEntry;
+import ru.rogovalex.translator.data.api.response.DictionaryResponse;
+import ru.rogovalex.translator.data.api.response.DictionaryTranslation;
 import ru.rogovalex.translator.domain.model.Definition;
 import ru.rogovalex.translator.domain.model.DefinitionOption;
 import ru.rogovalex.translator.domain.model.TranslationParams;
@@ -58,7 +58,7 @@ public class YandexDictionaryProviderTest {
 
         Assert.assertEquals(1, observer.errors().size());
         //noinspection ThrowableResultOfMethodCallIgnored
-        ApiException e = (ApiException) observer.errors().get(0);
+        YandexApiException e = (YandexApiException) observer.errors().get(0);
         Assert.assertEquals(401, e.getCode());
     }
 

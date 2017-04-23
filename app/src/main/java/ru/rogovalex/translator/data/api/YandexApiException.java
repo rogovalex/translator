@@ -1,6 +1,8 @@
-package ru.rogovalex.translator.api;
+package ru.rogovalex.translator.data.api;
 
 import java.util.HashMap;
+
+import ru.rogovalex.translator.domain.model.ApiException;
 
 /**
  * Created with Android Studio.
@@ -8,7 +10,7 @@ import java.util.HashMap;
  * Date: 01.04.2017
  * Time: 18:42
  */
-public class ApiException extends Exception {
+public class YandexApiException extends ApiException {
 
     private static final HashMap<Integer, String> mCodes =
             new HashMap<Integer, String>() {{
@@ -22,7 +24,7 @@ public class ApiException extends Exception {
 
     private int mCode;
 
-    public ApiException(int code) {
+    public YandexApiException(int code) {
         super(mCodes.get(code));
         mCode = code;
     }

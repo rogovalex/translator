@@ -1,11 +1,11 @@
-package ru.rogovalex.translator.api;
+package ru.rogovalex.translator.data.api;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import ru.rogovalex.translator.api.response.LanguagesResponse;
-import ru.rogovalex.translator.api.response.TranslateResponse;
+import ru.rogovalex.translator.data.api.response.LanguagesResponse;
+import ru.rogovalex.translator.data.api.response.TranslateResponse;
 
 /**
  * Created with Android Studio.

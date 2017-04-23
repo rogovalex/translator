@@ -11,7 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ru.rogovalex.translator.R;
-import ru.rogovalex.translator.api.ApiException;
+import ru.rogovalex.translator.domain.model.ApiException;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.presentation.common.SearchableListFragment;
 import ru.rogovalex.translator.presentation.injection.component.LanguageFragmentComponent;

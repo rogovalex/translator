@@ -1,4 +1,4 @@
-package ru.rogovalex.translator.api.response;
+package ru.rogovalex.translator.data.api.response;
 
 import com.google.gson.annotations.SerializedName;
 

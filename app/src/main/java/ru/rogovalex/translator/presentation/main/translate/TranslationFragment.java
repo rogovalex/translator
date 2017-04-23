@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import ru.rogovalex.translator.R;
-import ru.rogovalex.translator.api.ApiException;
+import ru.rogovalex.translator.domain.model.ApiException;
 import ru.rogovalex.translator.domain.model.Language;
 import ru.rogovalex.translator.domain.model.Translation;
 import ru.rogovalex.translator.presentation.common.BaseFragment;

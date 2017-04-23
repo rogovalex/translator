@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
-import ru.rogovalex.translator.api.ApiException;
-import ru.rogovalex.translator.api.DictionaryApiService;
-import ru.rogovalex.translator.api.response.DictionaryEntry;
-import ru.rogovalex.translator.api.response.DictionaryResponse;
-import ru.rogovalex.translator.api.response.DictionaryTranslation;
+import ru.rogovalex.translator.data.api.DictionaryApiService;
+import ru.rogovalex.translator.data.api.YandexApiException;
+import ru.rogovalex.translator.data.api.response.DictionaryEntry;
+import ru.rogovalex.translator.data.api.response.DictionaryResponse;
+import ru.rogovalex.translator.data.api.response.DictionaryTranslation;
 import ru.rogovalex.translator.domain.model.Definition;
 import ru.rogovalex.translator.domain.model.DefinitionOption;
 import ru.rogovalex.translator.domain.model.TranslationParams;
@@ -45,7 +45,7 @@ public class YandexDictionaryProvider implements DictionaryProvider {
 
     private Observable<List<DictionaryEntry>> handleDictionaryResponse(DictionaryResponse response) {
         if (response.getCode() != 200) {
-            return Observable.error(new ApiException(response.getCode()));
+            return Observable.error(new YandexApiException(response.getCode()));
         }
         return Observable.just(response.getEntries() != null
                 ? Arrays.asList(response.getEntries())
