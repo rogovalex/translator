@@ -4,7 +4,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import ru.rogovalex.translator.domain.model.Translation;
-import ru.rogovalex.translator.domain.model.TranslationParams;
 
 /**
  * Created with Android Studio.
@@ -14,10 +13,6 @@ import ru.rogovalex.translator.domain.model.TranslationParams;
  */
 public interface HistoryRepository {
     Observable<List<Translation>> loadHistory();
-
-    Observable<Boolean> updateHistory(Translation translation, String uiLangCode);
-
-    Observable<List<Translation>> loadFromHistory(TranslationParams params);
 
     Observable<Boolean> clearHistory();
 }
