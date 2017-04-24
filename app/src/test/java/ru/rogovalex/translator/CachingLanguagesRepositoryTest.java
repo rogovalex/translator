@@ -39,7 +39,7 @@ public class CachingLanguagesRepositoryTest {
         }});
 
         LanguagesProvider provider = mock(LanguagesProvider.class);
-        when(provider.languages("ru")).thenReturn(Observable.just(Collections.emptyList()));
+        when(provider.languages("ru")).thenReturn(Observable.empty());
 
         CachingLanguagesRepository repository = new CachingLanguagesRepository(database, provider);
 
